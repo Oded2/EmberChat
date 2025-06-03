@@ -1,5 +1,10 @@
 <script lang="ts">
 	import { authHandlers, authStore } from '$lib/stores/fire';
+
+	const items: { label: string; href: string }[] = [
+		{ label: 'Item 1', href: '/' },
+		{ label: 'Item 2', href: '/' }
+	];
 </script>
 
 <div class="navbar bg-base-100 shadow-sm">
@@ -21,36 +26,20 @@
 					/>
 				</svg>
 			</div>
-			<ul
-				tabindex="0"
-				class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-			>
-				<li><a>Item 1</a></li>
-				<li>
-					<a>Parent</a>
-					<ul class="p-2">
-						<li><a>Submenu 1</a></li>
-						<li><a>Submenu 2</a></li>
-					</ul>
-				</li>
-				<li><a>Item 3</a></li>
+			<!-- Possible problem: add tabindex -->
+			<ul class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+				{#each items as item}
+					<li><a href={item.href}>{item.label}</a></li>
+				{/each}
 			</ul>
 		</div>
-		<a class="btn btn-ghost text-xl">daisyUI</a>
+		<a href="/bind:" class="btn btn-ghost text-xl">JustChat</a>
 	</div>
 	<div class="navbar-center hidden lg:flex">
 		<ul class="menu menu-horizontal px-1">
-			<li><a>Item 1</a></li>
-			<li>
-				<details>
-					<summary>Parent</summary>
-					<ul class="p-2">
-						<li><a>Submenu 1</a></li>
-						<li><a>Submenu 2</a></li>
-					</ul>
-				</details>
-			</li>
-			<li><a>Item 3</a></li>
+			{#each items as item}
+				<li><a href={item.href}>{item.label}</a></li>
+			{/each}
 		</ul>
 	</div>
 	<div class="navbar-end">
