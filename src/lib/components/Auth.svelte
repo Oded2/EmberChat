@@ -15,6 +15,10 @@
 	let confirmPass = $state('');
 	let inProgress = $state(false);
 
+	$effect(() => {
+		signUp = initialSignUp;
+	});
+
 	async function handleAuthenticate() {
 		inProgress = true;
 		try {
