@@ -5,11 +5,10 @@
 	import { auth, db } from '$lib/firebase/firebase';
 	import { goto } from '$app/navigation';
 	import { doc, getDoc, setDoc } from 'firebase/firestore';
-	import { authStore } from '$lib/stores/fire';
+	import { authStore, nonAuthRoutes } from '$lib/stores/fire';
 
 	const { children } = $props();
-
-	const nonAuthRoutes = ['/', '/auth'];
+	$inspect($authStore);
 
 	onMount(() => {
 		const unsubscribe = auth.onAuthStateChanged(async (user) => {

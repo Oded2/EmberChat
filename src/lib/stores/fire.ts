@@ -1,9 +1,14 @@
 import { auth } from '$lib/firebase/firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import {
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+	signOut,
+	type User
+} from 'firebase/auth';
 import { writable, type Writable } from 'svelte/store';
 
 interface AuthStore {
-	user: any;
+	user: User | null;
 	loading: boolean;
 	data: { [key: string]: any };
 }
@@ -13,6 +18,8 @@ const initialAuthStore: AuthStore = {
 	loading: true,
 	data: {}
 };
+
+export const nonAuthRoutes = ['/', '/auth'];
 
 export const authStore: Writable<AuthStore> = writable(structuredClone(initialAuthStore));
 
