@@ -19,29 +19,24 @@
 				goto('/');
 				return;
 			}
+			let dataToSetToStore: { [key: string]: any } = {};
 			if (user) {
 				goto('/');
+				const docRef = doc(db, 'users', user.uid);
+				const docSnap = await getDoc(docRef);
+				if (!docSnap.exists()) {
+					console.log('Creating User');
+					const userRef = doc(db, 'users', user.uid);
+					dataToSetToStore = {
+						email: user.email
+					};
+					await setDoc(userRef, dataToSetToStore, { merge: true });
+				} else {
+					console.log('Fetching User');
+					const userData = docSnap.data();
+					dataToSetToStore = userData;
+				}
 			}
-			if (!user) {
-				return;
-			}
-			let dataToSetToStore;
-			const docRef = doc(db, 'users', user.uid);
-			const docSnap = await getDoc(docRef);
-			if (!docSnap.exists()) {
-				console.log('Creating User');
-				const userRef = doc(db, 'users', user.uid);
-				dataToSetToStore = {
-					email: user.email,
-					todos: []
-				};
-				await setDoc(userRef, dataToSetToStore, { merge: true });
-			} else {
-				console.log('Fetching User');
-				const userData = docSnap.data();
-				dataToSetToStore = userData;
-			}
-
 			authStore.update((curr) => {
 				return {
 					...curr,

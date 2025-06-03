@@ -8,11 +8,13 @@ interface AuthStore {
 	data: { [key: string]: any };
 }
 
-export const authStore: Writable<AuthStore> = writable({
+const initialAuthStore: AuthStore = {
 	user: null,
 	loading: true,
 	data: {}
-});
+};
+
+export const authStore: Writable<AuthStore> = writable(structuredClone(initialAuthStore));
 
 export const authHandlers = {
 	signup: async (email: string, password: string) =>
@@ -20,4 +22,8 @@ export const authHandlers = {
 	login: async (email: string, password: string) =>
 		await signInWithEmailAndPassword(auth, email, password),
 	signout: async () => signOut(auth)
+};
+
+export const resetAuthStore = () => {
+	authStore.set(structuredClone(initialAuthStore));
 };
