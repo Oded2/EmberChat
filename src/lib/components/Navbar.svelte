@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { addParams } from '$lib/helpers';
 	import { authHandlers, authStore } from '$lib/stores/fire';
 
 	const items: { label: string; href: string }[] = [
@@ -33,7 +34,7 @@
 				{/each}
 			</ul>
 		</div>
-		<a href="/bind:" class="btn btn-ghost text-xl">JustChat</a>
+		<a href="/" class="btn btn-ghost text-xl">JustChat</a>
 	</div>
 	<div class="navbar-center hidden lg:flex">
 		<ul class="menu menu-horizontal px-1">
@@ -42,10 +43,12 @@
 			{/each}
 		</ul>
 	</div>
-	<div class="navbar-end">
+	<div class="navbar-end gap-2">
 		{#if $authStore.user}
 			<button onclick={authHandlers.signout} class="btn btn-primary">Logout</button>
 		{:else}
+			<a href={addParams('/auth', { action: 'login' })} class="btn btn-primary btn-outline">Login</a
+			>
 			<a href="/auth" class="btn btn-primary">Sign Up</a>
 		{/if}
 	</div>

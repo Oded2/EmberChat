@@ -3,7 +3,13 @@
 	import FieldsetInput from '$lib/components/FieldsetInput.svelte';
 	import { authHandlers } from '$lib/stores/fire';
 
-	let signUp = $state(true);
+	interface Props {
+		initialSignUp?: boolean;
+	}
+
+	const { initialSignUp }: Props = $props();
+
+	let signUp = $state(initialSignUp);
 	let email = $state('');
 	let password = $state('');
 	let confirmPass = $state('');
