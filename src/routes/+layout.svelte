@@ -6,13 +6,13 @@
 	import { goto } from '$app/navigation';
 	import { doc, getDoc, setDoc } from 'firebase/firestore';
 	import { authStore, nonAuthRoutes } from '$lib/stores/fire';
+	import { page } from '$app/state';
 
 	const { children } = $props();
-	$inspect($authStore);
 
 	onMount(() => {
 		const unsubscribe = auth.onAuthStateChanged(async (user) => {
-			const currentPath = window.location.pathname;
+			const currentPath = page.url.pathname;
 			if (!user && !nonAuthRoutes.includes(currentPath)) {
 				// The user is trying to access a protected page
 				goto('/');
