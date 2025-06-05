@@ -16,7 +16,6 @@
 			if (!user && !nonAuthRoutes.includes(currentPath)) {
 				// The user is trying to access a protected page
 				goto('/');
-				return;
 			}
 			let dataToSetToStore: { [key: string]: any } = {};
 			if (user) {
