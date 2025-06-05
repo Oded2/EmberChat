@@ -1,5 +1,12 @@
 <script lang="ts">
-	// TypeScript code can be added here
+	import LabelInput from '$lib/components/LabelInput.svelte';
+
+	let message: string = $state('');
 </script>
 
-<h1>Protected chat page</h1>
+<div class="flex grow flex-col">
+	<div class="grow bg-blue-500"></div>
+	<div class="p-4">
+		<LabelInput bind:value={message} label="Enter a message"></LabelInput>
+	</div>
+</div>

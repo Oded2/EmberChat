@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import Fieldset from '$lib/components/Fieldset.svelte';
 	import FieldsetInput from '$lib/components/FieldsetInput.svelte';
 	import { authHandlers } from '$lib/stores/fire';
@@ -29,9 +30,9 @@
 				}
 				await authHandlers.signup(email, password);
 			} else await authHandlers.login(email, password);
+			goto('/');
 		} catch (err) {
 			console.error(err);
-		} finally {
 			inProgress = false;
 		}
 	}
@@ -66,10 +67,11 @@
 			type="button"
 			onclick={() => (signUp = !signUp)}
 			class="mt-2 cursor-pointer font-extralight underline"
-			>{signUp ? 'Already have an account? Login' : "Don't have an account yet? Sign up"}</button
 		>
-		<button disabled={inProgress} type="submit" class="btn btn-primary mt-2"
-			>{signUp ? 'Sign Up' : 'Login'}</button
-		>
+			{signUp ? 'Already have an account? Login' : "Don't have an account yet? Sign up"}
+		</button>
+		<button disabled={inProgress} type="submit" class="btn btn-primary mt-2">
+			{signUp ? 'Sign Up' : 'Login'}
+		</button>
 	</Fieldset>
 </form>

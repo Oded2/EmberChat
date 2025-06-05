@@ -19,7 +19,6 @@
 			}
 			let dataToSetToStore: { [key: string]: any } = {};
 			if (user) {
-				goto('/');
 				const docRef = doc(db, 'users', user.uid);
 				const docSnap = await getDoc(docRef);
 				if (!docSnap.exists()) {
@@ -48,7 +47,9 @@
 	});
 </script>
 
-<Navbar></Navbar>
-<main class="container mx-auto py-10">
-	{@render children()}
-</main>
+<div class="flex min-h-screen flex-col">
+	<Navbar></Navbar>
+	<main class="container mx-auto flex grow flex-col py-10">
+		{@render children()}
+	</main>
+</div>
