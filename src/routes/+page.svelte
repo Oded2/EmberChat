@@ -33,13 +33,17 @@
 				>{`Email unverified: check your inbox at ${$user.email} to verify your email`}
 			</span>
 		{/if}
-		<a href="/chat" class="btn btn-primary btn-wide mx-auto mt-2 md:mx-0">Begin</a>
+		<a href="/chat" class="btn btn-primary btn-lg btn-wide mx-auto mt-2">
+			<i class="fa-solid fa-globe"></i> Global Chat
+		</a>
 		<div class="divider">OR</div>
 		<h4 class="text-2xl font-semibold">Enter Chat Room</h4>
 		<LabelInputForm handleSubmit={goToRoom}>
 			<LabelInput bind:value={roomCode} label="Room code" placeholder="Enter room code here"
 			></LabelInput>
-			<button type="submit" class="btn btn-primary min-w-30">Go</button>
+			<button type="submit" class="btn btn-primary btn-lg min-w-30">
+				<i class="fa-solid fa-circle-right"></i> Go
+			</button>
 		</LabelInputForm>
 	</div>
 	<div>
