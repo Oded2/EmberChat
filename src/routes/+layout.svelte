@@ -23,7 +23,7 @@
 	});
 </script>
 
-<div class="flex min-h-screen flex-col">
+<div class="bg-base-200 flex min-h-screen flex-col">
 	<Navbar></Navbar>
 	<main class="container mx-auto flex grow flex-col py-10">
 		{@render children()}
