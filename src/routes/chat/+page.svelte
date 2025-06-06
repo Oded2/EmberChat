@@ -28,7 +28,7 @@
 	async function sendMessage() {
 		await addDoc(collection(db, 'globalMessages'), {
 			text: newMessage,
-			senderName: get(user)?.displayName,
+			senderName: get(user)?.displayName ?? '',
 			timestamp: serverTimestamp()
 		});
 		newMessage = '';
@@ -39,7 +39,7 @@
 	<div class="flex grow flex-col gap-3">
 		{#each messages as message}
 			<div class="bg-base-100 relative inline-flex gap-2 rounded-lg p-2 transition-transform">
-				<span class="font-medium after:content-[':']">{message.senderName}</span>
+				<span class="font-medium after:content-[':']">{message.senderName || 'Anonymous'}</span>
 				<span>{message.text}</span>
 			</div>
 		{/each}
