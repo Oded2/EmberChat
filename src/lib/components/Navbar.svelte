@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { authHandlers } from '$lib/firebase/firebase';
 	import { addParams } from '$lib/helpers';
-	import { authHandlers, authStore } from '$lib/stores/fire';
+	import { user } from '$lib/stores/user';
 
 	const items: { label: string; href: string }[] = [
 		{ label: 'Item 1', href: '/' },
@@ -44,7 +45,7 @@
 		</ul>
 	</div>
 	<div class="navbar-end gap-2">
-		{#if $authStore.user}
+		{#if $user}
 			<button onclick={authHandlers.signout} class="btn btn-primary">Logout</button>
 		{:else}
 			<a href={addParams('/auth', { action: 'login' })} class="btn btn-primary btn-outline">Login</a

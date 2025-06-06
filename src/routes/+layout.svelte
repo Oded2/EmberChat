@@ -2,46 +2,22 @@
 	import Navbar from '$lib/components/Navbar.svelte';
 	import { onMount } from 'svelte';
 	import '../app.css';
-	import { auth, db } from '$lib/firebase/firebase';
-	import { goto } from '$app/navigation';
-	import { doc, getDoc, setDoc } from 'firebase/firestore';
-	import { authStore, nonAuthRoutes } from '$lib/stores/fire';
+	import { auth } from '$lib/firebase/firebase';
+	import { user } from '$lib/stores/user';
 	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 
 	const { children } = $props();
 
+	const protectedRoutes = ['/chat'];
+
 	onMount(() => {
-		const unsubscribe = auth.onAuthStateChanged(async (user) => {
-			const currentPath = page.url.pathname;
-			if (!user && !nonAuthRoutes.includes(currentPath)) {
-				// The user is trying to access a protected page
+		const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
+			if (!firebaseUser && protectedRoutes.includes(page.url.pathname)) {
+				// User has logged out and is in a protected page
 				goto('/');
 			}
-			let dataToSetToStore: { [key: string]: any } = {};
-			if (user) {
-				const docRef = doc(db, 'users', user.uid);
-				const docSnap = await getDoc(docRef);
-				if (!docSnap.exists()) {
-					console.log('Creating User');
-					const userRef = doc(db, 'users', user.uid);
-					dataToSetToStore = {
-						email: user.email
-					};
-					await setDoc(userRef, dataToSetToStore, { merge: true });
-				} else {
-					console.log('Fetching User');
-					const userData = docSnap.data();
-					dataToSetToStore = userData;
-				}
-			}
-			authStore.update((curr) => {
-				return {
-					...curr,
-					user,
-					data: dataToSetToStore,
-					loading: false
-				};
-			});
+			user.set(firebaseUser);
 		});
 		return unsubscribe;
 	});

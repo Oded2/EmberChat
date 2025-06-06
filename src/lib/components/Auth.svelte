@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import Fieldset from '$lib/components/Fieldset.svelte';
 	import FieldsetInput from '$lib/components/FieldsetInput.svelte';
-	import { authHandlers } from '$lib/stores/fire';
+	import { authHandlers } from '$lib/firebase/firebase';
 
 	interface Props {
 		initialSignUp?: boolean;

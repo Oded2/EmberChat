@@ -11,7 +11,12 @@ import {
 	PUBLIC_FIREBASE_MEASUREMENT_ID
 } from '$env/static/public';
 import { getFirestore } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import {
+	createUserWithEmailAndPassword,
+	getAuth,
+	signInWithEmailAndPassword,
+	signOut
+} from 'firebase/auth';
 
 // Firebase configuration
 const firebaseConfig = {
@@ -37,3 +42,10 @@ if (!getApps().length) {
 // Export Firestore and Auth instances
 export const db = getFirestore(firebaseApp);
 export const auth = getAuth(firebaseApp);
+export const authHandlers = {
+	signup: async (email: string, password: string) =>
+		await createUserWithEmailAndPassword(auth, email, password),
+	login: async (email: string, password: string) =>
+		await signInWithEmailAndPassword(auth, email, password),
+	signout: async () => signOut(auth)
+};
