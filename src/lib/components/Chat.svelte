@@ -23,6 +23,7 @@
 	import LabelInputForm from './LabelInputForm.svelte';
 	import { globalRoomCode } from '$lib/helpers';
 	import Autolink from './Autolink.svelte';
+	import LabelInputButton from './LabelInputButton.svelte';
 
 	interface Props {
 		chatId: string;
@@ -129,9 +130,9 @@
 	<div class="bg-base-200 sticky bottom-0 flex flex-col gap-2 py-4">
 		<LabelInputForm handleSubmit={sendMessage}>
 			<LabelInput bind:value={newMessage} label="Enter a message"></LabelInput>
-			<button type="submit" class="btn btn-primary">
+			<LabelInputButton>
 				<i class="fa-solid fa-paper-plane"></i> Send
-			</button>
+			</LabelInputButton>
 		</LabelInputForm>
 		{#if chatId !== globalRoomCode}
 			<span class="text-center text-sm italic">{`Chat ID: ${chatId}`}</span>

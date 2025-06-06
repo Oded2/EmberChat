@@ -10,7 +10,7 @@
 </script>
 
 <form
-	class="flex items-center gap-4"
+	class="mx-auto flex w-full max-w-4xl flex-col items-center gap-4 sm:flex-row"
 	onsubmit={(e) => {
 		e.preventDefault();
 		handleSubmit();

@@ -26,7 +26,7 @@
 
 <div class="bg-base-200 flex min-h-screen flex-col">
 	<Navbar></Navbar>
-	<main class="container mx-auto flex grow flex-col">
+	<main class="container mx-auto flex grow flex-col px-2 sm:px-0">
 		{@render children()}
 	</main>
 	<Toasts></Toasts>
