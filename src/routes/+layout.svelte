@@ -6,6 +6,7 @@
 	import { user } from '$lib/stores/user';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
+	import Toasts from '$lib/components/Toasts.svelte';
 
 	const { children } = $props();
 
@@ -28,4 +29,5 @@
 	<main class="container mx-auto flex grow flex-col">
 		{@render children()}
 	</main>
+	<Toasts></Toasts>
 </div>
