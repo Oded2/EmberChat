@@ -7,9 +7,9 @@
 	<div class="flex grow flex-col gap-4">
 		<h1 class="text-8xl font-bold">Zero complexity, just chat.</h1>
 		<p class="text-lg font-light">
-			Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sunt tenetur veritatis cumque
-			laboriosam fugiat vitae architecto nobis esse, nisi consectetur ipsam atque minus placeat
-			aperiam quis in maiores assumenda omnis?
+			JustChat is a simple, real-time chat application built with SvelteKit and Firebase. It
+			features user authentication, live global messaging, and a clean, responsive UI using Tailwind
+			CSS and DaisyUI.
 		</p>
 		{#if $user && !$user.emailVerified}
 			<span class="text-warning"

@@ -11,7 +11,7 @@
 		query,
 		serverTimestamp
 	} from 'firebase/firestore';
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { get } from 'svelte/store';
 
 	let newMessage: string = $state('');
@@ -19,8 +19,10 @@
 
 	onMount(() => {
 		const q = query(collection(db, 'globalMessages'), orderBy('timestamp'));
-		const unsubscribe = onSnapshot(q, (snapshot) => {
+		const unsubscribe = onSnapshot(q, async (snapshot) => {
 			messages = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+			await tick();
+			window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 		});
 		return unsubscribe;
 	});
@@ -36,24 +38,26 @@
 </script>
 
 <div class="flex grow flex-col gap-4">
-	<div class="flex grow flex-col gap-3">
+	<div class="flex grow flex-col gap-4">
 		{#each messages as message}
 			<div class="bg-base-100 relative inline-flex gap-2 rounded-lg p-2 transition-transform">
 				<span class="font-medium after:content-[':']">{message.senderName || 'Anonymous'}</span>
-				<span>{message.text}</span>
+				<span dir="rtl">{message.text}</span>
 			</div>
 		{/each}
 	</div>
-	<form
-		class="flex items-center gap-4"
-		onsubmit={(e) => {
-			e.preventDefault();
-			sendMessage();
-		}}
-	>
-		<LabelInput bind:value={newMessage} label="Enter a message" required></LabelInput>
-		<button type="submit" class="btn btn-primary">Send</button>
-	</form>
+	<div class="bg-base-200 sticky bottom-0 py-4">
+		<form
+			class="flex items-center gap-4"
+			onsubmit={(e) => {
+				e.preventDefault();
+				sendMessage();
+			}}
+		>
+			<LabelInput bind:value={newMessage} label="Enter a message" required></LabelInput>
+			<button type="submit" class="btn btn-primary">Send</button>
+		</form>
+	</div>
 </div>
 
 <Title title="Chat"></Title>
