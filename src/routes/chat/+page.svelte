@@ -28,10 +28,12 @@
 	});
 
 	async function sendMessage() {
+		const currentUser = get(user);
 		await addDoc(collection(db, 'globalMessages'), {
 			text: newMessage,
-			senderName: get(user)?.displayName ?? '',
-			timestamp: serverTimestamp()
+			senderName: currentUser?.displayName ?? '',
+			timestamp: serverTimestamp(),
+			owner: currentUser?.uid ?? ''
 		});
 		newMessage = '';
 	}
