@@ -5,7 +5,7 @@
 		title?: string;
 		btnText: string;
 		disabled?: boolean;
-		handleSubmit: () => void;
+		handleSubmit: () => any;
 		children?: Snippet;
 	}
 

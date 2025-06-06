@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { addErrorToast } from '$lib/helpers';
 	import { addToast } from '$lib/stores/toasts';
 	import type { Snippet } from 'svelte';
 	import type { MouseEventHandler } from 'svelte/elements';
@@ -31,11 +32,7 @@
 			reactiveTip = copyConfirmation;
 		} catch (err) {
 			console.error(err);
-			addToast({
-				text: 'Error Copying to Clipboard',
-				duration: 5000,
-				type: 'error'
-			});
+			addErrorToast('Error copying to clipboard');
 		}
 		timeout = setTimeout(() => (reactiveTip = originalMessage), timeoutDuration);
 	};

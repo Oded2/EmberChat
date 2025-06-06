@@ -1,3 +1,8 @@
+import { addToast } from './stores/toasts';
+
+export const alphanumericRegex = /^[A-Za-z0-9]+$/;
+export const globalRoomCode = 'global';
+
 export function addParams(url: string, params: Record<string, string>): string {
 	const urlParams = new URLSearchParams(params);
 	return `${url}?${urlParams.toString()}`;
@@ -15,3 +20,5 @@ export function firebaseAuthErrorTypeGaurd(
 		typeof (error as any).message === 'string'
 	);
 }
+
+export const addErrorToast = (text: string) => addToast('error', 5000, text);

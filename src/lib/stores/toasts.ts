@@ -2,22 +2,24 @@ import { writable, type Writable } from 'svelte/store';
 
 export type ToastType = 'success' | 'info' | 'error';
 
-export interface UserToast {
+interface UserToast {
 	duration: number;
 	type: ToastType;
 	text: string;
 }
-export interface Toast extends UserToast {
+interface Toast extends UserToast {
 	id: string;
 }
 
 export const toasts: Writable<Toast[]> = writable([]);
 
-export const addToast = (options: UserToast) => {
+export const addToast = (type: ToastType, duration: number, text: string) => {
 	const id = Math.floor(Math.random() * 10000).toString();
 	const toast: Toast = {
 		id,
-		...options
+		type,
+		duration,
+		text
 	};
 	toasts.update((all) => [toast, ...all]);
 	if (toast.duration > 0) setTimeout(() => dismissToast(id), toast.duration);

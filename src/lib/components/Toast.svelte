@@ -1,12 +1,12 @@
 <script lang="ts">
+	import type { ToastType } from '$lib/stores/toasts';
 	import { type Snippet } from 'svelte';
-	import type { MouseEventHandler } from 'svelte/elements';
 	import { fly } from 'svelte/transition';
 
 	interface Props {
-		type: 'success' | 'info' | 'error';
+		type: ToastType;
 		duration: number;
-		handleClose: MouseEventHandler<HTMLButtonElement>;
+		handleClose: () => any;
 		children: Snippet;
 	}
 

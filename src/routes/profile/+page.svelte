@@ -2,7 +2,7 @@
 	import Fieldset from '$lib/components/Fieldset.svelte';
 	import FieldsetInput from '$lib/components/FieldsetInput.svelte';
 	import Title from '$lib/components/Title.svelte';
-	import { firebaseAuthErrorTypeGaurd } from '$lib/helpers';
+	import { addErrorToast, firebaseAuthErrorTypeGaurd } from '$lib/helpers';
 	import { addToast } from '$lib/stores/toasts';
 	import { updateUser, user } from '$lib/stores/user';
 	import {
@@ -72,8 +72,7 @@
 		} catch (err) {
 			console.error(err);
 			if (firebaseAuthErrorTypeGaurd(err)) {
-				if (err.code === 'auth/invalid-credential')
-					addToast({ type: 'error', duration: 5000, text: 'Incorrect password' });
+				if (err.code === 'auth/invalid-credential') addErrorToast('Incorrect password');
 			}
 		}
 		inProgress.reauthentication = false;

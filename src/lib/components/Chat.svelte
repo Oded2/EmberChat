@@ -20,9 +20,10 @@
 	import { flip } from 'svelte/animate';
 	import { get } from 'svelte/store';
 	import { fly } from 'svelte/transition';
+	import LabelInputForm from './LabelInputForm.svelte';
 
 	interface Props {
-		chatId: number;
+		chatId: string;
 	}
 
 	const { chatId }: Props = $props();
@@ -30,7 +31,7 @@
 	let newMessage: string = $state('');
 	let allMessages: {
 		id: string;
-		chatId: number;
+		chatId: string;
 		text?: string;
 		senderName?: string;
 		timestamp: Date;
@@ -124,18 +125,12 @@
 		{/each}
 	</div>
 	<div class="bg-base-200 sticky bottom-0 py-4">
-		<form
-			class="flex items-center gap-4"
-			onsubmit={(e) => {
-				e.preventDefault();
-				sendMessage();
-			}}
-		>
+		<LabelInputForm handleSubmit={sendMessage}>
 			<LabelInput bind:value={newMessage} label="Enter a message"></LabelInput>
-			<button type="submit" class="btn btn-primary"
-				><i class="fa-solid fa-paper-plane"></i> Send</button
-			>
-		</form>
+			<button type="submit" class="btn btn-primary">
+				<i class="fa-solid fa-paper-plane"></i> Send
+			</button>
+		</LabelInputForm>
 	</div>
 </div>
 

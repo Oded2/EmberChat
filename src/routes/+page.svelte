@@ -1,6 +1,23 @@
-<script>
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import LabelInput from '$lib/components/LabelInput.svelte';
+	import LabelInputForm from '$lib/components/LabelInputForm.svelte';
 	import Title from '$lib/components/Title.svelte';
+	import { addErrorToast, alphanumericRegex, globalRoomCode } from '$lib/helpers';
+	import { addToast } from '$lib/stores/toasts';
 	import { user } from '$lib/stores/user';
+
+	let roomCode = $state('');
+
+	function goToRoom() {
+		roomCode = roomCode.trim();
+		if (!roomCode) return;
+		if (!alphanumericRegex.test(roomCode))
+			addErrorToast('Room code must only contain letters and/or numbers without spaces');
+		else if (roomCode === globalRoomCode)
+			addErrorToast(`Room code "${globalRoomCode}" is reserved for the global chat room`);
+		else goto(`/chat/${roomCode}`);
+	}
 </script>
 
 <div class="flex flex-col gap-8 lg:flex-row">
@@ -17,8 +34,21 @@
 			</span>
 		{/if}
 		<a href="/chat" class="btn btn-primary btn-wide mx-auto mt-2 md:mx-0">Begin</a>
+		<div class="divider">OR</div>
+		<h4 class="text-2xl font-semibold">Enter Chat Room</h4>
+		<LabelInputForm handleSubmit={goToRoom}>
+			<LabelInput bind:value={roomCode} label="Room code" placeholder="Enter room code here"
+			></LabelInput>
+			<button type="submit" class="btn btn-primary min-w-30">Go</button>
+		</LabelInputForm>
 	</div>
-	<img src="/favicon.png" alt="Logo" class="mx-auto max-w-md rounded-2xl shadow-2xl" />
+	<div>
+		<img
+			src="/favicon.png"
+			alt="Logo"
+			class="mx-auto max-w-md rounded-2xl shadow-2xl transition-transform hover:-translate-y-1"
+		/>
+	</div>
 </div>
 
 <Title title="JustChat"></Title>
