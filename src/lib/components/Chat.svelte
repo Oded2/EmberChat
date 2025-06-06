@@ -22,6 +22,7 @@
 	import { fly } from 'svelte/transition';
 	import LabelInputForm from './LabelInputForm.svelte';
 	import { globalRoomCode } from '$lib/helpers';
+	import Autolink from './Autolink.svelte';
 
 	interface Props {
 		chatId: string;
@@ -96,7 +97,7 @@
 			>
 				<div class="flex items-baseline gap-2">
 					<span class="font-medium after:content-[':']">{message.senderName || 'Anonymous'}</span>
-					<span dir="auto">{message.text}</span>
+					<span dir="auto"><Autolink text={message.text}></Autolink></span>
 				</div>
 				<div class="flex items-baseline gap-2">
 					<span class="whitespace-nowrap">
