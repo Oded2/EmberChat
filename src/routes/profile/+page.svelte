@@ -8,7 +8,7 @@
 
 	let inProgress = $state(false);
 
-	let email: string = $state('');
+	let email = $state('');
 	let displayName = $state('');
 
 	$effect(() => {
