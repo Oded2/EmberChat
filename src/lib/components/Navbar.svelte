@@ -46,6 +46,7 @@
 	</div>
 	<div class="navbar-end gap-2">
 		{#if $user}
+			<a href="/profile" class="btn btn-primary btn-outline">Profile</a>
 			<button onclick={authHandlers.signout} class="btn btn-primary">Logout</button>
 		{:else}
 			<a href={addParams('/auth', { action: 'login' })} class="btn btn-primary btn-outline">Login</a

@@ -15,7 +15,8 @@ import {
 	createUserWithEmailAndPassword,
 	getAuth,
 	signInWithEmailAndPassword,
-	signOut
+	signOut,
+	updateProfile
 } from 'firebase/auth';
 
 // Firebase configuration
@@ -43,8 +44,10 @@ if (!getApps().length) {
 export const db = getFirestore(firebaseApp);
 export const auth = getAuth(firebaseApp);
 export const authHandlers = {
-	signup: async (email: string, password: string) =>
-		await createUserWithEmailAndPassword(auth, email, password),
+	signup: async (email: string, password: string, displayName: string) => {
+		const { user } = await createUserWithEmailAndPassword(auth, email, password);
+		updateProfile(user, { displayName });
+	},
 	login: async (email: string, password: string) =>
 		await signInWithEmailAndPassword(auth, email, password),
 	signout: async () => signOut(auth)

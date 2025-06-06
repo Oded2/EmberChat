@@ -12,6 +12,7 @@
 
 	let signUp = $state(initialSignUp);
 	let email = $state('');
+	let displayName = $state('');
 	let password = $state('');
 	let confirmPass = $state('');
 	let inProgress = $state(false);
@@ -28,13 +29,48 @@
 					alert('Password does not match confirm password');
 					return;
 				}
-				await authHandlers.signup(email, password);
+				await authHandlers.signup(email, password, displayName);
 			} else await authHandlers.login(email, password);
 			goto('/');
 		} catch (err) {
 			console.error(err);
 			inProgress = false;
+			if (isFirebaseAuthError(err)) {
+				switch (err.code) {
+					case 'auth/invalid-credential':
+						alert('Incorrect password. Please try again.');
+						break;
+					case 'auth/user-not-found':
+						alert('No account found with this email.');
+						break;
+					case 'auth/email-already-in-use':
+						alert('Email is already registered.');
+						break;
+					case 'auth/invalid-email':
+						alert('Invalid email format.');
+						break;
+					case 'auth/weak-password':
+						alert('Password is too weak.');
+						break;
+					default:
+						alert('Authentication error: ' + err.message);
+				}
+			} else {
+				alert('An unexpected error occurred.');
+			}
 		}
+	}
+
+	// Type guard to check if error is a Firebase Auth error
+	function isFirebaseAuthError(error: unknown): error is { code: string; message: string } {
+		return (
+			typeof error === 'object' &&
+			error !== null &&
+			'code' in error &&
+			typeof (error as any).code === 'string' &&
+			'message' in error &&
+			typeof (error as any).message === 'string'
+		);
 	}
 </script>
 
@@ -47,6 +83,14 @@
 	<Fieldset title={signUp ? 'Sign Up' : 'Login'}>
 		<FieldsetInput bind:value={email} label="Email" type="email" placeholder="Email" required
 		></FieldsetInput>
+		{#if signUp}
+			<FieldsetInput
+				bind:value={displayName}
+				label="Display name"
+				placeholder="Display name"
+				required
+			></FieldsetInput>
+		{/if}
 		<FieldsetInput
 			bind:value={password}
 			label="Password"

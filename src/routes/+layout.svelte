@@ -9,7 +9,7 @@
 
 	const { children } = $props();
 
-	const protectedRoutes = ['/chat'];
+	const protectedRoutes = ['/chat', '/profile'];
 
 	onMount(() => {
 		const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
