@@ -4,8 +4,8 @@
 	import { user } from '$lib/stores/user';
 
 	const items: { label: string; href: string }[] = [
-		{ label: 'Item 1', href: '/' },
-		{ label: 'Item 2', href: '/' }
+		{ label: 'Chat', href: '/chat' },
+		{ label: 'About', href: '/' }
 	];
 </script>
 
