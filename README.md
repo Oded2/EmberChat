@@ -1,38 +1,70 @@
-# sv
+# JustChat
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+JustChat is a minimal, zero-complexity chat application built with [SvelteKit](https://kit.svelte.dev/), [Firebase](https://firebase.google.com/), [Tailwind CSS](https://tailwindcss.com/), and [DaisyUI](https://daisyui.com/). It features authentication, real-time global chat, and user profile management.
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- 🔥 Real-time global chat using Firebase Firestore
+- 🔐 User authentication (sign up, login, email verification)
+- 👤 User profile management (display name, email)
+- 🎨 Responsive UI with Tailwind CSS and DaisyUI
+- ⚡ Fast, modern SvelteKit app structure
 
-```bash
-# create a new project in the current directory
-npx sv create
+## Getting Started
 
-# create a new project in my-app
-npx sv create my-app
-```
+### Prerequisites
 
-## Developing
+- [Node.js](https://nodejs.org/) (v18+ recommended)
+- [Firebase Project](https://console.firebase.google.com/) with Authentication and Firestore enabled
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Installation
 
-```bash
-npm run dev
+1. **Clone the repository:**
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+   ```sh
+   git clone https://github.com/yourusername/justchat.git
+   cd justchat
+   ```
 
-## Building
+2. **Install dependencies:**
 
-To create a production version of your app:
+   ```sh
+   npm install
+   ```
 
-```bash
-npm run build
-```
+3. **Set up Firebase:**
 
-You can preview the production build with `npm run preview`.
+   - Create a new Firebase project in the [Firebase Console](https://console.firebase.google.com/).
+   - Enable Firestore and Authentication (Email/Password) in the Firebase Console.
+   - Create a `.env` file in the root of the project and add your Firebase config:
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+     ```env
+     VITE_FIREBASE_API_KEY=your_api_key
+     VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+     VITE_FIREBASE_PROJECT_ID=your_project_id
+     VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+     VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+     VITE_FIREBASE_APP_ID=your_app_id
+     ```
+
+4. **Run the development server:**
+
+   ```sh
+   npm run dev
+   ```
+
+   Open your browser and go to `http://localhost:5173` (or the URL shown in the terminal).
+
+## Usage
+
+- **Sign up / Log in:** Use the authentication form to sign up or log in.
+- **Global chat:** Access the global chat from the navigation menu.
+- **User profile:** Manage your profile and view other users' profiles.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+Made by [Oded](https://github.com/Oded2)
