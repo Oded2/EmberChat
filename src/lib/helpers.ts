@@ -1,6 +1,6 @@
 import { addToast } from './stores/toasts';
 
-export const alphanumericRegex = /^[A-Za-z0-9]+$/;
+export const alphanumericRegex = /^[a-z0-9]+$/;
 export const globalRoomCode = 'global';
 
 export function addParams(url: string, params: Record<string, string>): string {

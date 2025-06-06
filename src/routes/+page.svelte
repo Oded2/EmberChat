@@ -7,11 +7,15 @@
 
 	let roomCode = $state('');
 
+	$effect(() => {
+		roomCode = roomCode.toLowerCase();
+	});
+
 	function goToRoom() {
 		roomCode = roomCode.trim();
 		if (!roomCode) return;
-		if (!alphanumericRegex.test(roomCode))
-			addErrorToast('Room code must only contain letters and/or numbers without spaces');
+		else if (!alphanumericRegex.test(roomCode))
+			addErrorToast('Room code must only contain lowercase letters and/or numbers without spaces');
 		else if (roomCode === globalRoomCode)
 			addErrorToast(`Room code "${globalRoomCode}" is reserved for the global chat room`);
 		else goto(`/chat/${roomCode}`);
