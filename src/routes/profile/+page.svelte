@@ -69,6 +69,7 @@
 			await reauthenticateWithCredential(currentUser, credential);
 			isReauthenticated = true;
 		} catch (err) {
+			console.error(err);
 			if (firebaseAuthErrorTypeGaurd(err)) {
 				if (err.code === 'auth/invalid-credential') alert('Incorrect password');
 			}
