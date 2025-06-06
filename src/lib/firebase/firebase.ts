@@ -15,6 +15,7 @@ import {
 	createUserWithEmailAndPassword,
 	getAuth,
 	sendEmailVerification,
+	sendPasswordResetEmail,
 	signInWithEmailAndPassword,
 	signOut,
 	updateProfile
@@ -52,5 +53,6 @@ export const authHandlers = {
 	},
 	login: async (email: string, password: string) =>
 		await signInWithEmailAndPassword(auth, email, password),
-	signout: async () => signOut(auth)
+	signout: async () => signOut(auth),
+	forgotPassword: async (email: string) => await sendPasswordResetEmail(auth, email)
 };

@@ -4,6 +4,7 @@
 	import FieldsetInput from '$lib/components/FieldsetInput.svelte';
 	import { authHandlers } from '$lib/firebase/firebase';
 	import { firebaseAuthErrorTypeGaurd } from '$lib/helpers';
+	import { sendPasswordResetEmail } from 'firebase/auth';
 	import Title from './Title.svelte';
 
 	interface Props {
@@ -62,6 +63,17 @@
 			}
 		}
 	}
+
+	async function handlePasswordReset() {
+		if (!email) {
+			alert('Please enter your email to reset your password');
+			return;
+		}
+		inProgress = true;
+		await authHandlers.forgotPassword(email);
+		inProgress = false;
+		alert(`An email has been sent to ${email} with instructions`);
+	}
 </script>
 
 <div class="mx-auto">
@@ -72,6 +84,15 @@
 		handleSubmit={handleAuthenticate}
 	>
 		<FieldsetInput bind:value={email} label="Email" type="email" required></FieldsetInput>
+		{#if !signUp}
+			<button
+				type="button"
+				onclick={handlePasswordReset}
+				class="me-auto cursor-pointer font-extralight underline"
+			>
+				Forgot Password?
+			</button>
+		{/if}
 		{#if signUp}
 			<FieldsetInput bind:value={displayName} label="Display name" required></FieldsetInput>
 		{/if}
