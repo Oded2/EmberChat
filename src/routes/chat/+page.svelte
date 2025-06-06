@@ -1,6 +1,7 @@
 <script lang="ts">
 	import LabelInput from '$lib/components/LabelInput.svelte';
 	import { db } from '$lib/firebase/firebase';
+	import { user } from '$lib/stores/user';
 	import {
 		addDoc,
 		collection,
@@ -10,11 +11,10 @@
 		serverTimestamp
 	} from 'firebase/firestore';
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 
 	let newMessage: string = $state('');
 	let messages: Record<string, any>[] = $state([]);
-
-	$inspect(messages);
 
 	onMount(() => {
 		const q = query(collection(db, 'globalMessages'), orderBy('timestamp'));
@@ -27,7 +27,7 @@
 	async function sendMessage() {
 		await addDoc(collection(db, 'globalMessages'), {
 			text: newMessage,
-			senderName: 'NA',
+			senderName: get(user)?.displayName,
 			timestamp: serverTimestamp()
 		});
 		newMessage = '';
