@@ -4,8 +4,6 @@
 	import LabelInputForm from '$lib/components/LabelInputForm.svelte';
 	import Title from '$lib/components/Title.svelte';
 	import { addErrorToast, alphanumericRegex, globalRoomCode } from '$lib/helpers';
-	import { addToast } from '$lib/stores/toasts';
-	import { user } from '$lib/stores/user';
 
 	let roomCode = $state('');
 
@@ -28,11 +26,6 @@
 			features user authentication, live global messaging, and a clean, responsive UI using Tailwind
 			CSS and DaisyUI.
 		</p>
-		{#if $user && !$user.emailVerified}
-			<span class="text-warning"
-				>{`Email unverified: check your inbox at ${$user.email} to verify your email`}
-			</span>
-		{/if}
 		<a href="/chat" class="btn btn-primary btn-lg btn-wide mx-auto mt-2">
 			<i class="fa-solid fa-globe"></i> Global Chat
 		</a>

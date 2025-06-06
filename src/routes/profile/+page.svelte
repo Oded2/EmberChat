@@ -50,6 +50,7 @@
 		if (currentUser.email !== email) {
 			inProgress.userSettings = true;
 			await updateEmail(currentUser, email);
+			await sendEmailVerification(currentUser);
 			updateUser();
 			inProgress.userSettings = false;
 		}
@@ -69,6 +70,7 @@
 		try {
 			await reauthenticateWithCredential(currentUser, credential);
 			isReauthenticated = true;
+			addToast('success', 5000, 'Account successfully verified');
 		} catch (err) {
 			console.error(err);
 			if (firebaseAuthErrorTypeGaurd(err)) {
@@ -115,7 +117,10 @@
 				<button
 					type="button"
 					class="btn btn-primary btn-sm btn-outline"
-					onclick={() => sendEmailVerification($user)}
+					onclick={() => {
+						sendEmailVerification($user);
+						addToast('success', 5000, `A verification email has been sent to ${$user.email}`);
+					}}
 				>
 					Send verification email
 				</button>
