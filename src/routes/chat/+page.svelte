@@ -6,6 +6,7 @@
 	import {
 		addDoc,
 		collection,
+		limit,
 		onSnapshot,
 		orderBy,
 		query,
@@ -15,7 +16,6 @@
 	import { get } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 
-	let timeStampFilter: Date = $state(new Date());
 	let newMessage: string = $state('');
 	let allMessages: {
 		id: string;
@@ -26,7 +26,7 @@
 	}[] = $state([]);
 
 	onMount(() => {
-		const q = query(collection(db, 'globalMessages'), orderBy('timestamp'));
+		const q = query(collection(db, 'globalMessages'), orderBy('timestamp'), limit(200));
 		const unsubscribe = onSnapshot(q, async (snapshot) => {
 			allMessages = snapshot.docs.map((doc) => {
 				const data = doc.data({ serverTimestamps: 'estimate' });
@@ -66,15 +66,13 @@
 		{#each allMessages as message}
 			<div
 				transition:fly={{ duration: 200, y: 40 }}
-				class="bg-base-100 relative justify-between gap-2 rounded-lg p-2 transition-transform"
-				class:flex={message.timestamp >= timeStampFilter}
-				class:hidden={message.timestamp < timeStampFilter}
+				class="bg-base-100 relative flex justify-between gap-2 rounded-lg p-2 transition-transform"
 			>
 				<div class="flex gap-2">
 					<span class="font-medium after:content-[':']">{message.senderName || 'Anonymous'}</span>
 					<span dir="auto">{message.text}</span>
 				</div>
-				<span
+				<span class="whitespace-nowrap"
 					>{message.timestamp.toLocaleString(undefined, {
 						minute: 'numeric',
 						hour: 'numeric',
@@ -95,16 +93,6 @@
 		>
 			<LabelInput bind:value={newMessage} label="Enter a message"></LabelInput>
 			<button type="submit" class="btn btn-primary">Send</button>
-			<button type="button" class="btn btn-error" onclick={() => (timeStampFilter = new Date())}>
-				Clear Messages
-			</button>
-			<button
-				class="btn btn-primary btn-outline"
-				onclick={async () => {
-					timeStampFilter = new Date(2025, 5, 6);
-					await resetScroll();
-				}}>Show History</button
-			>
 		</form>
 	</div>
 </div>
