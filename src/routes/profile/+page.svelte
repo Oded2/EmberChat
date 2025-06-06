@@ -82,8 +82,8 @@
 </script>
 
 {#if $user}
-	<div class="flex flex-col gap-4">
-		<h1 class="text-3xl font-bold">{`Hello, ${$user.displayName}`}</h1>
+	<h1 class="mb-4 text-3xl font-bold">{`Hello, ${$user.displayName}`}</h1>
+	<div class="flex flex-col gap-4 md:flex-row">
 		<Fieldset
 			title="User Settings"
 			btnText="Update Profile"
