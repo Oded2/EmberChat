@@ -1,4 +1,5 @@
 <script>
+	import Title from '$lib/components/Title.svelte';
 	import { user } from '$lib/stores/user';
 </script>
 
@@ -19,3 +20,5 @@
 	</div>
 	<img src="/favicon.png" alt="Logo" class="mx-auto max-w-md rounded-2xl shadow-2xl" />
 </div>
+
+<Title title="JustChat"></Title>

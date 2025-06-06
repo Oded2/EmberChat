@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Fieldset from '$lib/components/Fieldset.svelte';
 	import FieldsetInput from '$lib/components/FieldsetInput.svelte';
+	import Title from '$lib/components/Title.svelte';
 	import { updateUser, user } from '$lib/stores/user';
 	import { sendEmailVerification, updateProfile } from 'firebase/auth';
 	import { get } from 'svelte/store';
@@ -57,3 +58,5 @@
 		</Fieldset>
 	</form>
 {/if}
+
+<Title title="Profile"></Title>

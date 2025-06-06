@@ -1,5 +1,6 @@
 <script lang="ts">
 	import LabelInput from '$lib/components/LabelInput.svelte';
+	import Title from '$lib/components/Title.svelte';
 	import { db } from '$lib/firebase/firebase';
 	import { user } from '$lib/stores/user';
 	import {
@@ -54,3 +55,5 @@
 		<button type="submit" class="btn btn-primary">Send</button>
 	</form>
 </div>
+
+<Title title="Chat"></Title>

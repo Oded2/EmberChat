@@ -3,6 +3,7 @@
 	import Fieldset from '$lib/components/Fieldset.svelte';
 	import FieldsetInput from '$lib/components/FieldsetInput.svelte';
 	import { authHandlers } from '$lib/firebase/firebase';
+	import Title from './Title.svelte';
 
 	interface Props {
 		initialSignUp?: boolean;
@@ -104,3 +105,5 @@
 		</button>
 	</Fieldset>
 </form>
+
+<Title title={signUp ? 'Sign Up' : 'Login'}></Title>
