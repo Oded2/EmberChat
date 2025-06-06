@@ -8,13 +8,13 @@
 
 	let inProgress = $state(false);
 
-	const originalUser = get(user);
 	let email: string = $state('');
 	let displayName = $state('');
 
 	$effect(() => {
-		email = $user?.email ?? '';
-		displayName = $user?.displayName ?? '';
+		const currentUser = $user;
+		email = currentUser?.email ?? '';
+		displayName = currentUser?.displayName ?? '';
 	});
 
 	async function handleUpdateUser() {
