@@ -1,4 +1,5 @@
 <script lang="ts">
+	import CopyButton from '$lib/components/CopyButton.svelte';
 	import LabelInput from '$lib/components/LabelInput.svelte';
 	import Title from '$lib/components/Title.svelte';
 	import { db } from '$lib/firebase/firebase';
@@ -66,20 +67,25 @@
 		{#each allMessages as message}
 			<div
 				transition:fly={{ duration: 200, y: 40 }}
-				class="bg-base-100 relative flex justify-between gap-2 rounded-lg p-2 transition-transform"
+				class="bg-base-100 relative flex justify-between gap-2 rounded-lg p-2"
 			>
 				<div class="flex gap-2">
 					<span class="font-medium after:content-[':']">{message.senderName || 'Anonymous'}</span>
 					<span dir="auto">{message.text}</span>
 				</div>
-				<span class="whitespace-nowrap"
-					>{message.timestamp.toLocaleString(undefined, {
-						minute: 'numeric',
-						hour: 'numeric',
-						day: 'numeric',
-						month: 'long'
-					})}
-				</span>
+				<div class="flex items-baseline gap-2">
+					<CopyButton text={message.text ?? ''}>
+						<i class="fa-solid fa-copy"></i>
+					</CopyButton>
+					<span class="whitespace-nowrap">
+						{message.timestamp.toLocaleString(undefined, {
+							minute: 'numeric',
+							hour: 'numeric',
+							day: 'numeric',
+							month: 'long'
+						})}
+					</span>
+				</div>
 			</div>
 		{/each}
 	</div>
@@ -92,7 +98,9 @@
 			}}
 		>
 			<LabelInput bind:value={newMessage} label="Enter a message"></LabelInput>
-			<button type="submit" class="btn btn-primary">Send</button>
+			<button type="submit" class="btn btn-primary"
+				><i class="fa-solid fa-paper-plane"></i> Send</button
+			>
 		</form>
 	</div>
 </div>

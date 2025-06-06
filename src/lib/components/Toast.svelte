@@ -3,17 +3,14 @@
 	import type { MouseEventHandler } from 'svelte/elements';
 	import { fly } from 'svelte/transition';
 
-	const {
-		type,
-		duration,
-		handleClose,
-		children
-	}: {
+	interface Props {
 		type: 'success' | 'info' | 'error';
 		duration: number;
 		handleClose: MouseEventHandler<HTMLButtonElement>;
 		children: Snippet;
-	} = $props();
+	}
+
+	const { type, duration, handleClose, children }: Props = $props();
 
 	let progress = $state(100);
 	showProgress();
