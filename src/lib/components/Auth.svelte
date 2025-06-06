@@ -75,36 +75,24 @@
 </script>
 
 <form
+	class="mx-auto"
 	onsubmit={(e) => {
 		e.preventDefault();
 		handleAuthenticate();
 	}}
 >
-	<Fieldset title={signUp ? 'Sign Up' : 'Login'}>
-		<FieldsetInput bind:value={email} label="Email" type="email" placeholder="Email" required
-		></FieldsetInput>
+	<Fieldset
+		title={signUp ? 'Sign Up' : 'Login'}
+		btnText={signUp ? 'Sign Up' : 'Login'}
+		disabled={inProgress}
+	>
+		<FieldsetInput bind:value={email} label="Email" type="email" required></FieldsetInput>
 		{#if signUp}
-			<FieldsetInput
-				bind:value={displayName}
-				label="Display name"
-				placeholder="Display name"
-				required
-			></FieldsetInput>
+			<FieldsetInput bind:value={displayName} label="Display name" required></FieldsetInput>
 		{/if}
-		<FieldsetInput
-			bind:value={password}
-			label="Password"
-			type="password"
-			placeholder="Password"
-			required
-		></FieldsetInput>
+		<FieldsetInput bind:value={password} label="Password" type="password" required></FieldsetInput>
 		{#if signUp}
-			<FieldsetInput
-				bind:value={confirmPass}
-				label="Confirm Password"
-				type="password"
-				placeholder="Confirm Password"
-				required
+			<FieldsetInput bind:value={confirmPass} label="Confirm Password" type="password" required
 			></FieldsetInput>
 		{/if}
 		<button
@@ -113,9 +101,6 @@
 			class="mt-2 cursor-pointer font-extralight underline"
 		>
 			{signUp ? 'Already have an account? Login' : "Don't have an account yet? Sign up"}
-		</button>
-		<button disabled={inProgress} type="submit" class="btn btn-primary mt-2">
-			{signUp ? 'Sign Up' : 'Login'}
 		</button>
 	</Fieldset>
 </form>
