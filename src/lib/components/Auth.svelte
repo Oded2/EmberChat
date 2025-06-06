@@ -3,6 +3,7 @@
 	import Fieldset from '$lib/components/Fieldset.svelte';
 	import FieldsetInput from '$lib/components/FieldsetInput.svelte';
 	import { authHandlers } from '$lib/firebase/firebase';
+	import { firebaseAuthErrorTypeGaurd } from '$lib/helpers';
 	import Title from './Title.svelte';
 
 	interface Props {
@@ -36,7 +37,7 @@
 		} catch (err) {
 			console.error(err);
 			inProgress = false;
-			if (isFirebaseAuthError(err)) {
+			if (firebaseAuthErrorTypeGaurd(err)) {
 				switch (err.code) {
 					case 'auth/invalid-credential':
 						alert('Incorrect password. Please try again.');
@@ -61,31 +62,14 @@
 			}
 		}
 	}
-
-	// Type guard to check if error is a Firebase Auth error
-	function isFirebaseAuthError(error: unknown): error is { code: string; message: string } {
-		return (
-			typeof error === 'object' &&
-			error !== null &&
-			'code' in error &&
-			typeof (error as any).code === 'string' &&
-			'message' in error &&
-			typeof (error as any).message === 'string'
-		);
-	}
 </script>
 
-<form
-	class="mx-auto"
-	onsubmit={(e) => {
-		e.preventDefault();
-		handleAuthenticate();
-	}}
->
+<div class="mx-auto">
 	<Fieldset
 		title={signUp ? 'Sign Up' : 'Login'}
 		btnText={signUp ? 'Sign Up' : 'Login'}
 		disabled={inProgress}
+		handleSubmit={handleAuthenticate}
 	>
 		<FieldsetInput bind:value={email} label="Email" type="email" required></FieldsetInput>
 		{#if signUp}
@@ -104,6 +88,6 @@
 			{signUp ? 'Already have an account? Login' : "Don't have an account yet? Sign up"}
 		</button>
 	</Fieldset>
-</form>
+</div>
 
 <Title title={signUp ? 'Sign Up' : 'Login'}></Title>
