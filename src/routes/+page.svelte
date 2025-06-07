@@ -38,8 +38,7 @@
 		<h4 class="text-2xl font-semibold">Enter Chat Room</h4>
 		<div class="sm:me-auto sm:min-w-xl">
 			<LabelInputForm handleSubmit={goToRoom}>
-				<LabelInput bind:value={roomCode} label="Room code" placeholder="Enter room code here"
-				></LabelInput>
+				<LabelInput bind:value={roomCode} label="Room code"></LabelInput>
 				<LabelInputButton large>
 					<i class="fa-solid fa-circle-right"></i> Go
 				</LabelInputButton>

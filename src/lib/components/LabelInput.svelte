@@ -4,18 +4,19 @@
 	interface Props {
 		label?: string;
 		value?: string;
-		placeholder?: string;
 		required?: boolean;
 		type?: HTMLInputTypeAttribute;
 		min?: number;
 	}
 
-	let { label, value = $bindable(), placeholder, required, type, min }: Props = $props();
+	let { label, value = $bindable(), required, type, min }: Props = $props();
 </script>
 
-<label
-	class="bg-base-100 focus-within:ring-primary flex w-full grow gap-2 rounded-2xl px-4 py-3 transition-all focus-within:ring"
->
-	<span class="cursor-auto whitespace-nowrap">{label}</span>
-	<input {type} bind:value class="grow outline-none" {placeholder} {required} {min} />
-</label>
+<input
+	{type}
+	bind:value
+	class="bg-base-100 focus-within:ring-primary flex w-full grow gap-2 rounded-2xl px-4 py-3 transition-all outline-none focus:ring"
+	placeholder={label}
+	{required}
+	{min}
+/>
