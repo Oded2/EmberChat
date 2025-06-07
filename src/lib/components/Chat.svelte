@@ -107,7 +107,9 @@
 			>
 				<div class="flex items-baseline gap-2">
 					<span class="font-medium after:content-[':']">{message.senderName}</span>
-					<span dir="auto"><Autolink text={message.text}></Autolink></span>
+					<span class="whitespace-pre-line" dir="auto"
+						><Autolink text={message.text}></Autolink>
+					</span>
 				</div>
 				<div class="flex items-baseline gap-2">
 					<span class="whitespace-nowrap">
