@@ -152,4 +152,4 @@
 	</div>
 </div>
 
-<Title title="Chat"></Title>
+<Title title={chatId === globalRoomCode ? 'Global Chat' : `Chat - ${chatId}`}></Title>
