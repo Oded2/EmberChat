@@ -23,7 +23,6 @@
 	import LabelInputForm from './LabelInputForm.svelte';
 	import { globalRoomCode } from '$lib/helpers';
 	import Autolink from './Autolink.svelte';
-	import LabelInputButton from './LabelInputButton.svelte';
 	import LabelTextarea from './LabelTextarea.svelte';
 
 	interface Props {
@@ -43,6 +42,7 @@
 		timestamp: Date;
 		owner?: string;
 	}[] = $state([]);
+	let inProgress = $state(false);
 
 	onMount(() => {
 		const q = query(
@@ -62,6 +62,8 @@
 	});
 
 	async function sendMessage() {
+		if (inProgress) return;
+		inProgress = true;
 		newMessage = newMessage.trim();
 		if (!newMessage) return;
 		const currentUser = get(user);
@@ -73,6 +75,7 @@
 			chatId
 		});
 		newMessage = '';
+		inProgress = false;
 	}
 
 	async function deleteMessage(id: string) {
