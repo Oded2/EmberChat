@@ -7,6 +7,8 @@
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import Toasts from '$lib/components/Toasts.svelte';
+	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
+	import { confirmModal } from '$lib/stores/confirm';
 
 	const { children } = $props();
 
@@ -31,3 +33,9 @@
 	</main>
 	<Toasts></Toasts>
 </div>
+
+<ConfirmModal
+	show={$confirmModal.show}
+	message={$confirmModal.message}
+	handleConfirm={$confirmModal.handleConfirm}
+></ConfirmModal>

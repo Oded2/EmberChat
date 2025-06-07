@@ -4,6 +4,7 @@
 	import Title from '$lib/components/Title.svelte';
 	import { db } from '$lib/firebase/firebase';
 	import { addErrorToast, firebaseAuthErrorTypeGaurd } from '$lib/helpers';
+	import { showModal } from '$lib/stores/confirm';
 	import { addToast, dismissToast } from '$lib/stores/toasts';
 	import { updateUser, user } from '$lib/stores/user';
 	import {
@@ -89,25 +90,13 @@
 
 	async function deleteUser() {
 		const currentUser = get(user);
-		if (
-			inProgress ||
-			!confirm('This action is irreversible, are you sure you want to continue?') ||
-			!currentUser
-		)
-			return;
-		deleteUserMessages();
+		if (inProgress || !currentUser) return;
+		deleteUserMessages(false);
 		await currentUser.delete();
 	}
 
-	async function deleteUserMessages(interactive?: boolean) {
-		if (
-			inProgress ||
-			(interactive &&
-				!confirm(
-					'This will delete all of your chat messages across every chat. Would you like to continue?'
-				))
-		)
-			return;
+	async function deleteUserMessages(interactive: boolean = true) {
+		if (inProgress) return;
 		const currentUser = get(user);
 		const q = query(collection(db, 'globalMessages'), where('owner', '==', currentUser?.uid));
 		const snapshot = await getDocs(q);
@@ -126,7 +115,7 @@
 
 {#if $user}
 	<h1 class="mb-4 text-3xl font-bold">{`Hello, ${$user.displayName}`}</h1>
-	<div class="flex flex-wrap gap-4">
+	<div class="flex flex-wrap gap-4 pb-10">
 		<Fieldset
 			title="User Settings"
 			btnText="Update Profile"
@@ -166,8 +155,20 @@
 			{/if}
 		</Fieldset>
 		<Fieldset title="Danger Zone">
-			<button class="btn btn-error" onclick={() => deleteUserMessages(true)}>Purge messages</button>
-			<button disabled={!isReauthenticated} class="btn btn-error mt-2" onclick={deleteUser}>
+			<button
+				class="btn btn-error"
+				onclick={() =>
+					showModal(
+						deleteUserMessages,
+						'This action will delete all of your messages. Are you sure you want to continue?'
+					)}>Purge messages</button
+			>
+			<button
+				disabled={!isReauthenticated}
+				class="btn btn-error mt-2"
+				onclick={() =>
+					showModal(deleteUser, 'This action is irreversible. Are you sure you want to continue?')}
+			>
 				Delete Account
 			</button>
 			{#if !isReauthenticated}
