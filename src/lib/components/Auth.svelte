@@ -26,6 +26,7 @@
 	});
 
 	async function handleAuthenticate() {
+		if (inProgress) return;
 		inProgress = true;
 		try {
 			if (signUp) {
