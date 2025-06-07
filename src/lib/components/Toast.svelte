@@ -1,12 +1,11 @@
 <script lang="ts">
 	import type { ToastType } from '$lib/stores/toasts';
 	import { type Snippet } from 'svelte';
-	import { fly } from 'svelte/transition';
 
 	interface Props {
 		type: ToastType;
 		duration: number;
-		handleClose: () => any;
+		handleClose?: () => any;
 		children: Snippet;
 	}
 
@@ -30,11 +29,9 @@
 
 <div
 	role="alert"
-	class="alert flex w-[28rem] max-w-[90vw] flex-col items-stretch text-base"
+	class="alert flex w-112 max-w-[90vw] flex-col items-stretch text-base"
 	class:alert-success={type === 'success'}
 	class:alert-info={type === 'info'}
-	class:alert-error={type === 'error'}
-	transition:fly={{ duration: 200, y: 200 }}
 >
 	<div class="flex items-baseline gap-2">
 		{#if type === 'success'}

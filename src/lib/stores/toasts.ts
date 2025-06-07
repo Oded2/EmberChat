@@ -13,7 +13,7 @@ interface Toast extends UserToast {
 
 export const toasts: Writable<Toast[]> = writable([]);
 
-export const addToast = (type: ToastType, duration: number, text: string) => {
+export const addToast = (type: ToastType, duration: number, text: string): string => {
 	const id = Math.floor(Math.random() * 10000).toString();
 	const toast: Toast = {
 		id,
@@ -23,6 +23,7 @@ export const addToast = (type: ToastType, duration: number, text: string) => {
 	};
 	toasts.update((all) => [toast, ...all]);
 	if (toast.duration > 0) setTimeout(() => dismissToast(id), toast.duration);
+	return id;
 };
 
 export const dismissToast = (id: string): void => {

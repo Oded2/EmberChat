@@ -4,7 +4,7 @@
 	import Title from '$lib/components/Title.svelte';
 	import { db } from '$lib/firebase/firebase';
 	import { addErrorToast, firebaseAuthErrorTypeGaurd } from '$lib/helpers';
-	import { addToast } from '$lib/stores/toasts';
+	import { addToast, dismissToast } from '$lib/stores/toasts';
 	import { updateUser, user } from '$lib/stores/user';
 	import {
 		EmailAuthProvider,
@@ -26,11 +26,20 @@
 	let newPassword = $state('');
 	let reAuthenticatePassword = $state('');
 	let isReauthenticated = $state(false);
+	let toastId: string | null = null;
 
 	$effect(() => {
 		const currentUser = $user;
 		email = currentUser?.email ?? '';
 		displayName = currentUser?.displayName ?? '';
+	});
+
+	$effect(() => {
+		if (inProgress) toastId = addToast('info', 0, 'Working...');
+		else if (toastId) {
+			dismissToast(toastId);
+			toastId = null;
+		}
 	});
 
 	async function handleUpdateUser() {
