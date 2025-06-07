@@ -36,13 +36,15 @@
 		</a>
 		<div class="divider">OR</div>
 		<h4 class="text-2xl font-semibold">Enter Chat Room</h4>
-		<LabelInputForm handleSubmit={goToRoom}>
-			<LabelInput bind:value={roomCode} label="Room code" placeholder="Enter room code here"
-			></LabelInput>
-			<LabelInputButton large>
-				<i class="fa-solid fa-circle-right"></i> Go
-			</LabelInputButton>
-		</LabelInputForm>
+		<div class="me-auto sm:min-w-xl">
+			<LabelInputForm handleSubmit={goToRoom}>
+				<LabelInput bind:value={roomCode} label="Room code" placeholder="Enter room code here"
+				></LabelInput>
+				<LabelInputButton large>
+					<i class="fa-solid fa-circle-right"></i> Go
+				</LabelInputButton>
+			</LabelInputForm>
+		</div>
 	</div>
 	<div>
 		<img
