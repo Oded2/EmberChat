@@ -36,7 +36,7 @@
 		</a>
 		<div class="divider">OR</div>
 		<h4 class="text-2xl font-semibold">Enter Chat Room</h4>
-		<div class="me-auto sm:min-w-xl">
+		<div class="sm:me-auto sm:min-w-xl">
 			<LabelInputForm handleSubmit={goToRoom}>
 				<LabelInput bind:value={roomCode} label="Room code" placeholder="Enter room code here"
 				></LabelInput>
