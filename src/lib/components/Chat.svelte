@@ -31,6 +31,8 @@
 
 	const { chatId }: Props = $props();
 
+	const anonId = generateUsername();
+
 	let newMessage: string = $state('');
 	let allMessages: {
 		id: string;
@@ -64,7 +66,7 @@
 		const currentUser = get(user);
 		await addDoc(collection(db, 'globalMessages'), {
 			text: newMessage,
-			senderName: currentUser?.displayName ?? '',
+			senderName: currentUser?.displayName ?? anonId,
 			timestamp: serverTimestamp(),
 			owner: currentUser?.uid ?? '',
 			chatId
@@ -86,6 +88,11 @@
 		await tick();
 		window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 	}
+	function generateUsername(): string {
+		const randomNumber = Math.floor(Math.random() * 10000);
+		const paddedNumber = randomNumber.toString().padStart(4, '0');
+		return `user${paddedNumber}`;
+	}
 </script>
 
 <div class="flex grow flex-col gap-4">
@@ -97,7 +104,7 @@
 				class="bg-base-100 flex items-baseline justify-between gap-2 rounded-lg px-4 py-2"
 			>
 				<div class="flex items-baseline gap-2">
-					<span class="font-medium after:content-[':']">{message.senderName || 'Anonymous'}</span>
+					<span class="font-medium after:content-[':']">{message.senderName}</span>
 					<span dir="auto"><Autolink text={message.text}></Autolink></span>
 				</div>
 				<div class="flex items-baseline gap-2">
