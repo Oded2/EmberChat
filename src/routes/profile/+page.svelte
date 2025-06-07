@@ -2,6 +2,7 @@
 	import Fieldset from '$lib/components/Fieldset.svelte';
 	import FieldsetInput from '$lib/components/FieldsetInput.svelte';
 	import Title from '$lib/components/Title.svelte';
+	import { db } from '$lib/firebase/firebase';
 	import { addErrorToast, firebaseAuthErrorTypeGaurd } from '$lib/helpers';
 	import { addToast } from '$lib/stores/toasts';
 	import { updateUser, user } from '$lib/stores/user';
@@ -13,20 +14,17 @@
 		updatePassword,
 		updateProfile
 	} from 'firebase/auth';
+	import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
 	import { get } from 'svelte/store';
 
 	const verifyDisclaimer = 'You must verify your account first';
 
-	let inProgress = $state({
-		userSettings: false,
-		reauthentication: false
-	});
+	let inProgress = $state(false);
 
 	let email = $state('');
 	let displayName = $state('');
 	let newPassword = $state('');
 	let reAuthenticatePassword = $state('');
-
 	let isReauthenticated = $state(false);
 
 	$effect(() => {
@@ -36,36 +34,36 @@
 	});
 
 	async function handleUpdateUser() {
-		if (checkInProgress()) return;
+		if (inProgress) return;
 		const currentUser = get(user);
 		if (!currentUser) return;
 		if (currentUser.displayName !== displayName) {
-			inProgress.userSettings = true;
+			inProgress = true;
 			await updateProfile(currentUser, {
 				displayName
 			});
 			updateUser();
-			inProgress.userSettings = false;
+			inProgress = false;
 		}
 		if (currentUser.email !== email) {
-			inProgress.userSettings = true;
+			inProgress = true;
 			await updateEmail(currentUser, email);
 			await sendEmailVerification(currentUser);
 			updateUser();
-			inProgress.userSettings = false;
+			inProgress = false;
 		}
 		if (newPassword) {
-			inProgress.userSettings = true;
+			inProgress = true;
 			await updatePassword(currentUser, newPassword);
-			inProgress.userSettings = false;
+			inProgress = false;
 		}
 	}
 
 	async function handleReauthentication() {
-		if (checkInProgress()) return;
+		if (inProgress) return;
 		const currentUser = get(user);
 		if (!currentUser?.email) return;
-		inProgress.reauthentication = true;
+		inProgress = true;
 		const credential = EmailAuthProvider.credential(currentUser.email, reAuthenticatePassword);
 		try {
 			await reauthenticateWithCredential(currentUser, credential);
@@ -77,21 +75,53 @@
 				if (err.code === 'auth/invalid-credential') addErrorToast('Incorrect password');
 			}
 		}
-		inProgress.reauthentication = false;
+		inProgress = false;
 	}
 
-	function checkInProgress(): boolean {
-		return Object.values(inProgress).some((val) => val);
+	async function deleteUser() {
+		const currentUser = get(user);
+		if (
+			inProgress ||
+			!confirm('This action is irreversible, are you sure you want to continue?') ||
+			!currentUser
+		)
+			return;
+		deleteUserMessages();
+		await currentUser.delete();
+	}
+
+	async function deleteUserMessages(interactive?: boolean) {
+		if (
+			inProgress ||
+			(interactive &&
+				!confirm(
+					'This will delete all of your chat messages across every chat. Would you like to continue?'
+				))
+		)
+			return;
+		const currentUser = get(user);
+		const q = query(collection(db, 'globalMessages'), where('owner', '==', currentUser?.uid));
+		const snapshot = await getDocs(q);
+		const deletePromises = snapshot.docs.map((docSnap) =>
+			deleteDoc(doc(db, 'globalMessages', docSnap.id))
+		);
+		await Promise.all(deletePromises);
+		if (interactive)
+			addToast(
+				'success',
+				5000,
+				`Deleted ${deletePromises.length} messages for user ${currentUser?.email}`
+			);
 	}
 </script>
 
 {#if $user}
 	<h1 class="mb-4 text-3xl font-bold">{`Hello, ${$user.displayName}`}</h1>
-	<div class="flex flex-col gap-4 md:flex-row">
+	<div class="flex flex-wrap gap-4">
 		<Fieldset
 			title="User Settings"
 			btnText="Update Profile"
-			disabled={inProgress.userSettings}
+			disabled={inProgress}
 			handleSubmit={handleUpdateUser}
 		>
 			<FieldsetInput
@@ -126,10 +156,19 @@
 				</button>
 			{/if}
 		</Fieldset>
+		<Fieldset title="Danger Zone">
+			<button class="btn btn-error" onclick={() => deleteUserMessages(true)}>Purge messages</button>
+			<button disabled={!isReauthenticated} class="btn btn-error mt-2" onclick={deleteUser}>
+				Delete Account
+			</button>
+			{#if !isReauthenticated}
+				<span>{verifyDisclaimer}</span>
+			{/if}
+		</Fieldset>
 		<Fieldset
 			title="Verify Account"
 			btnText="Authenticate"
-			disabled={inProgress.reauthentication}
+			disabled={inProgress}
 			handleSubmit={handleReauthentication}
 		>
 			<FieldsetInput type="password" label="Password" bind:value={reAuthenticatePassword} required

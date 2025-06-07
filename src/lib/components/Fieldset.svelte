@@ -3,9 +3,9 @@
 
 	interface Props {
 		title?: string;
-		btnText: string;
+		btnText?: string;
 		disabled?: boolean;
-		handleSubmit: () => any;
+		handleSubmit?: () => any;
 		children?: Snippet;
 	}
 
@@ -15,7 +15,7 @@
 <form
 	onsubmit={(e) => {
 		e.preventDefault();
-		handleSubmit();
+		if (handleSubmit) handleSubmit();
 	}}
 >
 	<fieldset class="bg-base-300 border-base-300 rounded-box fieldset w-sm gap-2 border p-4">
@@ -25,8 +25,10 @@
 		{#if children}
 			{@render children()}
 		{/if}
-		<button {disabled} type="submit" class="btn btn-primary mt-2">
-			{btnText}
-		</button>
+		{#if btnText}
+			<button {disabled} type="submit" class="btn btn-primary mt-2">
+				{btnText}
+			</button>
+		{/if}
 	</fieldset>
 </form>
