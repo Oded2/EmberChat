@@ -26,7 +26,6 @@
 	});
 
 	async function handleAuthenticate() {
-		if (inProgress) return;
 		inProgress = true;
 		try {
 			if (signUp) {
@@ -36,7 +35,6 @@
 				}
 				await authHandlers.signup(email, password, displayName);
 			} else await authHandlers.login(email, password);
-			goto('/');
 		} catch (err) {
 			console.error(err);
 			inProgress = false;
@@ -67,6 +65,7 @@
 	}
 
 	async function handlePasswordReset() {
+		if (inProgress) return;
 		if (!email) {
 			addErrorToast('Please enter your email to reset your password');
 			return;

@@ -12,14 +12,11 @@
 
 	const { children } = $props();
 
-	const protectedRoutes = ['/profile'];
-
 	onMount(() => {
 		const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
-			if (!firebaseUser && protectedRoutes.includes(page.url.pathname)) {
-				// User has logged out and is in a protected page
-				goto('/');
-			}
+			const pathname = page.url.pathname;
+			if (!firebaseUser && pathname === '/profile') goto('/');
+			else if (firebaseUser && pathname === '/auth') goto('/');
 			user.set(firebaseUser);
 		});
 		return unsubscribe;
