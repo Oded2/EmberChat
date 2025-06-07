@@ -15,7 +15,7 @@
 <form
 	onsubmit={(e) => {
 		e.preventDefault();
-		if (handleSubmit) handleSubmit();
+		if (handleSubmit && !disabled) handleSubmit();
 	}}
 >
 	<fieldset class="bg-base-300 border-base-300 rounded-box fieldset w-sm gap-2 border p-4">
@@ -26,7 +26,7 @@
 			{@render children()}
 		{/if}
 		{#if btnText}
-			<button {disabled} type="submit" class="btn btn-primary mt-2">
+			<button type="submit" class="btn btn-primary mt-2">
 				{btnText}
 			</button>
 		{/if}
