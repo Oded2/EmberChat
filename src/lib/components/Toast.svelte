@@ -32,6 +32,7 @@
 	class="alert flex w-112 max-w-[90vw] flex-col items-stretch text-base"
 	class:alert-success={type === 'success'}
 	class:alert-info={type === 'info'}
+	class:alert-error={type === 'error'}
 >
 	<div class="flex items-baseline gap-2">
 		{#if type === 'success'}
