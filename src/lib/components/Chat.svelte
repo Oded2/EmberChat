@@ -89,6 +89,7 @@
 		await tick();
 		window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 	}
+
 	function generateUsername(): string {
 		const randomNumber = Math.floor(Math.random() * 10000);
 		const paddedNumber = randomNumber.toString().padStart(4, '0');
@@ -137,14 +138,13 @@
 	</div>
 	<div class="bg-base-200 sticky bottom-0 flex flex-col gap-2 py-4">
 		<LabelInputForm handleSubmit={sendMessage}>
-			<div class="bg-base-100 flex w-full flex-col rounded-2xl px-3 pt-1 pb-3">
-				<LabelTextarea bind:value={newMessage} label="Enter a message"></LabelTextarea>
+			<LabelTextarea bind:value={newMessage} label="Enter a message">
 				<div class="ms-auto">
 					<button type="submit" class="btn btn-primary btn-circle" aria-label="Send">
 						<i class="fa-solid fa-arrow-up"></i>
 					</button>
 				</div>
-			</div>
+			</LabelTextarea>
 		</LabelInputForm>
 		{#if chatId !== globalRoomCode}
 			<span class="text-center text-sm italic">{`Chat ID: ${chatId}`}</span>
