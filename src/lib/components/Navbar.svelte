@@ -9,7 +9,7 @@
 	];
 </script>
 
-<div class="navbar bg-base-100 sticky top-0 z-10 mb-10 shadow-sm">
+<div class="navbar bg-base-100 sticky top-0 z-10 shadow-sm">
 	<div class="navbar-start">
 		<div class="dropdown">
 			<div tabindex="0" role="button" class="btn btn-ghost sm:hidden">
