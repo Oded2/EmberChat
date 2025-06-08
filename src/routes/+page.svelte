@@ -32,7 +32,7 @@
 			CSS and DaisyUI.
 		</p>
 		<a href="/chat" class="btn btn-primary btn-lg btn-wide mx-auto mt-2">
-			<i class="fa-solid fa-globe"></i> Global Chat
+			<i class="fa-solid fa-globe"></i> Enter Global Chat
 		</a>
 		<div class="divider">OR</div>
 		<h4 class="text-2xl font-semibold">Enter Chat Room</h4>
