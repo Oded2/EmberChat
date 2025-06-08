@@ -17,7 +17,10 @@
 			const pathname = page.url.pathname;
 			if (!firebaseUser && pathname === '/profile') goto('/');
 			else if (firebaseUser && pathname === '/auth') goto('/');
-			user.set(firebaseUser);
+			user.set({
+				user: firebaseUser,
+				loading: false
+			});
 		});
 		return unsubscribe;
 	});

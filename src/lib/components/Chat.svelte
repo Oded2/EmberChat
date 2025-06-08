@@ -66,7 +66,7 @@
 		inProgress = true;
 		newMessage = newMessage.trim();
 		if (!newMessage) return;
-		const currentUser = get(user);
+		const currentUser = get(user).user;
 		await addDoc(collection(db, 'globalMessages'), {
 			text: newMessage,
 			senderName: currentUser?.displayName ?? anonId,
@@ -131,7 +131,7 @@
 					<CopyButton text={message.text ?? ''}>
 						<i class="fa-solid fa-copy"></i>
 					</CopyButton>
-					{#if message.owner === $user?.uid}
+					{#if message.owner === $user.user?.uid}
 						<div class="tooltip" data-tip="Delete">
 							<button
 								onclick={() => deleteMessage(message.id)}
@@ -150,7 +150,7 @@
 		<LabelInputForm handleSubmit={sendMessage}>
 			<LabelTextarea bind:value={newMessage} label="Enter a message">
 				<div class="flex ps-4">
-					{#if !$user}
+					{#if !$user.user}
 						<span class="mt-auto text-xs font-light italic">{`You're chatting as ${anonId}`}</span>
 					{/if}
 					<button type="submit" class="btn btn-primary btn-circle ms-auto" aria-label="Send">

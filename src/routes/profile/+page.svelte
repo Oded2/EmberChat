@@ -18,6 +18,8 @@
 	import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
 	import { get } from 'svelte/store';
 
+	const userData = $derived($user.user);
+
 	const verifyDisclaimer = 'You must verify your account first';
 
 	let inProgress = $state(false);
@@ -30,7 +32,7 @@
 	let toastId: string | null = null;
 
 	$effect(() => {
-		const currentUser = $user;
+		const currentUser = $user.user;
 		email = currentUser?.email ?? '';
 		displayName = currentUser?.displayName ?? '';
 	});
@@ -45,7 +47,7 @@
 
 	async function handleUpdateUser() {
 		if (inProgress) return;
-		const currentUser = get(user);
+		const currentUser = get(user).user;
 		if (!currentUser) return;
 		if (currentUser.displayName !== displayName) {
 			inProgress = true;
@@ -71,7 +73,7 @@
 
 	async function handleReauthentication() {
 		if (inProgress) return;
-		const currentUser = get(user);
+		const currentUser = get(user).user;
 		if (!currentUser?.email) return;
 		inProgress = true;
 		const credential = EmailAuthProvider.credential(currentUser.email, reAuthenticatePassword);
@@ -89,7 +91,7 @@
 	}
 
 	async function deleteUser() {
-		const currentUser = get(user);
+		const currentUser = get(user).user;
 		if (inProgress || !currentUser) return;
 		deleteUserMessages(false);
 		await currentUser.delete();
@@ -97,7 +99,7 @@
 
 	async function deleteUserMessages(interactive: boolean = true) {
 		if (inProgress) return;
-		const currentUser = get(user);
+		const currentUser = get(user).user;
 		const q = query(collection(db, 'globalMessages'), where('owner', '==', currentUser?.uid));
 		const snapshot = await getDocs(q);
 		const deletePromises = snapshot.docs.map((docSnap) =>
@@ -113,8 +115,8 @@
 	}
 </script>
 
-{#if $user}
-	<h1 class="mb-4 text-3xl font-bold">{`Hello, ${$user.displayName}`}</h1>
+{#if userData}
+	<h1 class="mb-4 text-3xl font-bold">{`Hello, ${userData.displayName}`}</h1>
 	<div class="flex flex-wrap gap-4 pb-10">
 		<Fieldset
 			title="User Settings"
@@ -138,16 +140,16 @@
 				disabled={!isReauthenticated}
 				disabledDisclaimer={verifyDisclaimer}
 			></FieldsetInput>
-			{#if !$user.emailVerified}
+			{#if !userData.emailVerified}
 				<span class="text-warning">
-					{`Your email is unverified. Check your inbox at ${$user.email} for a verification email. If you don't see an email click the button below to send one.`}
+					{`Your email is unverified. Check your inbox at ${userData.email} for a verification email. If you don't see an email click the button below to send one.`}
 				</span>
 				<button
 					type="button"
 					class="btn btn-primary btn-sm btn-outline"
 					onclick={() => {
-						sendEmailVerification($user);
-						addToast('success', 5000, `A verification email has been sent to ${$user.email}`);
+						sendEmailVerification(userData);
+						addToast('success', 5000, `A verification email has been sent to ${userData.email}`);
 					}}
 				>
 					Send verification email

@@ -12,7 +12,7 @@
 <div class="navbar bg-base-100 sticky top-0 z-10 mb-10 shadow-sm">
 	<div class="navbar-start">
 		<div class="dropdown">
-			<div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+			<div tabindex="0" role="button" class="btn btn-ghost sm:hidden">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					class="h-5 w-5"
@@ -37,7 +37,7 @@
 		</div>
 		<a href="/" class="btn btn-ghost text-xl">JustChat</a>
 	</div>
-	<div class="navbar-center hidden lg:flex">
+	<div class="navbar-center hidden sm:flex">
 		<ul class="menu menu-horizontal px-1">
 			{#each items as item}
 				<li><a href={item.href}>{item.label}</a></li>
@@ -45,7 +45,7 @@
 		</ul>
 	</div>
 	<div class="navbar-end gap-2">
-		{#if $user}
+		{#if $user.user}
 			<a href="/profile" class="btn btn-primary btn-outline">Profile</a>
 			<button onclick={authHandlers.signout} class="btn btn-primary">Logout</button>
 		{:else}
