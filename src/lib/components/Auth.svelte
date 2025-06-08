@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import Fieldset from '$lib/components/Fieldset.svelte';
 	import FieldsetInput from '$lib/components/FieldsetInput.svelte';
 	import { authHandlers } from '$lib/firebase/firebase';
 	import { addErrorToast, firebaseAuthErrorTypeGaurd } from '$lib/helpers';
-	import { sendPasswordResetEmail } from 'firebase/auth';
 	import Title from './Title.svelte';
 	import { addToast } from '$lib/stores/toasts';
 
