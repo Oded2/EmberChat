@@ -23,13 +23,13 @@
 	}
 </script>
 
-<div class="flex flex-col gap-8 lg:flex-row">
+<div class="flex gap-8">
 	<div class="flex grow flex-col gap-4">
 		<h1 class="text-6xl font-bold md:text-8xl">Zero complexity, just chat.</h1>
 		<p class="text-lg font-light">
-			JustChat is a simple, real-time chat application built with SvelteKit and Firebase. It
-			features user authentication, live global messaging, and a clean, responsive UI using Tailwind
-			CSS and DaisyUI.
+			JustChat lets you connect instantly with others in real time. Join the global chat or create
+			your own private room &mdash; no hassle, just conversation. Enjoy a smooth, modern interface
+			that works seamlessly on any device.
 		</p>
 		<a href="/chat" class="btn btn-primary btn-lg btn-wide mx-auto mt-2">
 			<i class="fa-solid fa-globe"></i> Enter Global Chat
@@ -45,11 +45,11 @@
 			</LabelInputForm>
 		</div>
 	</div>
-	<div>
+	<div class="hidden lg:inline-block">
 		<img
 			src="/favicon.png"
 			alt="Logo"
-			class="mx-auto rounded-2xl shadow-2xl transition-transform hover:-translate-y-1 sm:max-w-md"
+			class="rounded-2xl shadow-2xl transition-transform hover:-translate-y-1 sm:max-w-md"
 		/>
 	</div>
 </div>
