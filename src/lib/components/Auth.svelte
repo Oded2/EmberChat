@@ -75,7 +75,7 @@
 	}
 </script>
 
-<div class="mx-auto">
+<div class="mx-auto mt-10">
 	<Fieldset
 		title={signUp ? 'Sign Up' : 'Login'}
 		btnText={signUp ? 'Sign Up' : 'Login'}

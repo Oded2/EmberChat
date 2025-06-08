@@ -105,7 +105,7 @@
 	}
 </script>
 
-<div class="flex grow flex-col gap-4">
+<div class="mt-10 flex grow flex-col gap-4">
 	<div class="flex grow flex-col gap-4">
 		{#each allMessages as message (message.id)}
 			<div
