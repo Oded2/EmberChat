@@ -2,6 +2,7 @@ import { addToast } from './stores/toasts';
 
 export const alphanumericRegex = /^[a-z0-9]+$/;
 export const globalRoomCode = 'global';
+export const addErrorToast = (text: string) => addToast('error', 5000, text);
 
 export function addParams(url: string, params: Record<string, string>): string {
 	const urlParams = new URLSearchParams(params);
@@ -21,4 +22,8 @@ export function firebaseAuthErrorTypeGaurd(
 	);
 }
 
-export const addErrorToast = (text: string) => addToast('error', 5000, text);
+export function getRandomInt(min: number, max: number): number {
+	const lower = Math.ceil(min);
+	const upper = Math.floor(max);
+	return Math.floor(Math.random() * (upper - lower + 1)) + lower;
+}

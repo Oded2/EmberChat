@@ -1,6 +1,5 @@
 <script lang="ts">
 	import CopyButton from '$lib/components/CopyButton.svelte';
-	import LabelInput from '$lib/components/LabelInput.svelte';
 	import Title from '$lib/components/Title.svelte';
 	import { db } from '$lib/firebase/firebase';
 	import { user } from '$lib/stores/user';
@@ -21,9 +20,10 @@
 	import { get } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import LabelInputForm from './LabelInputForm.svelte';
-	import { globalRoomCode } from '$lib/helpers';
+	import { getRandomInt, globalRoomCode } from '$lib/helpers';
 	import Autolink from './Autolink.svelte';
 	import LabelTextarea from './LabelTextarea.svelte';
+	import { adjectives, nouns } from '$lib/words/words';
 
 	interface Props {
 		chatId: string;
@@ -31,8 +31,7 @@
 
 	const { chatId }: Props = $props();
 
-	const anonId = generateUsername();
-
+	let anonId = $state('');
 	let newMessage: string = $state('');
 	let allMessages: {
 		id: string;
@@ -45,6 +44,7 @@
 	let inProgress = $state(false);
 
 	onMount(() => {
+		anonId = getOrGenerateUsername();
 		const q = query(
 			collection(db, 'globalMessages'),
 			where('chatId', '==', chatId),
@@ -93,10 +93,15 @@
 		window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 	}
 
-	function generateUsername(): string {
-		const randomNumber = Math.floor(Math.random() * 10000);
-		const paddedNumber = randomNumber.toString().padStart(4, '0');
-		return `user${paddedNumber}`;
+	function getOrGenerateUsername(): string {
+		const localStorageUsername = localStorage.getItem('username');
+		if (localStorageUsername) return localStorageUsername;
+		const randomAdjective = adjectives[getRandomInt(1, adjectives.length) - 1];
+		const randomNoun = nouns[getRandomInt(1, nouns.length) - 1];
+		const randomNumber = getRandomInt(0, 99).toString().padStart(2, '0');
+		const username = `${randomAdjective}-${randomNoun}-${randomNumber}`;
+		localStorage.setItem('username', username);
+		return username;
 	}
 </script>
 
@@ -144,8 +149,9 @@
 	<div class="bg-base-200 sticky bottom-0 flex flex-col gap-2 py-4">
 		<LabelInputForm handleSubmit={sendMessage}>
 			<LabelTextarea bind:value={newMessage} label="Enter a message">
-				<div class="ms-auto">
-					<button type="submit" class="btn btn-primary btn-circle" aria-label="Send">
+				<div class="flex ps-4">
+					<span class="mt-auto text-xs font-light italic">{`You're writing as ${anonId}`}</span>
+					<button type="submit" class="btn btn-primary btn-circle ms-auto" aria-label="Send">
 						<i class="fa-solid fa-arrow-up"></i>
 					</button>
 				</div>
