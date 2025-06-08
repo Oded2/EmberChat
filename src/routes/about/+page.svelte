@@ -44,7 +44,7 @@
 				JustChat is open source and available on <a href={PUBLIC_REPO_URL} class="link">GitHub</a>.
 			</span>
 			<br />
-			<span>Technologies used</span>
+			<span class="after:content-[':']">Technologies used</span>
 			<ul class="list-inside list-disc">
 				<li><span>SvelteKit</span>Web framework</li>
 				<li><span>TailwindCSS &amp; DaisyUI</span>User interface</li>
