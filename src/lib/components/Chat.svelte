@@ -150,7 +150,9 @@
 		<LabelInputForm handleSubmit={sendMessage}>
 			<LabelTextarea bind:value={newMessage} label="Enter a message">
 				<div class="flex ps-4">
-					<span class="mt-auto text-xs font-light italic">{`You're writing as ${anonId}`}</span>
+					{#if !$user}
+						<span class="mt-auto text-xs font-light italic">{`You're writing as ${anonId}`}</span>
+					{/if}
 					<button type="submit" class="btn btn-primary btn-circle ms-auto" aria-label="Send">
 						<i class="fa-solid fa-arrow-up"></i>
 					</button>
