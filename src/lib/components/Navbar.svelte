@@ -5,7 +5,7 @@
 
 	const items: { label: string; href: string }[] = [
 		{ label: 'Chat', href: '/chat' },
-		{ label: 'About', href: '/' }
+		{ label: 'About', href: '/about' }
 	];
 </script>
 
