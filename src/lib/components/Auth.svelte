@@ -85,6 +85,10 @@
 		handleSubmit={handleAuthenticate}
 	>
 		<FieldsetInput bind:value={email} label="Email" type="email" required></FieldsetInput>
+		{#if signUp}
+			<FieldsetInput bind:value={displayName} label="Display name" required></FieldsetInput>
+		{/if}
+		<FieldsetInput bind:value={password} label="Password" type="password" required></FieldsetInput>
 		{#if !signUp}
 			<button
 				type="button"
@@ -94,10 +98,6 @@
 				Forgot Password?
 			</button>
 		{/if}
-		{#if signUp}
-			<FieldsetInput bind:value={displayName} label="Display name" required></FieldsetInput>
-		{/if}
-		<FieldsetInput bind:value={password} label="Password" type="password" required></FieldsetInput>
 		{#if signUp}
 			<FieldsetInput bind:value={confirmPass} label="Confirm Password" type="password" required
 			></FieldsetInput>
