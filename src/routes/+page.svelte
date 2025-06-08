@@ -9,14 +9,13 @@
 	let roomCode = $state('');
 
 	$effect(() => {
-		roomCode = roomCode.toLowerCase();
+		roomCode = roomCode.trim().toLowerCase();
 	});
 
 	function goToRoom() {
 		roomCode = roomCode.trim();
 		if (!roomCode) return;
-		else if (!alphanumericRegex.test(roomCode))
-			addErrorToast('Room code must only contain lowercase letters and/or numbers without spaces');
+		else if (!alphanumericRegex.test(roomCode)) addErrorToast('Room code cannot contain symbols');
 		else if (roomCode === globalRoomCode)
 			addErrorToast(`Room code "${globalRoomCode}" is reserved for the global chat room`);
 		else goto(`/chat/${roomCode}`);
@@ -38,12 +37,21 @@
 		<h4 class="text-2xl font-semibold">Enter Chat Room</h4>
 		<div class="sm:me-auto sm:min-w-xl">
 			<LabelInputForm handleSubmit={goToRoom}>
-				<LabelInput bind:value={roomCode} label="Room code"></LabelInput>
+				<LabelInput
+					bind:value={roomCode}
+					label="Room code"
+					autocorrect="off"
+					autocapitalize="off"
+					spellcheck={false}
+				></LabelInput>
 				<LabelInputButton large>
 					<i class="fa-solid fa-circle-right"></i> Go
 				</LabelInputButton>
 			</LabelInputForm>
 		</div>
+		<span class="text-sm font-light italic before:me-0.5 before:content-['*']">
+			Room code must include only lowercase letters and/or numbers, without spaces or symbols.
+		</span>
 	</div>
 	<div class="hidden lg:inline-block">
 		<img

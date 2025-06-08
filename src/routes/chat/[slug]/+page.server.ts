@@ -1,7 +1,8 @@
 import { alphanumericRegex, globalRoomCode } from '$lib/helpers';
-import { redirect } from '@sveltejs/kit';
+import { error } from '@sveltejs/kit';
 
 export function load({ params: { slug } }) {
-	if (!alphanumericRegex.test(slug) || slug === globalRoomCode) throw redirect(303, '/chat');
+	if (!alphanumericRegex.test(slug) || slug === globalRoomCode)
+		throw error(400, { message: 'Illegal room code' });
 	return { chatId: slug };
 }

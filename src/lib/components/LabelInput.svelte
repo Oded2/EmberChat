@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { HTMLInputTypeAttribute } from 'svelte/elements';
+	import type { ChangeEventHandler, HTMLInputTypeAttribute } from 'svelte/elements';
 
 	interface Props {
 		id?: string;
@@ -8,9 +8,23 @@
 		required?: boolean;
 		disabled?: boolean;
 		type?: HTMLInputTypeAttribute;
+		autocorrect?: 'off' | 'on';
+		autocapitalize?: 'off' | 'on';
+		spellcheck?: boolean;
+		oninput?: ChangeEventHandler<HTMLInputElement>;
 	}
 
-	let { id, label, value = $bindable(), required, disabled, type }: Props = $props();
+	let {
+		id,
+		label,
+		value = $bindable(),
+		required,
+		disabled,
+		type,
+		autocorrect,
+		autocapitalize,
+		spellcheck
+	}: Props = $props();
 </script>
 
 <input
@@ -21,4 +35,7 @@
 	placeholder={label}
 	{required}
 	{disabled}
+	{autocorrect}
+	{autocapitalize}
+	{spellcheck}
 />
