@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { HTMLInputTypeAttribute } from 'svelte/elements';
+	import LabelInput from './LabelInput.svelte';
 
 	interface Props {
 		label?: string;
@@ -24,7 +25,7 @@
 
 <div class="flex flex-col gap-1">
 	<label for={id} class="label">{label}</label>
-	<input {id} {required} {type} bind:value class="input w-full" placeholder={label} {disabled} />
+	<LabelInput {id} {required} {type} bind:value {label} {disabled}></LabelInput>
 	{#if disabledDisclaimer && disabled}
 		<span class="font-light">{disabledDisclaimer}</span>
 	{/if}
