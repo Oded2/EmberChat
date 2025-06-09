@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte';
+	import { onMount, type Snippet } from 'svelte';
 
 	interface Props {
 		label?: string;
@@ -12,6 +12,10 @@
 
 	let textarea: HTMLTextAreaElement;
 	let hiddenSubmit: HTMLButtonElement;
+
+	onMount(() => {
+		textarea.focus();
+	});
 
 	$effect(() => {
 		// Run on value change
