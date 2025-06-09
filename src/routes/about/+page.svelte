@@ -4,9 +4,9 @@
 	import Title from '$lib/components/Title.svelte';
 </script>
 
-<div class="mt-10 flex flex-col gap-20">
+<div class="my-10 flex flex-col gap-20">
 	<h1 class="text-center text-3xl font-bold underline underline-offset-5">About JustChat</h1>
-	<div class="flex flex-col flex-wrap justify-center gap-4 sm:flex-row">
+	<div class="flex flex-wrap justify-center gap-4">
 		<AboutCard title="Mission">
 			<span>Create a simple, minimalistic way to chat within a group of people. </span>
 		</AboutCard>

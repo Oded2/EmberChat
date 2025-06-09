@@ -22,7 +22,7 @@
 	}
 </script>
 
-<div class="mt-10 flex gap-8">
+<div class="my-10 flex gap-8">
 	<div class="flex grow flex-col gap-4">
 		<h1 class="text-6xl font-bold md:text-8xl">Zero complexity, just chat.</h1>
 		<p class="text-lg font-light">
