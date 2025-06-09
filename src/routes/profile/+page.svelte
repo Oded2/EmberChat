@@ -85,7 +85,7 @@
 		} catch (err) {
 			console.error(err);
 			if (firebaseAuthErrorTypeGaurd(err)) {
-				if (err.code === 'auth/invalid-credential') addToast('error', 'Incorrect password');
+				if (err.code === 'auth/wrong-password') addToast('error', 'Incorrect password');
 			}
 		}
 		inProgress = false;
@@ -117,7 +117,7 @@
 
 {#if userData}
 	<h1 class="mt-10 mb-4 text-3xl font-bold">{`Hello, ${userData.displayName}`}</h1>
-	<div class="flex flex-wrap gap-4 pb-10">
+	<div class="flex flex-wrap justify-center gap-4 pb-10">
 		<Fieldset
 			title="User Settings"
 			btnText="Update Profile"
