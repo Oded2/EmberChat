@@ -29,7 +29,7 @@
 		<AboutCard title="Do I need an account?">
 			<span class="after:content-[':']">
 				No. An account is not required in order to chat, however there are benefits to creating an
-				account
+				account. Creating an account provides benefits, such as:
 			</span>
 			<ul class="list-inside list-disc">
 				<li>Custom display name</li>
