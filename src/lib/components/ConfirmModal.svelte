@@ -30,9 +30,9 @@
 
 <dialog bind:this={modal} class="modal">
 	<div class="modal-box">
-		<p class="mb-4 text-lg">{message}</p>
+		<p class="mb-4 whitespace-pre-line">{message}</p>
 		<div class="flex justify-end gap-2">
-			<button class="btn btn-outline" onclick={closeModal}>Cancel</button>
+			<button class="btn" onclick={closeModal}>Cancel</button>
 			<button class="btn btn-error" onclick={(e) => confirm(e.currentTarget)}>Confirm</button>
 		</div>
 	</div>

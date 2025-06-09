@@ -24,6 +24,7 @@
 	import Autolink from './Autolink.svelte';
 	import LabelTextarea from './LabelTextarea.svelte';
 	import { adjectives, nouns } from '$lib/words/words';
+	import { showModal } from '$lib/stores/confirm';
 
 	interface Props {
 		chatId: string;
@@ -111,7 +112,7 @@
 			<div
 				in:fly={{ duration: 200, y: 40 }}
 				animate:flip={{ duration: 200 }}
-				class="bg-base-100 flex justify-between gap-2 rounded-lg px-4 py-2"
+				class="bg-base-100 group flex justify-between gap-2 rounded-lg px-4 py-2"
 			>
 				<div class="flex flex-col">
 					<div class="flex items-baseline gap-x-1.5">
@@ -129,18 +130,22 @@
 						<Autolink text={message.text}></Autolink>
 					</span>
 				</div>
-				<div class="flex items-center gap-2">
+				<div class="flex gap-2">
 					<CopyButton text={message.text ?? ''}>
 						<i class="fa-solid fa-copy"></i>
 					</CopyButton>
 					{#if message.owner === $user.user?.uid}
 						<div class="tooltip" data-tip="Delete">
 							<button
-								onclick={() => deleteMessage(message.id)}
-								class="btn btn-error btn-sm"
+								onclick={() =>
+									showModal(
+										() => deleteMessage(message.id),
+										`Are you sure you want to delete the following message?\n\n"${message.text}"`
+									)}
+								class="btn btn-sm"
 								aria-label="Delete"
 							>
-								<i class="fa-solid fa-eraser"></i>
+								<i class="fa-solid fa-trash-can"></i>
 							</button>
 						</div>
 					{/if}
