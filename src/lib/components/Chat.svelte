@@ -151,26 +151,6 @@
 						</li>
 					{/if}
 				</Dropdown>
-				<!-- <div class="flex gap-2">
-					<CopyButton text={message.text ?? ''}>
-						<i class="fa-solid fa-copy"></i>
-					</CopyButton>
-					{#if message.owner === $user.user?.uid}
-						<div class="tooltip" data-tip="Delete">
-							<button
-								onclick={() =>
-									showModal(
-										() => deleteMessage(message.id),
-										`Are you sure you want to delete the following message?\n\n"${message.text}"`
-									)}
-								class="btn btn-sm"
-								aria-label="Delete"
-							>
-								<i class="fa-solid fa-trash-can"></i>
-							</button>
-						</div>
-					{/if}
-				</div> -->
 			</div>
 		{/each}
 	</div>
