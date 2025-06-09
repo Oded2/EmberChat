@@ -4,7 +4,8 @@
 	import LabelInputButton from '$lib/components/LabelInputButton.svelte';
 	import LabelInputForm from '$lib/components/LabelInputForm.svelte';
 	import Title from '$lib/components/Title.svelte';
-	import { addErrorToast, alphanumericRegex, globalRoomCode } from '$lib/helpers';
+	import { alphanumericRegex, globalRoomCode } from '$lib/helpers';
+	import { addToast } from '$lib/stores/toasts';
 
 	let roomCode = $state('');
 
@@ -15,9 +16,10 @@
 	function goToRoom() {
 		roomCode = roomCode.trim();
 		if (!roomCode) return;
-		else if (!alphanumericRegex.test(roomCode)) addErrorToast('Room code cannot contain symbols');
+		else if (!alphanumericRegex.test(roomCode))
+			addToast('error', 'Room code cannot contain symbols');
 		else if (roomCode === globalRoomCode)
-			addErrorToast(`Room code "${globalRoomCode}" is reserved for the global chat room`);
+			addToast('error', `Room code "${globalRoomCode}" is reserved for the global chat room`);
 		else goto(`/chat/${roomCode}`);
 	}
 </script>

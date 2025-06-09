@@ -2,7 +2,7 @@
 	import Fieldset from '$lib/components/Fieldset.svelte';
 	import FieldsetInput from '$lib/components/FieldsetInput.svelte';
 	import { authHandlers } from '$lib/firebase/firebase';
-	import { addErrorToast, firebaseAuthErrorTypeGaurd } from '$lib/helpers';
+	import { firebaseAuthErrorTypeGaurd } from '$lib/helpers';
 	import Title from './Title.svelte';
 	import { addToast } from '$lib/stores/toasts';
 
@@ -28,7 +28,7 @@
 		try {
 			if (signUp) {
 				if (password != confirmPass) {
-					addErrorToast('Password does not match confirm password');
+					addToast('error', 'Password does not match confirm password');
 					return;
 				}
 				await authHandlers.signup(email, password, displayName);
@@ -39,25 +39,25 @@
 			if (firebaseAuthErrorTypeGaurd(err)) {
 				switch (err.code) {
 					case 'auth/invalid-credential':
-						addErrorToast('Incorrect password. Please try again.');
+						addToast('error', 'Incorrect password. Please try again.');
 						break;
 					case 'auth/user-not-found':
-						addErrorToast('No account found with this email.');
+						addToast('error', 'No account found with this email.');
 						break;
 					case 'auth/email-already-in-use':
-						addErrorToast('Email is already registered.');
+						addToast('error', 'Email is already registered.');
 						break;
 					case 'auth/invalid-email':
-						addErrorToast('Invalid email format.');
+						addToast('error', 'Invalid email format.');
 						break;
 					case 'auth/weak-password':
-						addErrorToast('Password is too weak.');
+						addToast('error', 'Password is too weak.');
 						break;
 					default:
-						addErrorToast('Authentication error: ' + err.message);
+						addToast('error', 'Authentication error: ' + err.message);
 				}
 			} else {
-				addErrorToast('An unexpected error occurred.');
+				addToast('error', 'An unexpected error occurred.');
 			}
 		}
 	}
@@ -65,13 +65,13 @@
 	async function handlePasswordReset() {
 		if (inProgress) return;
 		if (!email) {
-			addErrorToast('Please enter your email to reset your password');
+			addToast('error', 'Please enter your email to reset your password');
 			return;
 		}
 		inProgress = true;
 		await authHandlers.forgotPassword(email);
 		inProgress = false;
-		addToast('info', 5000, `An email has been sent to ${email} with instructions`);
+		addToast('info', `An email has been sent to ${email} with instructions`);
 	}
 </script>
 

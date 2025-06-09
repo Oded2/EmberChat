@@ -3,7 +3,7 @@
 	import FieldsetInput from '$lib/components/FieldsetInput.svelte';
 	import Title from '$lib/components/Title.svelte';
 	import { db } from '$lib/firebase/firebase';
-	import { addErrorToast, firebaseAuthErrorTypeGaurd } from '$lib/helpers';
+	import { firebaseAuthErrorTypeGaurd } from '$lib/helpers';
 	import { showModal } from '$lib/stores/confirm';
 	import { addToast, dismissToast } from '$lib/stores/toasts';
 	import { updateUser, user } from '$lib/stores/user';
@@ -38,7 +38,7 @@
 	});
 
 	$effect(() => {
-		if (inProgress) toastId = addToast('info', 0, 'Working...');
+		if (inProgress) toastId = addToast('info', 'Working...', 0);
 		else if (toastId) {
 			dismissToast(toastId);
 			toastId = null;
@@ -80,11 +80,11 @@
 		try {
 			await reauthenticateWithCredential(currentUser, credential);
 			isReauthenticated = true;
-			addToast('success', 5000, 'Account successfully verified');
+			addToast('success', 'Account successfully verified');
 		} catch (err) {
 			console.error(err);
 			if (firebaseAuthErrorTypeGaurd(err)) {
-				if (err.code === 'auth/invalid-credential') addErrorToast('Incorrect password');
+				if (err.code === 'auth/invalid-credential') addToast('error', 'Incorrect password');
 			}
 		}
 		inProgress = false;
@@ -109,7 +109,6 @@
 		if (interactive)
 			addToast(
 				'success',
-				5000,
 				`Deleted ${deletePromises.length} messages for user ${currentUser?.email}`
 			);
 	}
@@ -149,7 +148,7 @@
 					class="btn btn-primary btn-sm btn-outline"
 					onclick={() => {
 						sendEmailVerification(userData);
-						addToast('success', 5000, `A verification email has been sent to ${userData.email}`);
+						addToast('success', `A verification email has been sent to ${userData.email}`);
 					}}
 				>
 					Send verification email

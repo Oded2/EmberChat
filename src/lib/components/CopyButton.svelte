@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { addErrorToast } from '$lib/helpers';
-	import type { Snippet } from 'svelte';
+	import { addToast } from '$lib/stores/toasts';
 	import type { MouseEventHandler } from 'svelte/elements';
 
 	interface Props {
@@ -30,7 +29,7 @@
 			reactiveTip = copyConfirmation;
 		} catch (err) {
 			console.error(err);
-			addErrorToast('Error copying to clipboard');
+			addToast('error', 'Error copying to clipboard');
 		}
 		timeout = setTimeout(() => (reactiveTip = originalMessage), timeoutDuration);
 	};
