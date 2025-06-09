@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { addErrorToast } from '$lib/helpers';
-	import { addToast } from '$lib/stores/toasts';
 	import type { Snippet } from 'svelte';
 	import type { MouseEventHandler } from 'svelte/elements';
 
