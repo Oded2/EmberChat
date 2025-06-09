@@ -69,6 +69,7 @@
 			await updatePassword(currentUser, newPassword);
 			inProgress = false;
 		}
+		addToast('success', 'Profile updated');
 	}
 
 	async function handleReauthentication() {
