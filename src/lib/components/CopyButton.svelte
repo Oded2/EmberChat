@@ -5,10 +5,9 @@
 
 	interface Props {
 		text: string;
-		children: Snippet;
 	}
 
-	const { text, children }: Props = $props();
+	const { text }: Props = $props();
 
 	const originalMessage = 'Copy to Clipboard';
 	const copyConfirmation = 'Copied!';
@@ -37,8 +36,10 @@
 	};
 </script>
 
-<div class="tooltip w-full" data-tip={reactiveTip}>
-	<button class="btn btn-sm" onclick={copy} aria-label="Copy to clipboard">
-		{@render children()}
-	</button>
-</div>
+<button
+	class="flex cursor-pointer items-baseline justify-center"
+	onclick={copy}
+	aria-label="Copy to clipboard"
+>
+	{reactiveTip}
+</button>

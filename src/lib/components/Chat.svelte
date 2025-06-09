@@ -25,6 +25,7 @@
 	import LabelTextarea from './LabelTextarea.svelte';
 	import { adjectives, nouns } from '$lib/words/words';
 	import { showModal } from '$lib/stores/confirm';
+	import Dropdown from './Dropdown.svelte';
 
 	interface Props {
 		chatId: string;
@@ -130,7 +131,27 @@
 						<Autolink text={message.text}></Autolink>
 					</span>
 				</div>
-				<div class="flex gap-2">
+				<Dropdown label="Options">
+					<li>
+						<CopyButton text={message.text ?? ''}></CopyButton>
+					</li>
+					{#if message.owner === $user.user?.uid}
+						<li>
+							<button
+								class="flex items-baseline justify-center"
+								onclick={() =>
+									showModal(
+										() => deleteMessage(message.id),
+										`Are you sure you want to delete the following message?\n\n"${message.text}"`
+									)}
+								aria-label="Delete"
+							>
+								Delete Message
+							</button>
+						</li>
+					{/if}
+				</Dropdown>
+				<!-- <div class="flex gap-2">
 					<CopyButton text={message.text ?? ''}>
 						<i class="fa-solid fa-copy"></i>
 					</CopyButton>
@@ -149,7 +170,7 @@
 							</button>
 						</div>
 					{/if}
-				</div>
+				</div> -->
 			</div>
 		{/each}
 	</div>
