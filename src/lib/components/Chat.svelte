@@ -111,23 +111,25 @@
 			<div
 				in:fly={{ duration: 200, y: 40 }}
 				animate:flip={{ duration: 200 }}
-				class="bg-base-100 flex items-baseline justify-between gap-2 rounded-lg px-4 py-2"
+				class="bg-base-100 flex justify-between gap-2 rounded-lg px-4 py-2"
 			>
-				<div class="flex items-baseline gap-2">
-					<span class="font-medium after:content-[':']">{message.senderName}</span>
-					<span class="whitespace-pre-line" dir="auto"
-						><Autolink text={message.text}></Autolink>
+				<div class="flex flex-col">
+					<div class="flex items-baseline gap-2">
+						<span class="font-semibold">{message.senderName}</span>
+						<span class="text-xs font-light italic">
+							{message.timestamp.toLocaleString(undefined, {
+								minute: 'numeric',
+								hour: 'numeric',
+								day: 'numeric',
+								month: 'numeric'
+							})}
+						</span>
+					</div>
+					<span class="whitespace-pre-line" dir="auto">
+						<Autolink text={message.text}></Autolink>
 					</span>
 				</div>
-				<div class="flex items-baseline gap-2">
-					<span class="whitespace-nowrap">
-						{message.timestamp.toLocaleString(undefined, {
-							minute: 'numeric',
-							hour: 'numeric',
-							day: 'numeric',
-							month: 'long'
-						})}
-					</span>
+				<div class="flex items-center gap-2">
 					<CopyButton text={message.text ?? ''}>
 						<i class="fa-solid fa-copy"></i>
 					</CopyButton>
