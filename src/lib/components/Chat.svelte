@@ -20,7 +20,7 @@
 	import { get } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import LabelInputForm from './LabelInputForm.svelte';
-	import { getRandomInt, globalRoomCode } from '$lib/helpers';
+	import { addParams, getRandomInt, globalRoomCode } from '$lib/helpers';
 	import Autolink from './Autolink.svelte';
 	import LabelTextarea from './LabelTextarea.svelte';
 	import { adjectives, nouns } from '$lib/words/words';
@@ -138,7 +138,7 @@
 					{#if message.owner === $user.user?.uid}
 						<li>
 							<button
-								class="flex items-baseline justify-center"
+								class="flex cursor-pointer items-baseline justify-center"
 								onclick={() =>
 									showModal(
 										() => deleteMessage(message.id),
@@ -148,6 +148,20 @@
 							>
 								Delete Message
 							</button>
+						</li>
+					{:else if message.text}
+						<li>
+							<a
+								href={addParams('/contact', {
+									id: message.id,
+									chatId: message.chatId,
+									text: message.text
+								})}
+								target="_blank"
+								class="flex cursor-pointer items-baseline justify-center"
+							>
+								Report
+							</a>
 						</li>
 					{/if}
 				</Dropdown>
