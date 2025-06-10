@@ -55,21 +55,21 @@
 				displayName
 			});
 			updateUser();
-			inProgress = false;
 		}
 		if (currentUser.email !== email) {
 			inProgress = true;
 			await updateEmail(currentUser, email);
 			await sendEmailVerification(currentUser);
 			updateUser();
-			inProgress = false;
 		}
 		if (newPassword) {
 			inProgress = true;
 			await updatePassword(currentUser, newPassword);
-			inProgress = false;
 		}
-		addToast('success', 'Profile updated');
+		if (inProgress) {
+			inProgress = false;
+			addToast('success', 'Profile updated');
+		}
 	}
 
 	async function handleReauthentication() {
