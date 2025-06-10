@@ -11,7 +11,3 @@ export const confirmModal: Writable<ConfirmModal> = writable({ show: false });
 export const showModal = (handler: () => Promise<void>, message?: string) => {
 	confirmModal.set({ show: true, handleConfirm: handler, message });
 };
-
-export const reset = () => {
-	confirmModal.update((m) => ({ ...m, show: false }));
-};

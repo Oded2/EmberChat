@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { reset } from '$lib/stores/confirm';
-
 	interface Props {
 		show?: boolean;
 		message?: string;
@@ -10,21 +8,22 @@
 
 	let modal: HTMLDialogElement;
 
+	let inProgress = $state(false);
+
 	$effect(() => {
 		if (show) modal.showModal();
 	});
 
-	async function confirm(btn: HTMLButtonElement) {
+	async function confirm() {
 		if (!handleConfirm) return;
-		btn.disabled = true;
+		inProgress = true;
 		await handleConfirm();
 		closeModal();
-		btn.disabled = false;
+		inProgress = false;
 	}
 
 	function closeModal() {
 		modal.close();
-		reset();
 	}
 </script>
 
@@ -33,7 +32,7 @@
 		<p class="mb-4 whitespace-pre-line">{message}</p>
 		<div class="flex justify-end gap-2">
 			<button class="btn" onclick={closeModal}>Cancel</button>
-			<button class="btn btn-error" onclick={(e) => confirm(e.currentTarget)}>Confirm</button>
+			<button class="btn btn-error" disabled={inProgress} onclick={confirm}>Confirm</button>
 		</div>
 	</div>
 	<form method="dialog" class="modal-backdrop">
