@@ -60,7 +60,7 @@
 
 	async function handleReauthentication() {
 		const currentUser = get(user).user;
-		if (!newPassword || !currentUser?.email) return;
+		if (!reAuthenticatePassword || !currentUser?.email) return;
 		const credential = EmailAuthProvider.credential(currentUser.email, reAuthenticatePassword);
 		try {
 			await reauthenticateWithCredential(currentUser, credential);
