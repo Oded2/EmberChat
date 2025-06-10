@@ -60,8 +60,7 @@
 
 	async function handleReauthentication() {
 		const currentUser = get(user).user;
-		if (!currentUser?.email) return;
-
+		if (!newPassword || !currentUser?.email) return;
 		const credential = EmailAuthProvider.credential(currentUser.email, reAuthenticatePassword);
 		try {
 			await reauthenticateWithCredential(currentUser, credential);
@@ -159,7 +158,7 @@
 			{/if}
 		</Fieldset>
 		<Fieldset title="Verify Account" btnText="Authenticate" handleSubmit={handleReauthentication}>
-			<FieldsetInput type="password" label="Password" bind:value={reAuthenticatePassword} required
+			<FieldsetInput type="password" label="Password" bind:value={reAuthenticatePassword}
 			></FieldsetInput>
 		</Fieldset>
 	</div>
