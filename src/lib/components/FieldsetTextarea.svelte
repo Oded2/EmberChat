@@ -13,7 +13,7 @@
 <FieldsetInputContainer>
 	<label for={id} class="label">{label}</label>
 	<textarea
-		class="bg-base-100 focus:ring-primary rounded-2xl px-4 py-3 transition-all outline-none focus:ring"
+		class="bg-base-100 focus:ring-primary resize-none rounded-2xl px-4 py-3 transition-all outline-none focus:ring"
 		{id}
 		name={label}
 		placeholder={label}
