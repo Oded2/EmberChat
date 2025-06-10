@@ -12,7 +12,7 @@
 	let message = $state('');
 
 	async function handleSubmit() {
-		const ok = await sendForm({ email, name, message });
+		const ok = await sendForm({ type: 'Message', email, name, message });
 		if (ok) addToast('success', 'Your message has been sent');
 		else addToast('error', 'There was an error in sending the form');
 	}
