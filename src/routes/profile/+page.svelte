@@ -5,7 +5,7 @@
 	import { db } from '$lib/firebase/firebase';
 	import { firebaseAuthErrorTypeGaurd } from '$lib/helpers';
 	import { showModal } from '$lib/stores/confirm';
-	import { addToast, dismissToast } from '$lib/stores/toasts';
+	import { addToast } from '$lib/stores/toasts';
 	import { updateUser, user } from '$lib/stores/user';
 	import {
 		EmailAuthProvider,
@@ -29,20 +29,11 @@
 	let newPassword = $state('');
 	let reAuthenticatePassword = $state('');
 	let isReauthenticated = $state(false);
-	let toastId: string | null = null;
 
 	$effect(() => {
 		const currentUser = $user.user;
 		email = currentUser?.email ?? '';
 		displayName = currentUser?.displayName ?? '';
-	});
-
-	$effect(() => {
-		if (inProgress) toastId = addToast('info', 'Working...', 0);
-		else if (toastId) {
-			dismissToast(toastId);
-			toastId = null;
-		}
 	});
 
 	async function handleUpdateUser() {
@@ -122,7 +113,7 @@
 		<Fieldset
 			title="User Settings"
 			btnText="Update Profile"
-			disabled={inProgress}
+			{inProgress}
 			handleSubmit={handleUpdateUser}
 		>
 			<FieldsetInput
@@ -181,7 +172,7 @@
 		<Fieldset
 			title="Verify Account"
 			btnText="Authenticate"
-			disabled={inProgress}
+			{inProgress}
 			handleSubmit={handleReauthentication}
 		>
 			<FieldsetInput type="password" label="Password" bind:value={reAuthenticatePassword} required

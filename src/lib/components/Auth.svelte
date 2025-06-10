@@ -79,7 +79,7 @@
 	<Fieldset
 		title={signUp ? 'Sign Up' : 'Login'}
 		btnText={signUp ? 'Sign Up' : 'Login'}
-		disabled={inProgress}
+		{inProgress}
 		handleSubmit={handleAuthenticate}
 	>
 		<FieldsetInput bind:value={email} label="Email" type="email" required></FieldsetInput>
