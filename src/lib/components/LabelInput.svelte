@@ -34,7 +34,7 @@
 	{id}
 	{name}
 	bind:value
-	class="bg-base-100 focus:ring-primary flex w-full grow gap-2 rounded-2xl px-4 py-3 transition-all outline-none focus:ring disabled:opacity-50"
+	class="bg-base-100 focus:ring-primary grow rounded-2xl px-4 py-3 transition-all outline-none focus:ring disabled:opacity-50"
 	placeholder={label}
 	minlength={type === 'password' ? 8 : undefined}
 	maxlength={type === 'password' ? 4096 : undefined}
