@@ -37,20 +37,25 @@
 	async function handleUpdateUser() {
 		const currentUser = get(user).user;
 		if (!currentUser) return;
+		let isUpdate = false;
 		if (currentUser.displayName !== displayName) {
 			await updateProfile(currentUser, {
 				displayName
 			});
 			updateUser();
+			isUpdate = true;
 		}
 		if (currentUser.email !== email) {
 			await updateEmail(currentUser, email);
 			await sendEmailVerification(currentUser);
 			updateUser();
+			isUpdate = true;
 		}
-		if (newPassword) await updatePassword(currentUser, newPassword);
-
-		addToast('success', 'Profile updated');
+		if (newPassword) {
+			await updatePassword(currentUser, newPassword);
+			isUpdate = true;
+		}
+		if (isUpdate) addToast('success', 'Profile updated');
 	}
 
 	async function handleReauthentication() {
