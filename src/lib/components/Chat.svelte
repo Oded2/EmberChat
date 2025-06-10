@@ -180,7 +180,7 @@
 									`Are you sure you want to report the following message?\n\n"${message.text}"\n\nSender: ${message.senderName}`
 								)}
 						>
-							Report
+							Report Message
 						</DropdownButton>
 					{/if}
 				</Dropdown>
