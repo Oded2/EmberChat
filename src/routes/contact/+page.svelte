@@ -13,8 +13,10 @@
 
 	async function handleSubmit() {
 		const ok = await sendForm({ type: 'Message', email, name, message });
-		if (ok) addToast('success', 'Your message has been sent');
-		else addToast('error', 'There was an error in sending the form');
+		if (ok) {
+			addToast('success', 'Your message has been sent');
+			message = '';
+		} else addToast('error', 'There was an error in sending the form');
 	}
 </script>
 
