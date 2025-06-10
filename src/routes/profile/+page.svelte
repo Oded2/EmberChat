@@ -86,6 +86,7 @@
 			console.error(err);
 			if (firebaseAuthErrorTypeGaurd(err)) {
 				if (err.code === 'auth/wrong-password') addToast('error', 'Incorrect password');
+				else addToast('error', `${err.code}: ${err.message}`);
 			}
 		}
 		inProgress = false;
