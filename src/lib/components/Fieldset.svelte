@@ -4,25 +4,24 @@
 	interface Props {
 		title?: string;
 		btnText?: string;
-		inProgress?: boolean;
-		action?: string;
-		method?: 'POST';
-		handleSubmit?: () => any;
+		handleSubmit?: () => Promise<void>;
 		children: Snippet;
 	}
 
-	const { title, btnText, inProgress, action, method, handleSubmit, children }: Props = $props();
+	const { title, btnText, handleSubmit, children }: Props = $props();
+
+	let inProgress = $state(false);
 </script>
 
 <form
-	{method}
-	{action}
-	onsubmit={handleSubmit
-		? (e) => {
-				e.preventDefault();
-				if (!inProgress) handleSubmit();
-			}
-		: undefined}
+	onsubmit={async (e) => {
+		e.preventDefault();
+		if (!inProgress && handleSubmit) {
+			inProgress = true;
+			await handleSubmit();
+			inProgress = false;
+		}
+	}}
 >
 	<fieldset class="bg-base-300 border-base-300 rounded-box fieldset w-sm gap-2 border p-4">
 		{#if title}

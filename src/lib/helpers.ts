@@ -24,3 +24,14 @@ export function getRandomInt(min: number, max: number): number {
 	const upper = Math.floor(max);
 	return Math.floor(Math.random() * (upper - lower + 1)) + lower;
 }
+
+export async function sendForm(record: Record<string, string>): Promise<boolean> {
+	const response = await fetch('https://formspree.io/f/xwpblapz', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify(record)
+	});
+	return response.ok;
+}

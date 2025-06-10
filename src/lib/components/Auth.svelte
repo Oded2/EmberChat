@@ -17,14 +17,12 @@
 	let displayName = $state('');
 	let password = $state('');
 	let confirmPass = $state('');
-	let inProgress = $state(false);
 
 	$effect(() => {
 		signUp = initialSignUp;
 	});
 
 	async function handleAuthenticate() {
-		inProgress = true;
 		try {
 			if (signUp) {
 				if (password != confirmPass) {
@@ -35,7 +33,6 @@
 			} else await authHandlers.login(email, password);
 		} catch (err) {
 			console.error(err);
-			inProgress = false;
 			if (firebaseAuthErrorTypeGaurd(err)) {
 				switch (err.code) {
 					case 'auth/invalid-credential':
@@ -63,14 +60,11 @@
 	}
 
 	async function handlePasswordReset() {
-		if (inProgress) return;
 		if (!email) {
 			addToast('error', 'Please enter your email to reset your password');
 			return;
 		}
-		inProgress = true;
 		await authHandlers.forgotPassword(email);
-		inProgress = false;
 		addToast('info', `An email has been sent to ${email} with instructions`);
 	}
 </script>
@@ -79,7 +73,6 @@
 	<Fieldset
 		title={signUp ? 'Sign Up' : 'Login'}
 		btnText={signUp ? 'Sign Up' : 'Login'}
-		{inProgress}
 		handleSubmit={handleAuthenticate}
 	>
 		<FieldsetInput bind:value={email} label="Email" type="email" required></FieldsetInput>

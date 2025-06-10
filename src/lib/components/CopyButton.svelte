@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { addToast } from '$lib/stores/toasts';
 	import type { MouseEventHandler } from 'svelte/elements';
+	import DropdownButton from './DropdownButton.svelte';
 
 	interface Props {
 		text: string;
@@ -15,7 +16,7 @@
 	let reactiveTip: string = $state(originalMessage);
 	let timeout: NodeJS.Timeout | null = null;
 
-	const copy: MouseEventHandler<HTMLButtonElement> = async () => {
+	async function copy() {
 		const original = reactiveTip;
 		// If already showing copyMessage, clear and reset the timeout
 		if (original === copyConfirmation) {
@@ -32,13 +33,9 @@
 			addToast('error', 'Error copying to clipboard');
 		}
 		timeout = setTimeout(() => (reactiveTip = originalMessage), timeoutDuration);
-	};
+	}
 </script>
 
-<button
-	class="flex cursor-pointer items-baseline justify-center"
-	onclick={copy}
-	aria-label="Copy to clipboard"
->
+<DropdownButton onclick={copy}>
 	{reactiveTip}
-</button>
+</DropdownButton>

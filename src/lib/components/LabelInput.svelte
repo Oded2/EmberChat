@@ -3,7 +3,6 @@
 
 	interface Props {
 		id?: string;
-		name?: string;
 		label?: string;
 		value?: string;
 		required?: boolean;
@@ -17,7 +16,6 @@
 
 	let {
 		id,
-		name,
 		label,
 		value = $bindable(),
 		required,
@@ -32,7 +30,6 @@
 <input
 	{type}
 	{id}
-	{name}
 	bind:value
 	class="bg-base-100 focus:ring-primary grow rounded-2xl px-4 py-3 transition-all outline-none focus:ring disabled:opacity-50"
 	placeholder={label}

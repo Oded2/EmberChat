@@ -4,9 +4,10 @@
 	interface Props {
 		label: string;
 		value?: string;
+		required?: boolean;
 	}
 
-	const { label, value }: Props = $props();
+	let { label, value = $bindable(), required }: Props = $props();
 
 	const id = $props.id();
 </script>
@@ -16,10 +17,10 @@
 	<textarea
 		class="bg-base-100 focus:ring-primary resize-none rounded-2xl px-4 py-3 transition-all outline-none focus:ring"
 		{id}
-		{value}
+		bind:value
 		name={label}
 		placeholder={label}
 		rows="10"
-		required
+		{required}
 	></textarea>
 </FieldsetInputContainer>

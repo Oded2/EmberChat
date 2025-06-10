@@ -26,7 +26,7 @@
 
 <FieldsetInputContainer>
 	<label for={id} class="label">{label}</label>
-	<LabelInput {id} name={label} {required} {type} bind:value {label} {disabled}></LabelInput>
+	<LabelInput {id} {required} {type} bind:value {label} {disabled}></LabelInput>
 	{#if disabledDisclaimer && disabled}
 		<span class="font-light">{disabledDisclaimer}</span>
 	{/if}

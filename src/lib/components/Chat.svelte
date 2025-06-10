@@ -20,30 +20,35 @@
 	import { get } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import LabelInputForm from './LabelInputForm.svelte';
-	import { addParams, getRandomInt, globalRoomCode } from '$lib/helpers';
+	import { addParams, getRandomInt, globalRoomCode, sendForm } from '$lib/helpers';
 	import Autolink from './Autolink.svelte';
 	import LabelTextarea from './LabelTextarea.svelte';
 	import { adjectives, nouns } from '$lib/words/words';
 	import { showModal } from '$lib/stores/confirm';
 	import Dropdown from './Dropdown.svelte';
+	import DropdownButton from './DropdownButton.svelte';
+	import { addToast } from '$lib/stores/toasts';
 
 	interface Props {
 		chatId: string;
 	}
 
-	const { chatId }: Props = $props();
-
-	let anonId = $state('');
-	let newMessage: string = $state('');
-	let allMessages: {
+	interface Message {
 		id: string;
 		chatId: string;
 		text?: string;
 		senderName?: string;
 		timestamp: Date;
 		owner?: string;
-	}[] = $state([]);
-	let inProgress = $state(false);
+	}
+
+	const { chatId }: Props = $props();
+
+	let anonId = $state('');
+	let newMessage: string = $state('');
+	let allMessages: Message[] = $state([]);
+	let inProgressChat = $state(false);
+	let inProgressReport = $state(false);
 
 	onMount(() => {
 		anonId = getOrGenerateUsername();
@@ -64,8 +69,8 @@
 	});
 
 	async function sendMessage() {
-		if (inProgress) return;
-		inProgress = true;
+		if (inProgressChat) return;
+		inProgressChat = true;
 		newMessage = newMessage.trim();
 		if (!newMessage) return;
 		const currentUser = get(user).user;
@@ -77,7 +82,7 @@
 			chatId
 		});
 		newMessage = '';
-		inProgress = false;
+		inProgressChat = false;
 	}
 
 	async function deleteMessage(id: string) {
@@ -104,6 +109,30 @@
 		const username = `${randomAdjective}-${randomNoun}-${randomNumber}`;
 		localStorage.setItem('username', username);
 		return username;
+	}
+
+	async function handleReport(m: Message) {
+		if (inProgressReport) return;
+		inProgressReport = true;
+		const ok = await sendForm({
+			type: 'Report',
+			id: m.id,
+			chatId: m.chatId,
+			text: m.text ?? '',
+			owner: m.owner || 'Anonymous',
+			senderName: m.senderName ?? '',
+			dateSent: m.timestamp.toLocaleDateString('en-US', {
+				minute: 'numeric',
+				hour: 'numeric',
+				weekday: 'long',
+				day: 'numeric',
+				month: 'long',
+				year: 'numeric'
+			})
+		});
+		inProgressReport = false;
+		if (ok) addToast('success', 'Your report has been sent');
+		else addToast('error', 'There was an error in sending your report');
 	}
 </script>
 
@@ -132,37 +161,27 @@
 					</span>
 				</div>
 				<Dropdown label="Options">
-					<li>
-						<CopyButton text={message.text ?? ''}></CopyButton>
-					</li>
+					<CopyButton text={message.text ?? ''}></CopyButton>
 					{#if message.owner === $user.user?.uid}
-						<li>
-							<button
-								class="flex cursor-pointer items-baseline justify-center"
-								onclick={() =>
-									showModal(
-										() => deleteMessage(message.id),
-										`Are you sure you want to delete the following message?\n\n"${message.text}"`
-									)}
-								aria-label="Delete"
-							>
-								Delete Message
-							</button>
-						</li>
+						<DropdownButton
+							onclick={() =>
+								showModal(
+									() => deleteMessage(message.id),
+									`Are you sure you want to delete the following message?\n\n"${message.text}"`
+								)}
+						>
+							Delete Message
+						</DropdownButton>
 					{:else if message.text}
-						<li>
-							<a
-								href={addParams('/contact', {
-									id: message.id,
-									chatId: message.chatId,
-									text: message.text
-								})}
-								target="_blank"
-								class="flex cursor-pointer items-baseline justify-center"
-							>
-								Report
-							</a>
-						</li>
+						<DropdownButton
+							onclick={() =>
+								showModal(
+									() => handleReport(message),
+									`Are you sure you want to report the following message?\n\n"${message.text}"\n\nSender: ${message.senderName}`
+								)}
+						>
+							Report
+						</DropdownButton>
 					{/if}
 				</Dropdown>
 			</div>

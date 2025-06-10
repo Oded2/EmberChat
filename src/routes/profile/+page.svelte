@@ -22,8 +22,6 @@
 
 	const verifyDisclaimer = 'You must verify your account first';
 
-	let inProgress = $state(false);
-
 	let email = $state('');
 	let displayName = $state('');
 	let newPassword = $state('');
@@ -37,37 +35,28 @@
 	});
 
 	async function handleUpdateUser() {
-		if (inProgress) return;
 		const currentUser = get(user).user;
 		if (!currentUser) return;
 		if (currentUser.displayName !== displayName) {
-			inProgress = true;
 			await updateProfile(currentUser, {
 				displayName
 			});
 			updateUser();
 		}
 		if (currentUser.email !== email) {
-			inProgress = true;
 			await updateEmail(currentUser, email);
 			await sendEmailVerification(currentUser);
 			updateUser();
 		}
-		if (newPassword) {
-			inProgress = true;
-			await updatePassword(currentUser, newPassword);
-		}
-		if (inProgress) {
-			inProgress = false;
-			addToast('success', 'Profile updated');
-		}
+		if (newPassword) await updatePassword(currentUser, newPassword);
+
+		addToast('success', 'Profile updated');
 	}
 
 	async function handleReauthentication() {
-		if (inProgress) return;
 		const currentUser = get(user).user;
 		if (!currentUser?.email) return;
-		inProgress = true;
+
 		const credential = EmailAuthProvider.credential(currentUser.email, reAuthenticatePassword);
 		try {
 			await reauthenticateWithCredential(currentUser, credential);
@@ -80,18 +69,16 @@
 				else addToast('error', `${err.code}: ${err.message}`);
 			}
 		}
-		inProgress = false;
 	}
 
 	async function deleteUser() {
 		const currentUser = get(user).user;
-		if (inProgress || !currentUser) return;
+		if (!currentUser) return;
 		deleteUserMessages(false);
 		await currentUser.delete();
 	}
 
 	async function deleteUserMessages(interactive: boolean = true) {
-		if (inProgress) return;
 		const currentUser = get(user).user;
 		const q = query(collection(db, 'globalMessages'), where('owner', '==', currentUser?.uid));
 		const snapshot = await getDocs(q);
@@ -110,12 +97,7 @@
 {#if userData}
 	<h1 class="my-10 text-3xl font-bold">{`Hello, ${userData.displayName}`}</h1>
 	<div class="flex flex-wrap justify-center gap-4 pb-10">
-		<Fieldset
-			title="User Settings"
-			btnText="Update Profile"
-			{inProgress}
-			handleSubmit={handleUpdateUser}
-		>
+		<Fieldset title="User Settings" btnText="Update Profile" handleSubmit={handleUpdateUser}>
 			<FieldsetInput
 				type="email"
 				label="Email"
@@ -150,6 +132,7 @@
 		</Fieldset>
 		<Fieldset title="Danger Zone">
 			<button
+				type="button"
 				class="btn btn-error"
 				onclick={() =>
 					showModal(
@@ -158,6 +141,7 @@
 					)}>Purge messages</button
 			>
 			<button
+				type="button"
 				disabled={!isReauthenticated}
 				class="btn btn-error mt-2"
 				onclick={() =>
@@ -169,12 +153,7 @@
 				<span>{verifyDisclaimer}</span>
 			{/if}
 		</Fieldset>
-		<Fieldset
-			title="Verify Account"
-			btnText="Authenticate"
-			{inProgress}
-			handleSubmit={handleReauthentication}
-		>
+		<Fieldset title="Verify Account" btnText="Authenticate" handleSubmit={handleReauthentication}>
 			<FieldsetInput type="password" label="Password" bind:value={reAuthenticatePassword} required
 			></FieldsetInput>
 		</Fieldset>
