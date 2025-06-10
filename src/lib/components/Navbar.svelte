@@ -4,7 +4,7 @@
 	import { user } from '$lib/stores/user';
 
 	const items: { label: string; href: string }[] = [
-		{ label: 'Chat', href: '/chat' },
+		{ label: 'Contact', href: '/contact' },
 		{ label: 'About', href: '/about' }
 	];
 </script>

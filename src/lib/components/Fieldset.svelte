@@ -5,18 +5,24 @@
 		title?: string;
 		btnText?: string;
 		inProgress?: boolean;
+		action?: string;
+		method?: 'POST';
 		handleSubmit?: () => any;
 		children: Snippet;
 	}
 
-	const { title, btnText, inProgress, handleSubmit, children }: Props = $props();
+	const { title, btnText, inProgress, action, method, handleSubmit, children }: Props = $props();
 </script>
 
 <form
-	onsubmit={(e) => {
-		e.preventDefault();
-		if (!inProgress && handleSubmit) handleSubmit();
-	}}
+	{method}
+	{action}
+	onsubmit={handleSubmit
+		? (e) => {
+				e.preventDefault();
+				if (!inProgress) handleSubmit();
+			}
+		: undefined}
 >
 	<fieldset class="bg-base-300 border-base-300 rounded-box fieldset w-sm gap-2 border p-4">
 		{#if title}

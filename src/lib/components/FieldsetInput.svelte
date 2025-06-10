@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { HTMLInputTypeAttribute } from 'svelte/elements';
 	import LabelInput from './LabelInput.svelte';
+	import FieldsetInputContainer from './FieldsetInputContainer.svelte';
 
 	interface Props {
 		label?: string;
@@ -14,19 +15,19 @@
 	let {
 		label,
 		type,
+		value = $bindable(),
 		required,
 		disabled,
-		disabledDisclaimer,
-		value = $bindable()
+		disabledDisclaimer
 	}: Props = $props();
 
 	const id = $props.id();
 </script>
 
-<div class="flex flex-col gap-1">
+<FieldsetInputContainer>
 	<label for={id} class="label">{label}</label>
-	<LabelInput {id} {required} {type} bind:value {label} {disabled}></LabelInput>
+	<LabelInput {id} name={label} {required} {type} bind:value {label} {disabled}></LabelInput>
 	{#if disabledDisclaimer && disabled}
 		<span class="font-light">{disabledDisclaimer}</span>
 	{/if}
-</div>
+</FieldsetInputContainer>

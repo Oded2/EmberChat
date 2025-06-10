@@ -108,7 +108,7 @@
 </script>
 
 {#if userData}
-	<h1 class="mt-10 mb-4 text-3xl font-bold">{`Hello, ${userData.displayName}`}</h1>
+	<h1 class="my-10 text-3xl font-bold">{`Hello, ${userData.displayName}`}</h1>
 	<div class="flex flex-wrap justify-center gap-4 pb-10">
 		<Fieldset
 			title="User Settings"
