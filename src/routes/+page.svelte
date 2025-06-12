@@ -3,7 +3,7 @@
 	import LabelInput from '$lib/components/LabelInput.svelte';
 	import LabelInputForm from '$lib/components/LabelInputForm.svelte';
 	import Title from '$lib/components/Title.svelte';
-	import { alphanumericRegex, globalRoomCode } from '$lib/helpers';
+	import { alphanumericRegex, getRandomInt, globalRoomCode } from '$lib/helpers';
 	import { addToast } from '$lib/stores/toasts';
 
 	let roomCode = $state('');
@@ -20,6 +20,13 @@
 		else if (roomCode === globalRoomCode)
 			addToast('error', `Room code "${globalRoomCode}" is reserved for the global chat room`);
 		else goto(`/chat/${roomCode}`);
+	}
+
+	function generateRoomCode() {
+		const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+		let result = '';
+		for (let i = 0; i < 4; i++) result += chars[getRandomInt(0, chars.length - 1)];
+		roomCode = result;
 	}
 </script>
 
@@ -45,6 +52,14 @@
 					autocapitalize="off"
 					spellcheck={false}
 				></LabelInput>
+				<button
+					type="button"
+					onclick={generateRoomCode}
+					class="btn btn-primary btn-outline btn-lg"
+					aria-label="Random"
+				>
+					<i class="fa-solid fa-dice"></i>
+				</button>
 				<button type="submit" class="btn btn-primary btn-lg w-full sm:w-auto">
 					<i class="fa-solid fa-circle-right"></i> Go
 				</button>
