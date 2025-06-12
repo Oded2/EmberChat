@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import LabelInput from '$lib/components/LabelInput.svelte';
-	import LabelInputButton from '$lib/components/LabelInputButton.svelte';
 	import LabelInputForm from '$lib/components/LabelInputForm.svelte';
 	import Title from '$lib/components/Title.svelte';
 	import { alphanumericRegex, globalRoomCode } from '$lib/helpers';
@@ -46,9 +45,9 @@
 					autocapitalize="off"
 					spellcheck={false}
 				></LabelInput>
-				<LabelInputButton large>
+				<button type="submit" class="btn btn-primary btn-lg w-full sm:w-auto">
 					<i class="fa-solid fa-circle-right"></i> Go
-				</LabelInputButton>
+				</button>
 			</LabelInputForm>
 		</div>
 		<span class="text-sm font-light italic before:me-0.5 before:content-['*']">
