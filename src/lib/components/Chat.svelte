@@ -20,7 +20,7 @@
 	import { get } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import LabelInputForm from './LabelInputForm.svelte';
-	import { addParams, getRandomInt, globalRoomCode, sendForm } from '$lib/helpers';
+	import { getRandomInt, globalRoomCode, sendForm } from '$lib/helpers';
 	import Autolink from './Autolink.svelte';
 	import LabelTextarea from './LabelTextarea.svelte';
 	import { adjectives, nouns } from '$lib/words/words';
