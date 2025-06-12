@@ -53,7 +53,7 @@
 	onMount(() => {
 		anonId = getOrGenerateUsername();
 		const q = query(
-			collection(db, 'globalMessages'),
+			collection(db, 'messages'),
 			where('chatId', '==', chatId),
 			orderBy('timestamp'),
 			limit(200)
@@ -74,7 +74,7 @@
 		newMessage = newMessage.trim();
 		if (!newMessage) return;
 		const currentUser = get(user).user;
-		await addDoc(collection(db, 'globalMessages'), {
+		await addDoc(collection(db, 'messages'), {
 			text: newMessage,
 			senderName: currentUser?.displayName ?? anonId,
 			timestamp: serverTimestamp(),
@@ -86,7 +86,7 @@
 	}
 
 	async function deleteMessage(id: string) {
-		const docRef = doc(db, 'globalMessages', id);
+		const docRef = doc(db, 'messages', id);
 		await deleteDoc(docRef);
 	}
 

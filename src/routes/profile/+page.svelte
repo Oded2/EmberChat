@@ -84,10 +84,10 @@
 
 	async function deleteUserMessages(interactive: boolean = true) {
 		const currentUser = get(user).user;
-		const q = query(collection(db, 'globalMessages'), where('owner', '==', currentUser?.uid));
+		const q = query(collection(db, 'messages'), where('owner', '==', currentUser?.uid));
 		const snapshot = await getDocs(q);
 		const deletePromises = snapshot.docs.map((docSnap) =>
-			deleteDoc(doc(db, 'globalMessages', docSnap.id))
+			deleteDoc(doc(db, 'messages', docSnap.id))
 		);
 		await Promise.all(deletePromises);
 		if (interactive)
