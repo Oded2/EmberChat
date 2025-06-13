@@ -67,7 +67,7 @@
 		</NavDropdown>
 	</li>
 	<li>
-		<NavDropdown label="Lanuage">
+		<NavDropdown label="Language">
 			{#each locales as map}
 				<li><button onclick={() => locale.set(map[0])}>{map[1].label}</button></li>
 			{/each}
