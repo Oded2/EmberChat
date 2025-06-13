@@ -5,7 +5,7 @@
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
 	import NavDropdown from './NavDropdown.svelte';
-	import { locale, localeMap, t, updateLocale } from '$lib/stores/localization';
+	import { localeMap, t, updateLocale } from '$lib/stores/localization';
 
 	onMount(() => themeChange(false));
 
