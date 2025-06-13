@@ -31,6 +31,7 @@
 	{type}
 	{id}
 	bind:value
+	dir="auto"
 	class="bg-base-100 focus:ring-neutral-content grow rounded-2xl px-4 py-3 transition-all duration-200 outline-none focus:ring disabled:opacity-50"
 	placeholder={label}
 	minlength={type === 'password' ? 8 : undefined}

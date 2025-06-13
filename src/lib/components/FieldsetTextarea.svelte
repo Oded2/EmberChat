@@ -16,6 +16,7 @@
 	<label for={id} class="label">{label}</label>
 	<textarea
 		class="bg-base-100 focus:ring-neutral-content resize-none rounded-2xl px-4 py-3 transition-all outline-none focus:ring"
+		dir="auto"
 		{id}
 		bind:value
 		name={label}
