@@ -79,7 +79,7 @@
     "usage": "Usage",
     "about_usage_label": "There are two different kinds of ways to start chatting",
     "about_usage_global_chat": "Global chat",
-    "about_usage_global_description": "Global and main chat room.",
+    "about_usage_global_chat_description": "Global and main chat room.",
     "about_usage_chat_room": "Chat room",
     "about_usage_chat_room_description": "Unique chat room that sends and displays message created in that chat room.",
     "need_account": "Do I need an account?",
