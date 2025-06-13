@@ -9,10 +9,17 @@
 	import Toasts from '$lib/components/Toasts.svelte';
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
 	import { confirmModal } from '$lib/stores/confirm';
+	import { locale, localeMap, updateLocale } from '$lib/stores/localization';
 
 	const { children } = $props();
 
 	onMount(() => {
+		const currentLocale = localStorage.getItem('locale');
+		if (currentLocale) locale.set(currentLocale);
+		else {
+			const navLocale = navigator.language.slice(0, 2);
+			if (Object.keys(localeMap).includes(navLocale)) updateLocale(navLocale);
+		}
 		const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
 			const pathname = page.url.pathname;
 			if (!firebaseUser && pathname === '/profile') goto('/');

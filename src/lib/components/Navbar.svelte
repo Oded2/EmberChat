@@ -5,7 +5,7 @@
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
 	import NavDropdown from './NavDropdown.svelte';
-	import { locale, localeMap, t } from '$lib/stores/localization';
+	import { locale, localeMap, t, updateLocale } from '$lib/stores/localization';
 
 	onMount(() => themeChange(false));
 
@@ -69,7 +69,7 @@
 	<li>
 		<NavDropdown label={$t('language')}>
 			{#each locales as map}
-				<li><button onclick={() => locale.set(map[0])}>{map[1].label}</button></li>
+				<li><button onclick={() => updateLocale(map[0])}>{map[1].label}</button></li>
 			{/each}
 		</NavDropdown>
 	</li>
