@@ -160,7 +160,7 @@
 						<Autolink text={message.text}></Autolink>
 					</span>
 				</div>
-				<Dropdown label="Options">
+				<Dropdown>
 					<CopyButton text={message.text ?? ''}></CopyButton>
 					{#if message.owner === $user.user?.uid}
 						<DropdownItem

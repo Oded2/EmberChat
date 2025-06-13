@@ -2,11 +2,10 @@
 	import type { Snippet } from 'svelte';
 
 	interface Props {
-		label: string;
 		children: Snippet;
 	}
 
-	const { label, children }: Props = $props();
+	const { children }: Props = $props();
 	const uniqueId = $props.id();
 </script>
 
@@ -14,7 +13,7 @@
 	class="btn btn-xs btn-ghost"
 	popovertarget={`popover-${uniqueId}`}
 	style={`anchor-name:--anchor-${uniqueId}`}
-	aria-label={label}
+	aria-label="Dropdown"
 >
 	<i class="fa-solid fa-ellipsis"></i>
 </button>
