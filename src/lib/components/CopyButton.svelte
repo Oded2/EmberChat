@@ -11,7 +11,7 @@
 	const { text }: Props = $props();
 	const timeoutDuration = 1500;
 
-	let reactiveTip: string = $state($t('copy_to_clipboard'));
+	let reactiveTip: string = $derived($t('copy_to_clipboard'));
 	let timeout: NodeJS.Timeout | null = null;
 
 	async function copy() {
