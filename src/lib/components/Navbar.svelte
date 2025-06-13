@@ -34,8 +34,8 @@
 				{/each}
 			</ul>
 		</div>
-		<a href="/" class="btn btn-ghost btn-lg" aria-label="Home"
-			><i class="fa-solid fa-fire-flame-curved"></i>
+		<a href="/" class="btn btn-ghost btn-lg" aria-label="Home">
+			<i class="fa-solid fa-fire-flame-curved"></i>
 		</a>
 	</div>
 	<div class="navbar-center hidden sm:flex">
