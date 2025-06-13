@@ -60,9 +60,7 @@
 				>
 					<i class="fa-solid fa-dice"></i>
 				</button>
-				<button type="submit" class="btn btn-primary btn-lg w-full sm:w-auto">
-					<i class="fa-solid fa-circle-right"></i> Go
-				</button>
+				<button type="submit" class="btn btn-primary btn-lg w-full sm:w-auto">Go</button>
 			</LabelInputForm>
 		</div>
 		<span class="text-sm font-light italic before:me-0.5 before:content-['*']">
