@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { addToast } from '$lib/stores/toasts';
-	import type { MouseEventHandler } from 'svelte/elements';
-	import DropdownButton from './DropdownButton.svelte';
+	import DropdownItem from './DropdownItem.svelte';
 
 	interface Props {
 		text: string;
@@ -36,6 +35,6 @@
 	}
 </script>
 
-<DropdownButton onclick={copy}>
+<DropdownItem onclick={copy}>
 	{reactiveTip}
-</DropdownButton>
+</DropdownItem>

@@ -26,7 +26,7 @@
 	import { adjectives, nouns } from '$lib/words/words';
 	import { showModal } from '$lib/stores/confirm';
 	import Dropdown from './Dropdown.svelte';
-	import DropdownButton from './DropdownButton.svelte';
+	import DropdownItem from './DropdownItem.svelte';
 	import { addToast } from '$lib/stores/toasts';
 
 	interface Props {
@@ -163,7 +163,7 @@
 				<Dropdown label="Options">
 					<CopyButton text={message.text ?? ''}></CopyButton>
 					{#if message.owner === $user.user?.uid}
-						<DropdownButton
+						<DropdownItem
 							onclick={() =>
 								showModal(
 									() => deleteMessage(message.id),
@@ -171,9 +171,9 @@
 								)}
 						>
 							Delete Message
-						</DropdownButton>
+						</DropdownItem>
 					{:else if message.text}
-						<DropdownButton
+						<DropdownItem
 							onclick={() =>
 								showModal(
 									() => handleReport(message),
@@ -181,7 +181,7 @@
 								)}
 						>
 							Report Message
-						</DropdownButton>
+						</DropdownItem>
 					{/if}
 				</Dropdown>
 			</div>
