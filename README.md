@@ -1,6 +1,6 @@
-# JustChat
+# EmberChat
 
-JustChat is a minimal, zero-complexity chat application built with [SvelteKit](https://kit.svelte.dev/), [Firebase](https://firebase.google.com/), [Tailwind CSS](https://tailwindcss.com/), and [DaisyUI](https://daisyui.com/). It features authentication, real-time global chat, and user profile management.
+EmberChat is a minimal, zero-complexity chat application built with [SvelteKit](https://kit.svelte.dev/), [Firebase](https://firebase.google.com/), [Tailwind CSS](https://tailwindcss.com/), and [DaisyUI](https://daisyui.com/). It features authentication, real-time global chat, and user profile management.
 
 ## Features
 
@@ -22,8 +22,8 @@ JustChat is a minimal, zero-complexity chat application built with [SvelteKit](h
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/yourusername/justchat.git
-   cd justchat
+   git clone https://github.com/Oded2/emberchat.git
+   cd emberchat
    ```
 
 2. **Install dependencies:**

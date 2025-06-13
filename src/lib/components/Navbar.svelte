@@ -34,7 +34,9 @@
 				{/each}
 			</ul>
 		</div>
-		<a href="/" class="btn btn-ghost text-xl">JustChat</a>
+		<a href="/" class="btn btn-ghost btn-lg" aria-label="Home"
+			><i class="fa-solid fa-fire-flame-curved"></i>
+		</a>
 	</div>
 	<div class="navbar-center hidden sm:flex">
 		<ul class="menu menu-horizontal px-1">

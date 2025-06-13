@@ -34,7 +34,7 @@
 	<div class="flex grow flex-col gap-4">
 		<h1 class="text-6xl font-bold md:text-8xl">Zero complexity, just chat.</h1>
 		<p class="text-lg font-light">
-			JustChat lets you connect instantly with others in real time. Join the global chat or create
+			EmberChat lets you connect instantly with others in real time. Join the global chat or create
 			your own private room &mdash; no hassle, just conversation. Enjoy a smooth, modern interface
 			that works seamlessly on any device.
 		</p>
@@ -78,4 +78,4 @@
 	</div>
 </div>
 
-<Title title="JustChat"></Title>
+<Title title="Home"></Title>

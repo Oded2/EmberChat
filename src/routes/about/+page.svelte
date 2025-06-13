@@ -5,7 +5,7 @@
 </script>
 
 <div class="my-10 flex flex-col gap-20">
-	<h1 class="text-center text-3xl font-bold underline underline-offset-5">About JustChat</h1>
+	<h1 class="text-center text-3xl font-bold underline underline-offset-5">About EmberChat</h1>
 	<div class="flex flex-wrap justify-center gap-4">
 		<AboutCard title="Mission">
 			<span>Create a simple, minimalistic way to chat within a group of people. </span>
@@ -37,11 +37,11 @@
 			</ul>
 		</AboutCard>
 		<AboutCard title="Are chats private?">
-			<span>No. Every single message is available to everyone using JustChat.</span>
+			<span>No. Every single message is available to everyone using EmberChat.</span>
 		</AboutCard>
 		<AboutCard title="Development">
 			<span>
-				JustChat is open source and available on <a href={PUBLIC_REPO_URL} class="link">GitHub</a>.
+				EmberChat is open source and available on <a href={PUBLIC_REPO_URL} class="link">GitHub</a>.
 			</span>
 			<br />
 			<span class="after:content-[':']">Technologies used</span>
