@@ -2,11 +2,11 @@
 	import { authHandlers } from '$lib/firebase/firebase';
 	import { addParams } from '$lib/helpers';
 	import { user } from '$lib/stores/user';
+	import { onMount } from 'svelte';
+	import { themeChange } from 'theme-change';
+	import NavDropdown from './NavDropdown.svelte';
 
-	const items: { label: string; href: string }[] = [
-		{ label: 'Contact', href: '/contact' },
-		{ label: 'About', href: '/about' }
-	];
+	onMount(() => themeChange(false));
 </script>
 
 <div class="navbar bg-base-100 sticky top-0 z-10 shadow-sm">
@@ -29,9 +29,7 @@
 				</svg>
 			</div>
 			<ul class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-				{#each items as item}
-					<li><a href={item.href}>{item.label}</a></li>
-				{/each}
+				{@render Items()}
 			</ul>
 		</div>
 		<a href="/" class="btn btn-ghost btn-lg" aria-label="Home">
@@ -40,9 +38,7 @@
 	</div>
 	<div class="navbar-center hidden sm:flex">
 		<ul class="menu menu-horizontal px-1">
-			{#each items as item}
-				<li><a href={item.href}>{item.label}</a></li>
-			{/each}
+			{@render Items()}
 		</ul>
 	</div>
 	<div class="navbar-end gap-2">
@@ -56,3 +52,14 @@
 		{/if}
 	</div>
 </div>
+
+{#snippet Items()}
+	<li><a href="/contact">Contact</a></li>
+	<li><a href="/about">About</a></li>
+	<li>
+		<NavDropdown label="Theme">
+			<li><button data-set-theme="nav">Nav</button></li>
+			<li><button data-set-theme="ember">Ember</button></li>
+		</NavDropdown>
+	</li>
+{/snippet}

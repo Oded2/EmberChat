@@ -4,7 +4,7 @@
 @plugin "daisyui/theme" {
 	name: 'ember';
 	default: false;
-	prefersdark: true;
+	prefersdark: false;
 	color-scheme: 'dark';
 	--color-base-100: oklch(23% 0.02 260.031);
 	--color-base-200: oklch(18% 0.02 265.755);
@@ -37,9 +37,9 @@
 }
 @plugin "daisyui/theme" {
 	name: 'nav';
-	default: false;
+	default: true;
 	prefersdark: false;
-	color-scheme: 'light';
+	color-scheme: 'dark';
 	--color-base-100: oklch(27% 0.041 260.031);
 	--color-base-200: oklch(20% 0.042 265.755);
 	--color-base-300: oklch(17% 0.042 264.695);

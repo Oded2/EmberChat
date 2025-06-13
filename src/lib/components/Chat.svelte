@@ -28,6 +28,7 @@
 	import Dropdown from './Dropdown.svelte';
 	import DropdownItem from './DropdownItem.svelte';
 	import { addToast } from '$lib/stores/toasts';
+	import DropdownButton from './DropdownButton.svelte';
 
 	interface Props {
 		chatId: string;
@@ -160,7 +161,10 @@
 						<Autolink text={message.text}></Autolink>
 					</span>
 				</div>
-				<Dropdown>
+				<DropdownButton id={message.id} className="btn btn-ghost btn-xs">
+					<i class="fa-solid fa-ellipsis"></i>
+				</DropdownButton>
+				<Dropdown id={message.id}>
 					<CopyButton text={message.text ?? ''}></CopyButton>
 					{#if message.owner === $user.user?.uid}
 						<DropdownItem
