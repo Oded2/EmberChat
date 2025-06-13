@@ -5,6 +5,7 @@
 	import { db } from '$lib/firebase/firebase';
 	import { firebaseAuthErrorTypeGaurd } from '$lib/helpers';
 	import { showModal } from '$lib/stores/confirm';
+	import { t } from '$lib/stores/localization';
 	import { addToast } from '$lib/stores/toasts';
 	import { updateUser, user } from '$lib/stores/user';
 	import {
@@ -19,8 +20,6 @@
 	import { get } from 'svelte/store';
 
 	const userData = $derived($user.user);
-
-	const verifyDisclaimer = 'You must verify your account first';
 
 	let email = $state('');
 	let displayName = $state('');
@@ -55,21 +54,23 @@
 			await updatePassword(currentUser, newPassword);
 			isUpdate = true;
 		}
-		if (isUpdate) addToast('success', 'Profile updated');
+		if (isUpdate) addToast('success', get(t)('profile_updated'));
 	}
 
 	async function handleReauthentication() {
 		const currentUser = get(user).user;
 		if (!reAuthenticatePassword || !currentUser?.email) return;
+		const translations = get(t);
 		const credential = EmailAuthProvider.credential(currentUser.email, reAuthenticatePassword);
 		try {
 			await reauthenticateWithCredential(currentUser, credential);
 			isReauthenticated = true;
-			addToast('success', 'Account successfully verified');
+			addToast('success', translations('account_verified'));
 		} catch (err) {
 			console.error(err);
 			if (firebaseAuthErrorTypeGaurd(err)) {
-				if (err.code === 'auth/wrong-password') addToast('error', 'Incorrect password');
+				if (err.code === 'auth/wrong-password')
+					addToast('error', translations('incorrect_password'));
 				else addToast('error', `${err.code}: ${err.message}`);
 			}
 		}
@@ -93,75 +94,87 @@
 		if (interactive)
 			addToast(
 				'success',
-				`Deleted ${deletePromises.length} messages for user ${currentUser?.email}`
+				get(t)('purge_messages_success')
+					.replace('%NUMBER%', deletePromises.length.toLocaleString())
+					.replace('%EMAIL%', currentUser?.email ?? '')
 			);
 	}
 </script>
 
 {#if userData}
-	<h1 class="my-10 text-center text-3xl font-bold">{`Hello, ${userData.displayName}`}</h1>
+	<h1 class="my-10 text-center text-3xl font-bold">
+		{$t('personal_greeting').replace('%NAME%', userData.displayName ?? '')}
+	</h1>
 	<div class="flex flex-wrap justify-center gap-4 pb-10">
-		<Fieldset title="User Settings" btnText="Update Profile" handleSubmit={handleUpdateUser}>
+		<Fieldset
+			title={$t('user_settings')}
+			btnText={$t('update_profile')}
+			handleSubmit={handleUpdateUser}
+		>
 			<FieldsetInput
 				type="email"
-				label="Email"
+				label={$t('email')}
 				bind:value={email}
 				required
 				disabled={!isReauthenticated}
-				disabledDisclaimer={verifyDisclaimer}
+				disabledDisclaimer={$t('verify_disclaimer')}
 			></FieldsetInput>
-			<FieldsetInput label="Display name" bind:value={displayName} required></FieldsetInput>
+			<FieldsetInput label={$t('display_name')} bind:value={displayName} required></FieldsetInput>
 			<FieldsetInput
 				type="password"
-				label="New password"
+				label={$t('new_password')}
 				bind:value={newPassword}
 				disabled={!isReauthenticated}
-				disabledDisclaimer={verifyDisclaimer}
+				disabledDisclaimer={$t('verify_disclaimer')}
 			></FieldsetInput>
 			{#if !userData.emailVerified}
 				<span class="text-warning">
-					{`Your email is unverified. Check your inbox at ${userData.email} for a verification email. If you don't see an email click the button below to send one.`}
+					{$t('email_unverified')}
 				</span>
 				<button
 					type="button"
 					class="btn btn-primary btn-sm btn-outline"
 					onclick={() => {
 						sendEmailVerification(userData);
-						addToast('success', `A verification email has been sent to ${userData.email}`);
+						addToast('success', get(t)('verification_email_sent')).replace(
+							'%EMAIL%',
+							userData.email ?? ''
+						);
 					}}
 				>
-					Send verification email
+					{$t('send_verification_email')}
 				</button>
 			{/if}
 		</Fieldset>
-		<Fieldset title="Danger Zone">
+		<Fieldset title={$t('danger_zone')}>
 			<button
 				type="button"
 				class="btn btn-error"
-				onclick={() =>
-					showModal(
-						deleteUserMessages,
-						'This action will delete all of your messages. Are you sure you want to continue?'
-					)}>Purge messages</button
+				onclick={() => showModal(deleteUserMessages, get(t)('confirm_purge_messages'))}
 			>
+				{$t('purge_messages')}
+			</button>
 			<button
 				type="button"
 				disabled={!isReauthenticated}
 				class="btn btn-error mt-2"
-				onclick={() =>
-					showModal(deleteUser, 'This action is irreversible. Are you sure you want to continue?')}
+				onclick={() => showModal(deleteUser, get(t)('confirm_delete_account'))}
 			>
-				Delete Account
+				{$t('delete_account')}
 			</button>
 			{#if !isReauthenticated}
-				<span>{verifyDisclaimer}</span>
+				<span>{$t('verify_disclaimer')}</span>
 			{/if}
 		</Fieldset>
-		<Fieldset title="Verify Account" btnText="Authenticate" handleSubmit={handleReauthentication}>
-			<FieldsetInput type="password" label="Password" bind:value={reAuthenticatePassword}
+		<Fieldset
+			title={$t('verify_account')}
+			btnText={$t('authenticate')}
+			handleSubmit={handleReauthentication}
+		>
+			<FieldsetInput type="password" label={$t('password')} bind:value={reAuthenticatePassword}
 			></FieldsetInput>
 		</Fieldset>
 	</div>
 {/if}
 
-<Title title="Profile"></Title>
+<Title title={$t('profile')}></Title>
