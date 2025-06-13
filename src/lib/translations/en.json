@@ -89,7 +89,7 @@
     "chats_private": "Are chats private?",
     "about_chats_private": "No. Every single message is available to everyone using EmberChat.",
     "development": "Development",
-    "about_development_label": "EmberChat is open source and available on <a class=\"link\" href=\"%REPO_URL%\" target=\"blank\">GitHub</a>.<br/>Technologies used",
+    "about_development_label": "EmberChat is open source and available on <a class=\"link\" href=\"%REPO_URL%\">GitHub</a>.<br/>Technologies used",
     "about_development_sveltekit": "SvelteKit",
     "about_development_sveltekit_description": "Web framework",
     "about_development_ui": "TailwindCSS & DaisyUI",

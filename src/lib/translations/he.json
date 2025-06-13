@@ -89,7 +89,7 @@
     "chats_private": "האם השיחות פרטיות?",
     "about_chats_private": "לא. כל הודעה זמינה לכל מי שמשתמש באמברצ'אט.",
     "development": "פיתוח",
-    "about_development_label": "אמברצ'אט הוא קוד פתוח וזמין ב-<a class=\"link\" href=\"%REPO_URL%\" target=\"blank\">GitHub</a>.<br/>טכנולוגיות בשימוש",
+    "about_development_label": "אמברצ'אט הוא קוד פתוח וזמין ב-<a class=\"link\" href=\"%REPO_URL%\">GitHub</a>.<br/>טכנולוגיות בשימוש",
     "about_development_sveltekit": "SvelteKit",
     "about_development_sveltekit_description": "מסגרת לפיתוח אתרים",
     "about_development_ui": "TailwindCSS ו-DaisyUI",
