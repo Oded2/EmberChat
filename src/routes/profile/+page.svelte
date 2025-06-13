@@ -24,6 +24,7 @@
 	let email = $state('');
 	let displayName = $state('');
 	let newPassword = $state('');
+	let confirmNewPassword = $state('');
 	let reAuthenticatePassword = $state('');
 	let isReauthenticated = $state(false);
 
@@ -34,6 +35,7 @@
 	});
 
 	async function handleUpdateUser() {
+		const translations = get(t);
 		const currentUser = get(user).user;
 		if (!currentUser) return;
 		let isUpdate = false;
@@ -51,6 +53,10 @@
 			isUpdate = true;
 		}
 		if (newPassword) {
+			if (newPassword !== confirmNewPassword) {
+				addToast('error', translations('password_mismatch'));
+				return;
+			}
 			await updatePassword(currentUser, newPassword);
 			isUpdate = true;
 		}
@@ -124,6 +130,13 @@
 				type="password"
 				label={$t('new_password')}
 				bind:value={newPassword}
+				disabled={!isReauthenticated}
+				disabledDisclaimer={$t('verify_disclaimer')}
+			></FieldsetInput>
+			<FieldsetInput
+				type="password"
+				label={$t('confirm_new_password')}
+				bind:value={confirmNewPassword}
 				disabled={!isReauthenticated}
 				disabledDisclaimer={$t('verify_disclaimer')}
 			></FieldsetInput>
