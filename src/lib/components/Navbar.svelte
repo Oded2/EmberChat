@@ -64,6 +64,7 @@
 		<NavDropdown label={$t('theme')}>
 			<li><button data-set-theme="nav">{$t('theme_nav')}</button></li>
 			<li><button data-set-theme="ember">{$t('theme_ember')}</button></li>
+			<li><button data-set-theme="winter">{$t('theme_winter')}</button></li>
 		</NavDropdown>
 	</li>
 	<li>

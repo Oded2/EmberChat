@@ -1,6 +1,8 @@
 @import 'tailwindcss';
 @import '@fortawesome/fontawesome-free/css/all.min.css';
-@plugin "daisyui";
+@plugin "daisyui" {
+	themes: winter, cyberpunk;
+}
 @plugin "daisyui/theme" {
 	name: 'ember';
 	default: false;
