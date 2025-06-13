@@ -2,54 +2,69 @@
 	import { PUBLIC_REPO_URL } from '$env/static/public';
 	import AboutCard from '$lib/components/AboutCard.svelte';
 	import Title from '$lib/components/Title.svelte';
+	import { t } from '$lib/stores/localization';
 </script>
 
 <div class="my-10 flex flex-col gap-20">
-	<h1 class="text-center text-3xl font-bold underline underline-offset-5">About EmberChat</h1>
+	<h1 class="text-center text-3xl font-bold underline underline-offset-5">
+		{$t('about_emberchat')}
+	</h1>
 	<div class="flex flex-wrap justify-center gap-4">
-		<AboutCard title="Mission">
-			<span>Create a simple, minimalistic way to chat within a group of people. </span>
+		<AboutCard title={$t('mission')}>
+			<span>{$t('about_mission')}</span>
 		</AboutCard>
-		<AboutCard title="How it works">
-			<span>Simply enter the global chat room or enter a room code.</span>
+		<AboutCard title={$t('how_it_works')}>
+			<span>{$t('about_how_it_works')}</span>
 		</AboutCard>
-		<AboutCard title="Usage">
+		<AboutCard title={$t('usage')}>
 			<span class="after:content-[':']">
-				There are two different kinds of ways to start chatting
+				{$t('about_usage_label')}
 			</span>
 
 			<ul class="list-inside list-disc">
-				<li><span>Global chat</span>Global and main chat room.</li>
 				<li>
-					<span>Chat room</span>Unique chat room that sends and displays message created in that
-					chat room.
+					<span>{$t('about_usage_global_chat')}</span>{$t('about_usage_global_chat_description')}
+				</li>
+				<li>
+					<span>{$t('about_usage_chat_room')}</span>{$t('about_usage_chat_room_description')}
 				</li>
 			</ul>
 		</AboutCard>
-		<AboutCard title="Do I need an account?">
+		<AboutCard title={$t('need_account')}>
 			<span class="after:content-[':']">
-				No. An account is not required in order to chat, however there are benefits to creating an
-				account. Creating an account provides benefits, such as
+				{$t('about_need_account_label')}
 			</span>
 			<ul class="list-inside list-disc">
-				<li>Custom display name</li>
-				<li>Ability to delete messages</li>
+				<li>{$t('about_need_account_1')}</li>
+				<li>{$t('about_need_account_2')}</li>
 			</ul>
 		</AboutCard>
-		<AboutCard title="Are chats private?">
-			<span>No. Every single message is available to everyone using EmberChat.</span>
+		<AboutCard title={$t('chats_private')}>
+			<span>{$t('about_chats_private')}</span>
 		</AboutCard>
-		<AboutCard title="Development">
-			<span>
-				EmberChat is open source and available on <a href={PUBLIC_REPO_URL} class="link">GitHub</a>.
+		<AboutCard title={$t('development')}>
+			<span class="after:content-[':']">
+				{@html $t('about_development_label').replace('%REPO_URL%', PUBLIC_REPO_URL)}
 			</span>
-			<br />
-			<span class="after:content-[':']">Technologies used</span>
 			<ul class="list-inside list-disc">
-				<li><span>SvelteKit</span>Web framework</li>
-				<li><span>TailwindCSS &amp; DaisyUI</span>User interface</li>
-				<li><span>Font Awesome</span>Icons</li>
-				<li><span>Firebase</span>Database &amp; authentication</li>
+				<li>
+					<span>{$t('about_development_sveltekit')}</span>{$t(
+						'about_development_sveltekit_description'
+					)}
+				</li>
+				<li>
+					<span>{$t('about_development_ui')}</span>{$t('about_development_ui_description')}
+				</li>
+				<li>
+					<span>{$t('about_development_font_awesome')}</span>{$t(
+						'about_development_font_awesome_description'
+					)}
+				</li>
+				<li>
+					<span>{$t('about_development_firebase')}</span>{$t(
+						'about_development_firebase_description'
+					)}
+				</li>
 			</ul>
 		</AboutCard>
 	</div>

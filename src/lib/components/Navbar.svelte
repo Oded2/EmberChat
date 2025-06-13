@@ -5,8 +5,11 @@
 	import { onMount } from 'svelte';
 	import { themeChange } from 'theme-change';
 	import NavDropdown from './NavDropdown.svelte';
+	import { locale, localeMap, t } from '$lib/stores/localization';
 
 	onMount(() => themeChange(false));
+
+	const locales = Object.entries(localeMap);
 </script>
 
 <div class="navbar bg-base-100 sticky top-0 z-10 shadow-sm">
@@ -43,23 +46,31 @@
 	</div>
 	<div class="navbar-end gap-2">
 		{#if $user.user}
-			<a href="/profile" class="btn btn-primary btn-outline">Profile</a>
-			<button onclick={authHandlers.signout} class="btn btn-primary">Logout</button>
+			<a href="/profile" class="btn btn-primary btn-outline">{$t('profile')}</a>
+			<button onclick={authHandlers.signout} class="btn btn-primary">{$t('logout')}</button>
 		{:else}
-			<a href={addParams('/auth', { action: 'login' })} class="btn btn-primary btn-outline">Login</a
+			<a href={addParams('/auth', { action: 'login' })} class="btn btn-primary btn-outline"
+				>{$t('login')}</a
 			>
-			<a href="/auth" class="btn btn-primary">Sign Up</a>
+			<a href="/auth" class="btn btn-primary">{$t('sign_up')}</a>
 		{/if}
 	</div>
 </div>
 
 {#snippet Items()}
-	<li><a href="/contact">Contact</a></li>
-	<li><a href="/about">About</a></li>
+	<li><a href="/contact">{$t('contact')}</a></li>
+	<li><a href="/about">{$t('about')}</a></li>
 	<li>
 		<NavDropdown label="Theme">
 			<li><button data-set-theme="nav">Nav</button></li>
 			<li><button data-set-theme="ember">Ember</button></li>
+		</NavDropdown>
+	</li>
+	<li>
+		<NavDropdown label="Lanuage">
+			{#each locales as map}
+				<li><button onclick={() => locale.set(map[0])}>{map[1].label}</button></li>
+			{/each}
 		</NavDropdown>
 	</li>
 {/snippet}

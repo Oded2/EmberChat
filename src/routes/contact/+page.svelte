@@ -4,6 +4,7 @@
 	import FieldsetTextarea from '$lib/components/FieldsetTextarea.svelte';
 	import Title from '$lib/components/Title.svelte';
 	import { sendForm } from '$lib/helpers';
+	import { t } from '$lib/stores/localization';
 	import { addToast } from '$lib/stores/toasts';
 	import { user } from '$lib/stores/user';
 
@@ -22,12 +23,12 @@
 
 <div class="my-10">
 	<div class="flex justify-center">
-		<Fieldset title="Contact" btnText="Send" {handleSubmit}>
-			<FieldsetInput type="email" label="Email" required bind:value={email}></FieldsetInput>
-			<FieldsetInput label="Name" required bind:value={name}></FieldsetInput>
-			<FieldsetTextarea label="Message" required bind:value={message}></FieldsetTextarea>
+		<Fieldset title={$t('contact')} btnText={$t('send')} {handleSubmit}>
+			<FieldsetInput type="email" label={$t('email')} required bind:value={email}></FieldsetInput>
+			<FieldsetInput label={$t('name')} required bind:value={name}></FieldsetInput>
+			<FieldsetTextarea label={$t('message')} required bind:value={message}></FieldsetTextarea>
 		</Fieldset>
 	</div>
 </div>
 
-<Title title="Contact"></Title>
+<Title title={$t('contact')}></Title>

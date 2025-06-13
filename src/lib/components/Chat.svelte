@@ -29,6 +29,7 @@
 	import DropdownItem from './DropdownItem.svelte';
 	import { addToast } from '$lib/stores/toasts';
 	import DropdownButton from './DropdownButton.svelte';
+	import { t } from '$lib/stores/localization';
 
 	interface Props {
 		chatId: string;
@@ -171,20 +172,22 @@
 							onclick={() =>
 								showModal(
 									() => deleteMessage(message.id),
-									`Are you sure you want to delete the following message?\n\n"${message.text}"`
+									get(t)('confirm_message_delete').replace('%TEXT%', message.text ?? '')
 								)}
 						>
-							Delete Message
+							{$t('delete_message')}
 						</DropdownItem>
 					{:else if message.text}
 						<DropdownItem
 							onclick={() =>
 								showModal(
 									() => handleReport(message),
-									`Are you sure you want to report the following message?\n\n"${message.text}"\n\nSender: ${message.senderName}`
+									get(t)('confirm_message_report')
+										.replace('%TEXT%', message.text ?? '')
+										.replace('%SENDER%', message.senderName ?? '')
 								)}
 						>
-							Report Message
+							{$t('report_message')}
 						</DropdownItem>
 					{/if}
 				</Dropdown>
@@ -193,19 +196,21 @@
 	</div>
 	<div class="bg-base-200 sticky bottom-0 flex flex-col gap-2 py-4">
 		<LabelInputForm handleSubmit={sendMessage}>
-			<LabelTextarea bind:value={newMessage} label="Enter a message">
+			<LabelTextarea bind:value={newMessage} label={$t('enter_message')}>
 				<div class="flex ps-4">
 					{#if !$user.loading && !$user.user}
-						<span class="mt-auto text-xs font-light italic">{`You're chatting as ${anonId}`}</span>
+						<span class="mt-auto text-xs font-light italic"
+							>{$t('anon_chat').replace('%ANON%', anonId)}</span
+						>
 					{/if}
-					<button type="submit" class="btn btn-primary btn-circle ms-auto" aria-label="Send">
+					<button type="submit" class="btn btn-primary btn-circle ms-auto" aria-label={$t('send')}>
 						<i class="fa-solid fa-arrow-up"></i>
 					</button>
 				</div>
 			</LabelTextarea>
 		</LabelInputForm>
 		{#if chatId !== globalRoomCode}
-			<span class="text-center text-sm italic">{`Chat ID: ${chatId}`}</span>
+			<span class="text-center text-sm italic">{$t('chat_id').replace('%ID%', chatId)}</span>
 		{/if}
 	</div>
 </div>
