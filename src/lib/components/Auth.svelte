@@ -102,7 +102,7 @@
 			onclick={() => (signUp = !signUp)}
 			class="mt-2 cursor-pointer font-extralight underline"
 		>
-			{signUp ? $t('swtich_login') : $t('switch_signup')}
+			{signUp ? $t('switch_login') : $t('switch_signup')}
 		</button>
 	</Fieldset>
 </div>
