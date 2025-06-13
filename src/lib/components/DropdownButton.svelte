@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { t } from '$lib/stores/localization';
 	import type { Snippet } from 'svelte';
 
 	interface Props {
@@ -15,7 +16,7 @@
 	class={className}
 	popovertarget={`popover-${id}`}
 	style={`anchor-name:--anchor-${id}`}
-	aria-label="Dropdown"
+	aria-label={$t('dropdown')}
 >
 	{@render children()}
 </button>

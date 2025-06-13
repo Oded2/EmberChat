@@ -215,4 +215,6 @@
 	</div>
 </div>
 
-<Title title={chatId === globalRoomCode ? 'Global Chat' : `Chat - ${chatId}`}></Title>
+<Title
+	title={chatId === globalRoomCode ? $t('global_chat') : $t('chat_room').replace('%CODE%', chatId)}
+></Title>

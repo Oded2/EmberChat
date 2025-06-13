@@ -61,13 +61,13 @@
 	<li><a href="/contact">{$t('contact')}</a></li>
 	<li><a href="/about">{$t('about')}</a></li>
 	<li>
-		<NavDropdown label="Theme">
-			<li><button data-set-theme="nav">Nav</button></li>
-			<li><button data-set-theme="ember">Ember</button></li>
+		<NavDropdown label={$t('theme')}>
+			<li><button data-set-theme="nav">{$t('theme_nav')}</button></li>
+			<li><button data-set-theme="ember">{$t('theme_ember')}</button></li>
 		</NavDropdown>
 	</li>
 	<li>
-		<NavDropdown label="Language">
+		<NavDropdown label={$t('language')}>
 			{#each locales as map}
 				<li><button onclick={() => locale.set(map[0])}>{map[1].label}</button></li>
 			{/each}

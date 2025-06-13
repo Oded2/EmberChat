@@ -5,6 +5,8 @@
 	import { firebaseAuthErrorTypeGaurd } from '$lib/helpers';
 	import Title from './Title.svelte';
 	import { addToast } from '$lib/stores/toasts';
+	import { get } from 'svelte/store';
+	import { t } from '$lib/stores/localization';
 
 	interface Props {
 		initialSignUp?: boolean;
@@ -18,15 +20,18 @@
 	let password = $state('');
 	let confirmPass = $state('');
 
+	const title = $derived(signUp ? $t('sign_up') : $t('login'));
+
 	$effect(() => {
 		signUp = initialSignUp;
 	});
 
 	async function handleAuthenticate() {
+		const translations = get(t);
 		try {
 			if (signUp) {
 				if (password != confirmPass) {
-					addToast('error', 'Password does not match confirm password');
+					addToast('error', translations('password_mismatch'));
 					return;
 				}
 				await authHandlers.signup(email, password, displayName);
@@ -36,61 +41,60 @@
 			if (firebaseAuthErrorTypeGaurd(err)) {
 				switch (err.code) {
 					case 'auth/invalid-credential':
-						addToast('error', 'Incorrect password. Please try again.');
+						addToast('error', translations('invalid_credentials'));
 						break;
 					case 'auth/user-not-found':
-						addToast('error', 'No account found with this email.');
+						addToast('error', translations('user_not_found'));
 						break;
 					case 'auth/email-already-in-use':
-						addToast('error', 'Email is already registered.');
+						addToast('error', translations('email_already_in_use'));
 						break;
 					case 'auth/invalid-email':
-						addToast('error', 'Invalid email format.');
-						break;
-					case 'auth/weak-password':
-						addToast('error', 'Password is too weak.');
+						addToast('error', translations('invalid_email'));
 						break;
 					default:
-						addToast('error', 'Authentication error: ' + err.message);
+						addToast('error', err.message);
 				}
 			} else {
-				addToast('error', 'An unexpected error occurred.');
+				addToast('error', translations('unexpected_error'));
 			}
 		}
 	}
 
 	async function handlePasswordReset() {
+		const translations = get(t);
 		if (!email) {
-			addToast('error', 'Please enter your email to reset your password');
+			addToast('error', translations('missing_email_forgot_password'));
 			return;
 		}
 		await authHandlers.forgotPassword(email);
-		addToast('info', `An email has been sent to ${email} with instructions`);
+		addToast('info', translations('success_forgot_password').replace('%EMAIL%', email));
 	}
 </script>
 
 <div class="mx-auto my-10">
-	<Fieldset
-		title={signUp ? 'Sign Up' : 'Login'}
-		btnText={signUp ? 'Sign Up' : 'Login'}
-		handleSubmit={handleAuthenticate}
-	>
-		<FieldsetInput bind:value={email} label="Email" type="email" required></FieldsetInput>
+	<Fieldset {title} btnText={title} handleSubmit={handleAuthenticate}>
+		<FieldsetInput bind:value={email} label={$t('email')} type="email" required></FieldsetInput>
 		{#if signUp}
-			<FieldsetInput bind:value={displayName} label="Display name" required></FieldsetInput>
+			<FieldsetInput bind:value={displayName} label={$t('display_name')} required></FieldsetInput>
 		{/if}
-		<FieldsetInput bind:value={password} label="Password" type="password" required></FieldsetInput>
+		<FieldsetInput bind:value={password} label={$t('password')} type="password" required
+		></FieldsetInput>
 		{#if !signUp}
 			<button
 				type="button"
 				onclick={handlePasswordReset}
 				class="me-auto cursor-pointer font-extralight underline"
 			>
-				Forgot Password?
+				{$t('forgot_password')}
 			</button>
 		{/if}
 		{#if signUp}
-			<FieldsetInput bind:value={confirmPass} label="Confirm Password" type="password" required
+			<FieldsetInput
+				bind:value={confirmPass}
+				label={$t('confirm_password')}
+				type="password"
+				required
 			></FieldsetInput>
 		{/if}
 		<button
@@ -98,9 +102,9 @@
 			onclick={() => (signUp = !signUp)}
 			class="mt-2 cursor-pointer font-extralight underline"
 		>
-			{signUp ? 'Already have an account? Login' : "Don't have an account yet? Sign up"}
+			{signUp ? $t('swtich_login') : $t('switch_signup')}
 		</button>
 	</Fieldset>
 </div>
 
-<Title title={signUp ? 'Sign Up' : 'Login'}></Title>
+<Title {title}></Title>

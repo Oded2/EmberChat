@@ -74,4 +74,4 @@
 	</div>
 </div>
 
-<Title title="Home"></Title>
+<Title title={$t('home')}></Title>
