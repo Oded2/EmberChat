@@ -35,9 +35,9 @@
 	});
 
 	async function handleUpdateUser() {
-		const translations = get(t);
 		const currentUser = get(user).user;
 		if (!currentUser) return;
+		const translations = get(t);
 		let isUpdate = false;
 		displayName = displayName.trim();
 		if (currentUser.displayName !== displayName) {
@@ -67,7 +67,7 @@
 			await updatePassword(currentUser, newPassword);
 			isUpdate = true;
 		}
-		if (isUpdate) addToast('success', get(t)('profile_updated'));
+		if (isUpdate) addToast('success', translations('profile_updated'));
 	}
 
 	async function handleReauthentication() {
