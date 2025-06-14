@@ -64,7 +64,7 @@
     "something_went_wrong": "אופס! משהו השתבש.",
     "unexpected_error": "התבקעה שגיאה בלתי צפויה.",
     "go_back_home": "חזור לדף הבית",
-    "copy_to_clipboard": "העתק ללוח",
+    "copy": "העתק ללוח",
     "copy_success": "הועתק!",
     "copy_error": "שגיאה בהעתקה ללוח",
     "delete": "מחק",

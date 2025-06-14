@@ -34,7 +34,7 @@
 	}
 </script>
 
-<OptionsButton tooltip={success ? $t('copy_success') : $t('copy_to_clipboard')} onclick={copy}>
+<OptionsButton tooltip={success ? $t('copy_success') : $t('copy')} onclick={copy}>
 	{#if success}
 		<i class="fa-solid fa-clipboard-check"></i>
 	{:else}
