@@ -10,7 +10,7 @@
 	const { tooltip, onclick, children }: Props = $props();
 </script>
 
-<div class="tooltip flex max-h-fit" data-tip={tooltip}>
+<div class="pointer-fine:tooltip flex max-h-fit" data-tip={tooltip}>
 	<button class="btn btn-xs" {onclick} aria-label={tooltip}>
 		{@render children()}
 	</button>
