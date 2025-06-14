@@ -179,7 +179,7 @@
 							})}
 						</span>
 					</div>
-					<div class="whitespace-pre-wrap">
+					<div class="whitespace-pre-wrap" dir="auto">
 						<Autolink text={message.text}></Autolink>
 						{#if message.edit}
 							<span class="text-xs font-light">{`(${$t('edited')})`}</span>
