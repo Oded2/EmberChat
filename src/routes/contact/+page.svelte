@@ -7,7 +7,6 @@
 	import { t } from '$lib/stores/localization';
 	import { addToast } from '$lib/stores/toasts';
 	import { user } from '$lib/stores/user';
-	import { get } from 'svelte/store';
 
 	let email = $state($user.user?.email ?? '');
 	let name = $state($user.user?.displayName ?? '');

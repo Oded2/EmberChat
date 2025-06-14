@@ -5,7 +5,6 @@
 	import { firebaseAuthErrorTypeGaurd } from '$lib/helpers';
 	import Title from './Title.svelte';
 	import { addToast } from '$lib/stores/toasts';
-	import { get } from 'svelte/store';
 	import { t } from '$lib/stores/localization';
 
 	interface Props {
