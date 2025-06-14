@@ -100,5 +100,8 @@
     "about_development_firebase": "Firebase",
     "about_development_firebase_description": "Database & authentication",
     "contact_success": "Your message has been sent",
-    "contact_error": "There was an error sending the form"
+    "contact_error": "There was an error sending the form",
+    "or": "OR",
+    "no_symbols": "Room code cannot contain symbols",
+    "reserved_global": "Room code \"%GLOBAL%\" is reserved for the global chat room"
 }

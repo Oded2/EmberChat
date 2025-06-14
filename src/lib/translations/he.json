@@ -100,5 +100,8 @@
     "about_development_firebase": "Firebase",
     "about_development_firebase_description": "בסיס נתונים ואימות משתמשים",
     "contact_success": "ההודעה שלך נשלחה בהצלחה",
-    "contact_error": "אירעה שגיאה בשליחת הטופס"
+    "contact_error": "אירעה שגיאה בשליחת הטופס",
+    "or": "או",
+    "no_symbols": "קוד החדר לא יכול להכיל סימנים",
+    "reserved_global": "קוד החדר \"%GLOBAL%\" שמור עבור חדר הצ'אט הגלובלי"
 }

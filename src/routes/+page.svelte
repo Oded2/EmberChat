@@ -1,26 +1,33 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import DynamicSpinner from '$lib/components/DynamicSpinner.svelte';
 	import LabelInput from '$lib/components/LabelInput.svelte';
 	import LabelInputForm from '$lib/components/LabelInputForm.svelte';
 	import Title from '$lib/components/Title.svelte';
 	import { alphanumericRegex, getRandomInt, globalRoomCode } from '$lib/helpers';
 	import { t } from '$lib/stores/localization';
 	import { addToast } from '$lib/stores/toasts';
+	import { get } from 'svelte/store';
 
 	let roomCode = $state('');
+	let inProgress = $state(false);
 
 	$effect(() => {
 		roomCode = roomCode.trim().toLowerCase();
 	});
 
 	function goToRoom() {
+		if (inProgress) return;
 		roomCode = roomCode.trim();
 		if (!roomCode) return;
-		else if (!alphanumericRegex.test(roomCode))
-			addToast('error', 'Room code cannot contain symbols');
+		const translations = get(t);
+		if (!alphanumericRegex.test(roomCode)) addToast('error', translations('no_symbols'));
 		else if (roomCode === globalRoomCode)
-			addToast('error', `Room code "${globalRoomCode}" is reserved for the global chat room`);
-		else goto(`/chat/${roomCode}`);
+			addToast('error', translations('reserved_global').replace('%GLOBAL%', globalRoomCode));
+		else {
+			inProgress = true;
+			goto(`/chat/${roomCode}`);
+		}
 	}
 
 	function generateRoomCode() {
@@ -39,7 +46,7 @@
 			<i class="fa-solid fa-globe"></i>
 			{$t('enter_global')}
 		</a>
-		<div class="divider">OR</div>
+		<div class="divider"><span class="font-medium">{$t('or')}</span></div>
 		<h4 class="text-2xl font-semibold">{$t('enter_chat_room')}</h4>
 		<div class="sm:me-auto sm:min-w-xl">
 			<LabelInputForm handleSubmit={goToRoom}>
@@ -53,12 +60,14 @@
 				<button
 					type="button"
 					onclick={generateRoomCode}
-					class="btn btn-primary btn-outline btn-lg"
+					class="btn btn-primary btn-outline btn-lg w-16"
 					aria-label="Random"
 				>
 					<i class="fa-solid fa-dice"></i>
 				</button>
-				<button type="submit" class="btn btn-primary btn-lg w-full sm:w-auto">{$t('go')}</button>
+				<button type="submit" class="btn btn-primary btn-lg w-16">
+					<DynamicSpinner text={$t('go')} {inProgress}></DynamicSpinner>
+				</button>
 			</LabelInputForm>
 		</div>
 		<span class="text-sm font-light italic before:me-0.5 before:content-['*']">

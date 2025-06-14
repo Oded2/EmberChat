@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import DynamicSpinner from './DynamicSpinner.svelte';
 
 	interface Props {
 		title?: string;
@@ -30,11 +31,7 @@
 		{@render children()}
 		{#if btnText}
 			<button type="submit" class="btn btn-primary mt-2">
-				{#if inProgress}
-					<span class="loading loading-spinner"></span>
-				{:else}
-					{btnText}
-				{/if}
+				<DynamicSpinner text={btnText} {inProgress}></DynamicSpinner>
 			</button>
 		{/if}
 	</fieldset>
