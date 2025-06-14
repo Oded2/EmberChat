@@ -41,7 +41,7 @@
 		let isUpdate = false;
 		if (currentUser.displayName !== displayName) {
 			await updateProfile(currentUser, {
-				displayName
+				displayName: displayName.trim()
 			});
 			updateUser();
 			isUpdate = true;

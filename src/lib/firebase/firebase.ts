@@ -48,7 +48,7 @@ export const auth = getAuth(firebaseApp);
 export const authHandlers = {
 	signup: async (email: string, password: string, displayName: string) => {
 		const { user } = await createUserWithEmailAndPassword(auth, email, password);
-		updateProfile(user, { displayName });
+		updateProfile(user, { displayName: displayName.trim() });
 		await sendEmailVerification(user);
 	},
 	login: async (email: string, password: string) =>

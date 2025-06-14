@@ -15,7 +15,12 @@
 
 	async function handleSubmit() {
 		const translations = get(t);
-		const ok = await sendForm({ type: 'Message', email, name, message });
+		const ok = await sendForm({
+			type: 'Message',
+			email,
+			name: name.trim(),
+			message: message.trim()
+		});
 		if (ok) {
 			addToast('success', translations('contact_success'));
 			message = '';
