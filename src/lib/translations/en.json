@@ -67,8 +67,9 @@
     "copy_to_clipboard": "Copy to Clipboard",
     "copy_success": "Copied!",
     "copy_error": "Error copying to clipboard",
-    "delete_message": "Delete",
-    "report_message": "Report",
+    "edit": "Edit",
+    "delete": "Delete",
+    "report": "Report",
     "report_success": "Your report has been sent",
     "report_error": "There was an error sending your report",
     "confirm_message_delete": "Are you sure you want to delete the following message?\n\n\"%TEXT%\"",
@@ -104,6 +105,5 @@
     "contact_error": "There was an error sending the form",
     "or": "OR",
     "no_symbols": "Room code cannot contain symbols",
-    "reserved_global": "Room code \"%GLOBAL%\" is reserved for the global chat room",
-    "edit": "Edit"
+    "reserved_global": "Room code \"%GLOBAL%\" is reserved for the global chat room"
 }
