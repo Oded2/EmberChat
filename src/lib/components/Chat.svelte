@@ -25,11 +25,9 @@
 	import LabelTextarea from './LabelTextarea.svelte';
 	import { adjectives, nouns } from '$lib/words/words';
 	import { showModal } from '$lib/stores/confirm';
-	import Dropdown from './Dropdown.svelte';
-	import DropdownItem from './DropdownItem.svelte';
 	import { addToast } from '$lib/stores/toasts';
-	import DropdownButton from './DropdownButton.svelte';
 	import { t } from '$lib/stores/localization';
+	import OptionsButton from './OptionsButton.svelte';
 
 	interface Props {
 		chatId: string;
@@ -81,7 +79,8 @@
 			senderName: currentUser?.displayName ?? anonId,
 			timestamp: serverTimestamp(),
 			owner: currentUser?.uid ?? '',
-			chatId
+			chatId,
+			edit: false
 		});
 		newMessage = '';
 		inProgressChat = false;
@@ -115,6 +114,7 @@
 
 	async function handleReport(m: Message) {
 		if (inProgressReport) return;
+		const translations = get(t);
 		inProgressReport = true;
 		const ok = await sendForm({
 			type: 'Report',
@@ -133,8 +133,8 @@
 			})
 		});
 		inProgressReport = false;
-		if (ok) addToast('success', 'Your report has been sent');
-		else addToast('error', 'There was an error in sending your report');
+		if (ok) addToast('success', translations('report_success'));
+		else addToast('error', translations('report_error'));
 	}
 </script>
 
@@ -144,9 +144,9 @@
 			<div
 				in:fly={{ duration: 200, y: 40 }}
 				animate:flip={{ duration: 200 }}
-				class="bg-base-100 group flex justify-between gap-2 rounded-lg px-4 py-2"
+				class="bg-base-100 group flex gap-2 rounded-lg px-4 py-2"
 			>
-				<div class="flex w-full flex-col">
+				<div class="flex grow flex-col">
 					<div class="flex items-baseline gap-x-1.5">
 						<span class="font-semibold">{message.senderName}</span>
 						<span class="text-xs font-light">
@@ -162,23 +162,21 @@
 						<Autolink text={message.text}></Autolink>
 					</span>
 				</div>
-				<DropdownButton id={message.id} className="btn btn-ghost btn-xs">
-					<i class="fa-solid fa-ellipsis"></i>
-				</DropdownButton>
-				<Dropdown id={message.id}>
+				<div class="invisible flex gap-x-2 group-hover:visible">
 					<CopyButton text={message.text ?? ''}></CopyButton>
 					{#if message.owner === $user.user?.uid}
-						<DropdownItem
+						<OptionsButton
+							tooltip={$t('delete_message')}
 							onclick={() =>
 								showModal(
 									() => deleteMessage(message.id),
 									get(t)('confirm_message_delete').replace('%TEXT%', message.text ?? '')
 								)}
-						>
-							{$t('delete_message')}
-						</DropdownItem>
-					{:else if message.text}
-						<DropdownItem
+							><i class="fa-solid fa-trash-can"></i>
+						</OptionsButton>
+					{:else}
+						<OptionsButton
+							tooltip={$t('report_message')}
 							onclick={() =>
 								showModal(
 									() => handleReport(message),
@@ -187,10 +185,10 @@
 										.replace('%SENDER%', message.senderName ?? '')
 								)}
 						>
-							{$t('report_message')}
-						</DropdownItem>
+							<i class="fa-solid fa-flag"></i>
+						</OptionsButton>
 					{/if}
-				</Dropdown>
+				</div>
 			</div>
 		{/each}
 	</div>

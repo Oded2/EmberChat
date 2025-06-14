@@ -2,7 +2,7 @@
 	import { t } from '$lib/stores/localization';
 	import { addToast } from '$lib/stores/toasts';
 	import { get } from 'svelte/store';
-	import DropdownItem from './DropdownItem.svelte';
+	import OptionsButton from './OptionsButton.svelte';
 
 	interface Props {
 		text: string;
@@ -11,33 +11,33 @@
 	const { text }: Props = $props();
 	const timeoutDuration = 1500;
 
-	let reactiveTip: string = $derived($t('copy_to_clipboard'));
-	let timeout: NodeJS.Timeout | null = null;
+	let success = $state(false);
+	let executed: NodeJS.Timeout | null = null;
 
 	async function copy() {
-		const translations = get(t);
-		const original = reactiveTip;
+		const original = success;
 		// If already showing copyMessage, clear and reset the timeout
-		if (original === translations('copy_confirmation')) {
-			if (timeout) clearTimeout(timeout);
-			timeout = setTimeout(
-				() => (reactiveTip = translations('copy_to_clipboard')),
-				timeoutDuration
-			);
+		if (original === true) {
+			if (executed) clearTimeout(executed);
+			executed = setTimeout(() => (success = false), timeoutDuration);
 			return;
 		}
 		try {
 			await navigator.clipboard.writeText(text);
-			if (timeout) clearTimeout(timeout);
-			reactiveTip = translations('copy_confirmation');
+			if (executed) clearTimeout(executed);
+			success = true;
 		} catch (err) {
 			console.error(err);
-			addToast('error', 'Error copying to clipboard');
+			addToast('error', get(t)('copy_error'));
 		}
-		timeout = setTimeout(() => (reactiveTip = translations('copy_to_clipboard')), timeoutDuration);
+		executed = setTimeout(() => (success = false), timeoutDuration);
 	}
 </script>
 
-<DropdownItem onclick={copy}>
-	{reactiveTip}
-</DropdownItem>
+<OptionsButton tooltip={success ? $t('copy_success') : $t('copy_to_clipboard')} onclick={copy}>
+	{#if success}
+		<i class="fa-solid fa-clipboard-check"></i>
+	{:else}
+		<i class="fa-solid fa-clipboard"></i>
+	{/if}
+</OptionsButton>
