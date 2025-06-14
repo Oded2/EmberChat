@@ -1,12 +1,16 @@
 <script lang="ts">
-	interface Props {
-		show?: boolean;
-		message?: string;
-		handleConfirm?: () => Promise<void>;
-	}
-	const { show, message, handleConfirm }: Props = $props();
+	import { confirmModal } from '$lib/stores/confirm';
+	import { onMount } from 'svelte';
+
+	const { show, message, handleConfirm } = $derived($confirmModal);
 
 	let modal: HTMLDialogElement;
+
+	onMount(() => {
+		const handleClose = () => confirmModal.update((c) => ({ ...c, show: false }));
+		modal.addEventListener('close', handleClose);
+		return () => modal.removeEventListener('close', handleClose);
+	});
 
 	let inProgress = $state(false);
 

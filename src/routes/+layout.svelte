@@ -8,7 +8,6 @@
 	import { goto } from '$app/navigation';
 	import Toasts from '$lib/components/Toasts.svelte';
 	import ConfirmModal from '$lib/components/ConfirmModal.svelte';
-	import { confirmModal } from '$lib/stores/confirm';
 	import { locale, localeMap, updateLocale } from '$lib/stores/localization';
 
 	const { children } = $props();
@@ -41,8 +40,4 @@
 	<Toasts></Toasts>
 </div>
 
-<ConfirmModal
-	show={$confirmModal.show}
-	message={$confirmModal.message}
-	handleConfirm={$confirmModal.handleConfirm}
-></ConfirmModal>
+<ConfirmModal></ConfirmModal>
