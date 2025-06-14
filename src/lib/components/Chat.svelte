@@ -119,11 +119,11 @@
 		const ok = await sendForm({
 			type: 'Report',
 			id: m.id,
-			chatId: m.chatId,
+			chat_code: m.chatId,
 			text: m.text ?? '',
 			owner: m.owner || 'Anonymous',
-			senderName: m.senderName ?? '',
-			dateSent: m.timestamp.toLocaleDateString('en-US', {
+			sender: m.senderName ?? '',
+			date: m.timestamp.toLocaleDateString('en-US', {
 				minute: 'numeric',
 				hour: 'numeric',
 				weekday: 'long',
