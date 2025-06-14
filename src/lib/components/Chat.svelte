@@ -186,7 +186,7 @@
 						{/if}
 					</div>
 				</div>
-				<div class="ainvisible flex gap-x-1.5 group-hover:visible">
+				<div class="invisible flex gap-x-1.5 group-hover:visible">
 					<CopyButton text={message.text ?? ''}></CopyButton>
 					{#if message.owner === $user.user?.uid}
 						<OptionsButton tooltip={$t('edit')} onclick={() => startEdit(message)}
