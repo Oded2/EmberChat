@@ -16,7 +16,7 @@
 		updatePassword,
 		updateProfile
 	} from 'firebase/auth';
-	import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
+	import { collection, deleteDoc, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 	import { get } from 'svelte/store';
 
 	const userData = $derived($user.user);
@@ -39,11 +39,18 @@
 		const currentUser = get(user).user;
 		if (!currentUser) return;
 		let isUpdate = false;
+		displayName = displayName.trim();
 		if (currentUser.displayName !== displayName) {
+			// Update the profile
 			await updateProfile(currentUser, {
-				displayName: displayName.trim()
+				displayName
 			});
 			updateUser();
+			// Change the senderName value in all the chats that the user has sent
+			const q = query(collection(db, 'messages'), where('owner', '==', currentUser.uid));
+			const snapshot = await getDocs(q);
+			const updates = snapshot.docs.map((doc) => updateDoc(doc.ref, { senderName: displayName }));
+			await Promise.all(updates);
 			isUpdate = true;
 		}
 		if (currentUser.email !== email) {
