@@ -37,7 +37,6 @@
 	async function handleUpdateUser() {
 		const currentUser = get(user).user;
 		if (!currentUser) return;
-		const translations = get(t);
 		let isUpdate = false;
 		displayName = displayName.trim();
 		if (currentUser.displayName !== displayName) {
@@ -61,29 +60,27 @@
 		}
 		if (newPassword) {
 			if (newPassword !== confirmNewPassword) {
-				addToast('error', translations('password_mismatch'));
+				addToast('error', $t('password_mismatch'));
 				return;
 			}
 			await updatePassword(currentUser, newPassword);
 			isUpdate = true;
 		}
-		if (isUpdate) addToast('success', translations('profile_updated'));
+		if (isUpdate) addToast('success', $t('profile_updated'));
 	}
 
 	async function handleReauthentication() {
 		const currentUser = get(user).user;
 		if (!reAuthenticatePassword || !currentUser?.email) return;
-		const translations = get(t);
 		const credential = EmailAuthProvider.credential(currentUser.email, reAuthenticatePassword);
 		try {
 			await reauthenticateWithCredential(currentUser, credential);
 			isReauthenticated = true;
-			addToast('success', translations('account_verified'));
+			addToast('success', $t('account_verified'));
 		} catch (err) {
 			console.error(err);
 			if (firebaseAuthErrorTypeGaurd(err)) {
-				if (err.code === 'auth/wrong-password')
-					addToast('error', translations('incorrect_password'));
+				if (err.code === 'auth/wrong-password') addToast('error', $t('incorrect_password'));
 				else addToast('error', `${err.code}: ${err.message}`);
 			}
 		}
@@ -107,7 +104,7 @@
 		if (interactive)
 			addToast(
 				'success',
-				get(t)('purge_messages_success')
+				$t('purge_messages_success')
 					.replace('%NUMBER%', deletePromises.length.toLocaleString())
 					.replace('%EMAIL%', currentUser?.email ?? '')
 			);
@@ -156,7 +153,7 @@
 					class="btn btn-primary btn-sm btn-outline"
 					onclick={() => {
 						sendEmailVerification(userData);
-						addToast('success', get(t)('verification_email_sent')).replace(
+						addToast('success', $t('verification_email_sent')).replace(
 							'%EMAIL%',
 							userData.email ?? ''
 						);
@@ -170,7 +167,7 @@
 			<button
 				type="button"
 				class="btn btn-error"
-				onclick={() => showModal(deleteUserMessages, get(t)('confirm_purge_messages'))}
+				onclick={() => showModal(deleteUserMessages, $t('confirm_purge_messages'))}
 			>
 				{$t('purge_messages')}
 			</button>
@@ -178,7 +175,7 @@
 				type="button"
 				disabled={!isReauthenticated}
 				class="btn btn-error mt-2"
-				onclick={() => showModal(deleteUser, get(t)('confirm_delete_account'))}
+				onclick={() => showModal(deleteUser, $t('confirm_delete_account'))}
 			>
 				{$t('delete_account')}
 			</button>

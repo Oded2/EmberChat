@@ -28,7 +28,7 @@
 			success = true;
 		} catch (err) {
 			console.error(err);
-			addToast('error', get(t)('copy_error'));
+			addToast('error', $t('copy_error'));
 		}
 		executed = setTimeout(() => (success = false), timeoutDuration);
 	}

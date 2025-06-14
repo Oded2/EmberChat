@@ -20,10 +20,9 @@
 		if (inProgress) return;
 		roomCode = roomCode.trim();
 		if (!roomCode) return;
-		const translations = get(t);
-		if (!alphanumericRegex.test(roomCode)) addToast('error', translations('no_symbols'));
+		if (!alphanumericRegex.test(roomCode)) addToast('error', $t('no_symbols'));
 		else if (roomCode === globalRoomCode)
-			addToast('error', translations('reserved_global').replace('%GLOBAL%', globalRoomCode));
+			addToast('error', $t('reserved_global').replace('%GLOBAL%', globalRoomCode));
 		else {
 			inProgress = true;
 			goto(`/chat/${roomCode}`);

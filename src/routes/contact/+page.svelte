@@ -14,7 +14,6 @@
 	let message = $state('');
 
 	async function handleSubmit() {
-		const translations = get(t);
 		const ok = await sendForm({
 			type: 'Message',
 			email,
@@ -22,9 +21,9 @@
 			message: message.trim()
 		});
 		if (ok) {
-			addToast('success', translations('contact_success'));
+			addToast('success', $t('contact_success'));
 			message = '';
-		} else addToast('error', translations('contact_error'));
+		} else addToast('error', $t('contact_error'));
 	}
 </script>
 

@@ -27,11 +27,10 @@
 	});
 
 	async function handleAuthenticate() {
-		const translations = get(t);
 		try {
 			if (signUp) {
 				if (password != confirmPass) {
-					addToast('error', translations('password_mismatch'));
+					addToast('error', $t('password_mismatch'));
 					return;
 				}
 				await authHandlers.signup(email, password, displayName);
@@ -41,34 +40,33 @@
 			if (firebaseAuthErrorTypeGaurd(err)) {
 				switch (err.code) {
 					case 'auth/invalid-credential':
-						addToast('error', translations('invalid_credentials'));
+						addToast('error', $t('invalid_credentials'));
 						break;
 					case 'auth/user-not-found':
-						addToast('error', translations('user_not_found'));
+						addToast('error', $t('user_not_found'));
 						break;
 					case 'auth/email-already-in-use':
-						addToast('error', translations('email_already_in_use'));
+						addToast('error', $t('email_already_in_use'));
 						break;
 					case 'auth/invalid-email':
-						addToast('error', translations('invalid_email'));
+						addToast('error', $t('invalid_email'));
 						break;
 					default:
 						addToast('error', err.message);
 				}
 			} else {
-				addToast('error', translations('unexpected_error'));
+				addToast('error', $t('unexpected_error'));
 			}
 		}
 	}
 
 	async function handlePasswordReset() {
-		const translations = get(t);
 		if (!email) {
-			addToast('error', translations('missing_email_forgot_password'));
+			addToast('error', $t('missing_email_forgot_password'));
 			return;
 		}
 		await authHandlers.forgotPassword(email);
-		addToast('info', translations('success_forgot_password').replace('%EMAIL%', email));
+		addToast('info', $t('success_forgot_password').replace('%EMAIL%', email));
 	}
 </script>
 

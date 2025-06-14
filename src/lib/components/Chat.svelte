@@ -114,7 +114,6 @@
 
 	async function handleReport(m: Message) {
 		if (inProgressReport) return;
-		const translations = get(t);
 		inProgressReport = true;
 		const ok = await sendForm({
 			type: 'Report',
@@ -133,8 +132,8 @@
 			})
 		});
 		inProgressReport = false;
-		if (ok) addToast('success', translations('report_success'));
-		else addToast('error', translations('report_error'));
+		if (ok) addToast('success', $t('report_success'));
+		else addToast('error', $t('report_error'));
 	}
 </script>
 
@@ -162,25 +161,25 @@
 						<Autolink text={message.text}></Autolink>
 					</span>
 				</div>
-				<div class="invisible flex gap-x-2 group-hover:visible">
+				<div class="invisible flex gap-x-1.5 group-hover:visible">
 					<CopyButton text={message.text ?? ''}></CopyButton>
 					{#if message.owner === $user.user?.uid}
 						<OptionsButton
-							tooltip={$t('delete_message')}
+							tooltip={$t('delete')}
 							onclick={() =>
 								showModal(
 									() => deleteMessage(message.id),
-									get(t)('confirm_message_delete').replace('%TEXT%', message.text ?? '')
+									$t('confirm_message_delete').replace('%TEXT%', message.text ?? '')
 								)}
 							><i class="fa-solid fa-trash-can"></i>
 						</OptionsButton>
 					{:else}
 						<OptionsButton
-							tooltip={$t('report_message')}
+							tooltip={$t('report')}
 							onclick={() =>
 								showModal(
 									() => handleReport(message),
-									get(t)('confirm_message_report')
+									$t('confirm_message_report')
 										.replace('%TEXT%', message.text ?? '')
 										.replace('%SENDER%', message.senderName ?? '')
 								)}
