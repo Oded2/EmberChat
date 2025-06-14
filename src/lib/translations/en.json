@@ -98,5 +98,7 @@
     "about_development_font_awesome": "Font Awesome",
     "about_development_font_awesome_description": "Icons",
     "about_development_firebase": "Firebase",
-    "about_development_firebase_description": "Database & authentication"
+    "about_development_firebase_description": "Database & authentication",
+    "contact_success": "Your message has been sent",
+    "contact_error": "There was an error sending the form"
 }

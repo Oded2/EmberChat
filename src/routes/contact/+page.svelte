@@ -7,17 +7,19 @@
 	import { t } from '$lib/stores/localization';
 	import { addToast } from '$lib/stores/toasts';
 	import { user } from '$lib/stores/user';
+	import { get } from 'svelte/store';
 
 	let email = $state($user.user?.email ?? '');
 	let name = $state($user.user?.displayName ?? '');
 	let message = $state('');
 
 	async function handleSubmit() {
+		const translations = get(t);
 		const ok = await sendForm({ type: 'Message', email, name, message });
 		if (ok) {
-			addToast('success', 'Your message has been sent');
+			addToast('success', translations('contact_success'));
 			message = '';
-		} else addToast('error', 'There was an error in sending the form');
+		} else addToast('error', translations('contact_error'));
 	}
 </script>
 

@@ -98,5 +98,7 @@
     "about_development_font_awesome": "Font Awesome",
     "about_development_font_awesome_description": "אייקונים",
     "about_development_firebase": "Firebase",
-    "about_development_firebase_description": "בסיס נתונים ואימות משתמשים"
+    "about_development_firebase_description": "בסיס נתונים ואימות משתמשים",
+    "contact_success": "ההודעה שלך נשלחה בהצלחה",
+    "contact_error": "אירעה שגיאה בשליחת הטופס"
 }
