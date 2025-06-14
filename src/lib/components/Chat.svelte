@@ -13,6 +13,7 @@
 		orderBy,
 		query,
 		serverTimestamp,
+		updateDoc,
 		where
 	} from 'firebase/firestore';
 	import { onMount, tick } from 'svelte';
@@ -40,6 +41,7 @@
 		senderName?: string;
 		timestamp: Date;
 		owner?: string;
+		edit?: boolean;
 	}
 
 	const { chatId }: Props = $props();
@@ -47,6 +49,7 @@
 	let anonId = $state('');
 	let newMessage: string = $state('');
 	let allMessages: Message[] = $state([]);
+	let editId: string | null = $state(null);
 	let inProgressChat = $state(false);
 	let inProgressReport = $state(false);
 
@@ -70,18 +73,26 @@
 
 	async function sendMessage() {
 		if (inProgressChat) return;
-		inProgressChat = true;
 		newMessage = newMessage.trim();
 		if (!newMessage) return;
+		inProgressChat = true;
 		const currentUser = get(user).user;
-		await addDoc(collection(db, 'messages'), {
-			text: newMessage,
-			senderName: currentUser?.displayName ?? anonId,
-			timestamp: serverTimestamp(),
-			owner: currentUser?.uid ?? '',
-			chatId,
-			edit: false
-		});
+		if (editId) {
+			const ref = doc(db, 'messages', editId);
+			await updateDoc(ref, {
+				text: newMessage,
+				edit: true
+			});
+			editId = null;
+		} else
+			await addDoc(collection(db, 'messages'), {
+				text: newMessage,
+				senderName: currentUser?.displayName ?? anonId,
+				timestamp: serverTimestamp(),
+				owner: currentUser?.uid ?? '',
+				chatId,
+				edit: false
+			});
 		newMessage = '';
 		inProgressChat = false;
 	}
@@ -135,6 +146,16 @@
 		if (ok) addToast('success', $t('report_success'));
 		else addToast('error', $t('report_error'));
 	}
+
+	function startEdit(m: Message) {
+		editId = m.id;
+		newMessage = m.text ?? '';
+	}
+
+	function cancelEdit() {
+		editId = null;
+		newMessage = '';
+	}
 </script>
 
 <div class="mt-10 flex grow flex-col gap-4">
@@ -144,6 +165,7 @@
 				in:fly={{ duration: 200, y: 40 }}
 				animate:flip={{ duration: 200 }}
 				class="bg-base-100 group flex gap-2 rounded-lg px-4 py-2"
+				class:ring={editId === message.id}
 			>
 				<div class="flex grow flex-col">
 					<div class="flex items-baseline gap-x-1.5">
@@ -157,13 +179,19 @@
 							})}
 						</span>
 					</div>
-					<span class="whitespace-pre-line" dir="auto">
+					<div class="whitespace-pre-wrap">
 						<Autolink text={message.text}></Autolink>
-					</span>
+						{#if message.edit}
+							<span class="text-xs font-light">{`(${$t('edited')})`}</span>
+						{/if}
+					</div>
 				</div>
-				<div class="invisible flex gap-x-1.5 group-hover:visible">
+				<div class="ainvisible flex gap-x-1.5 group-hover:visible">
 					<CopyButton text={message.text ?? ''}></CopyButton>
 					{#if message.owner === $user.user?.uid}
+						<OptionsButton tooltip={$t('edit')} onclick={() => startEdit(message)}
+							><i class="fa-solid fa-pen-to-square"></i>
+						</OptionsButton>
 						<OptionsButton
 							tooltip={$t('delete')}
 							onclick={() =>
@@ -196,9 +224,18 @@
 			<LabelTextarea bind:value={newMessage} label={$t('enter_message')}>
 				<div class="flex ps-4">
 					{#if !$user.loading && !$user.user}
-						<span class="mt-auto text-xs font-light italic"
-							>{$t('anon_chat').replace('%ANON%', anonId)}</span
+						<span class="mt-auto text-xs font-light italic">
+							{$t('anon_chat').replace('%ANON%', anonId)}
+						</span>
+					{/if}
+					{#if editId}
+						<button
+							type="button"
+							onclick={cancelEdit}
+							class="link mt-auto text-xs font-light italic"
 						>
+							{$t('edit_cancel')}
+						</button>
 					{/if}
 					<button type="submit" class="btn btn-primary btn-circle ms-auto" aria-label={$t('send')}>
 						<i class="fa-solid fa-arrow-up"></i>

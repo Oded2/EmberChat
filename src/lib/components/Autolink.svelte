@@ -16,5 +16,5 @@
 </script>
 
 {#if text && isLoaded}
-	{@html autoLinker.link(text.replaceAll('&', '&amp;'))}
+	<span>{@html autoLinker.link(text.replaceAll('&', '&amp;'))}</span>
 {/if}
