@@ -18,7 +18,6 @@
 	} from 'firebase/firestore';
 	import { onMount, tick } from 'svelte';
 	import { flip } from 'svelte/animate';
-	import { get } from 'svelte/store';
 	import { fly } from 'svelte/transition';
 	import {
 		getRandomInt,
