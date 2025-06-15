@@ -228,18 +228,14 @@
 		<Container>
 			<LabelInputForm handleSubmit={sendMessage}>
 				<LabelTextarea bind:value={newMessage} label={$t('enter_message')} maxlength={5000}>
-					<div class="flex ps-4">
+					<div class="flex items-end ps-4">
 						{#if !$user.loading && !$user.user}
-							<span class="mt-auto text-xs font-light italic">
+							<span class="text-xs font-light italic">
 								{$t('anon_chat').replace('%ANON%', anonId)}
 							</span>
 						{/if}
 						{#if editId}
-							<button
-								type="button"
-								onclick={cancelEdit}
-								class="link mt-auto text-xs font-light italic"
-							>
+							<button type="button" onclick={cancelEdit} class="link text-xs font-light italic">
 								{$t('edit_cancel')}
 							</button>
 						{/if}
