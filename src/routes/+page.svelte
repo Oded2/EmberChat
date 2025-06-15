@@ -47,7 +47,13 @@
 			</a>
 			<div class="divider"><span class="font-medium">{$t('or')}</span></div>
 			<h4 class="text-2xl font-semibold">{$t('enter_chat_room')}</h4>
-			<div class="flex flex-wrap gap-2 sm:me-auto sm:min-w-xl">
+			<form
+				class="flex flex-wrap gap-2 sm:me-auto sm:min-w-xl"
+				onsubmit={(e) => {
+					e.preventDefault();
+					goToRoom();
+				}}
+			>
 				<LabelInput
 					bind:value={roomCode}
 					label={$t('room_code')}
@@ -56,16 +62,17 @@
 					spellcheck={false}
 				></LabelInput>
 				<button
+					type="button"
 					onclick={generateRoomCode}
 					class="btn btn-primary btn-outline btn-lg sm:w-16"
 					aria-label="Random"
 				>
 					<i class="fa-solid fa-dice"></i>
 				</button>
-				<button onclick={goToRoom} class="btn btn-primary btn-lg w-full sm:w-16">
+				<button type="submit" class="btn btn-primary btn-lg w-full sm:w-16">
 					<DynamicSpinner {inProgress}>{$t('go')}</DynamicSpinner>
 				</button>
-			</div>
+			</form>
 			<span class="text-sm font-light italic before:me-0.5 before:content-['*']">
 				{$t('room_code_pattern')}
 			</span>
