@@ -20,7 +20,13 @@
 	import { flip } from 'svelte/animate';
 	import { get } from 'svelte/store';
 	import { fly } from 'svelte/transition';
-	import { getRandomInt, globalRoomCode, sendForm } from '$lib/helpers';
+	import {
+		getRandomInt,
+		globalRoomCode,
+		handleMessages,
+		sendForm,
+		type Message
+	} from '$lib/helpers';
 	import Autolink from './Autolink.svelte';
 	import LabelTextarea from './LabelTextarea.svelte';
 	import { adjectives, nouns } from '$lib/words/words';
@@ -33,16 +39,6 @@
 
 	interface Props {
 		chatId: string;
-	}
-
-	interface Message {
-		id: string;
-		chatId: string;
-		text?: string;
-		senderName?: string;
-		timestamp: Date;
-		owner?: string;
-		edit?: boolean;
 	}
 
 	const { chatId }: Props = $props();
@@ -65,10 +61,7 @@
 			limit(200)
 		);
 		const unsubscribe = onSnapshot(q, async (snapshot) => {
-			allMessages = snapshot.docs.map((doc) => {
-				const data = doc.data({ serverTimestamps: 'estimate' });
-				return { ...data, id: doc.id, chatId, timestamp: firestoreTimestampToDate(data.timestamp) };
-			});
+			allMessages = handleMessages(snapshot);
 			await resetScroll();
 		});
 		return unsubscribe;
@@ -83,7 +76,7 @@
 			return;
 		}
 		inProgressChat = true;
-		const currentUser = get(user).user;
+		const currentUser = $user.user;
 		if (editId) {
 			const ref = doc(db, 'messages', editId);
 			await updateDoc(ref, {
@@ -107,11 +100,6 @@
 	async function deleteMessage(id: string) {
 		const docRef = doc(db, 'messages', id);
 		await deleteDoc(docRef);
-	}
-
-	function firestoreTimestampToDate(timestamp: any): Date {
-		const millis = timestamp.seconds * 1000 + timestamp.nanoseconds / 1e6;
-		return new Date(millis);
 	}
 
 	async function resetScroll() {
@@ -140,7 +128,7 @@
 			text: m.text ?? '',
 			owner: m.owner || 'Anonymous',
 			sender: m.senderName ?? '',
-			date: m.timestamp.toLocaleDateString('en-US', {
+			date: m.timestamp.toDate().toLocaleDateString('en-US', {
 				minute: 'numeric',
 				hour: 'numeric',
 				weekday: 'long',
@@ -178,7 +166,7 @@
 					<div class="flex items-baseline gap-x-1.5">
 						<span class="font-semibold">{message.senderName}</span>
 						<span class="text-xs font-light">
-							{message.timestamp.toLocaleString(undefined, {
+							{message.timestamp.toDate().toLocaleString(undefined, {
 								minute: 'numeric',
 								hour: 'numeric',
 								day: 'numeric',
