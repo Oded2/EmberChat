@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Container from '$lib/components/Container.svelte';
 	import Fieldset from '$lib/components/Fieldset.svelte';
 	import FieldsetInput from '$lib/components/FieldsetInput.svelte';
 	import Title from '$lib/components/Title.svelte';
@@ -112,86 +113,88 @@
 </script>
 
 {#if userData}
-	<h1 class="my-10 text-center text-3xl font-bold">
-		{$t('personal_greeting').replace('%NAME%', userData.displayName ?? '')}
-	</h1>
-	<div class="flex flex-wrap justify-center gap-4 pb-10">
-		<Fieldset
-			title={$t('user_settings')}
-			btnText={$t('update_profile')}
-			handleSubmit={handleUpdateUser}
-		>
-			<FieldsetInput
-				type="email"
-				label={$t('email')}
-				bind:value={email}
-				required
-				disabled={!isReauthenticated}
-				disabledDisclaimer={$t('verify_disclaimer')}
-			></FieldsetInput>
-			<FieldsetInput label={$t('display_name')} bind:value={displayName} required></FieldsetInput>
-			<FieldsetInput
-				type="password"
-				label={$t('new_password')}
-				bind:value={newPassword}
-				disabled={!isReauthenticated}
-				disabledDisclaimer={$t('verify_disclaimer')}
-			></FieldsetInput>
-			<FieldsetInput
-				type="password"
-				label={$t('confirm_new_password')}
-				bind:value={confirmNewPassword}
-				disabled={!isReauthenticated}
-				disabledDisclaimer={$t('verify_disclaimer')}
-			></FieldsetInput>
-			{#if !userData.emailVerified}
-				<span class="text-warning">
-					{$t('email_unverified')}
-				</span>
+	<Container>
+		<h1 class="my-10 text-center text-3xl font-bold">
+			{$t('personal_greeting').replace('%NAME%', userData.displayName ?? '')}
+		</h1>
+		<div class="flex flex-wrap justify-center gap-4 pb-10">
+			<Fieldset
+				title={$t('user_settings')}
+				btnText={$t('update_profile')}
+				handleSubmit={handleUpdateUser}
+			>
+				<FieldsetInput
+					type="email"
+					label={$t('email')}
+					bind:value={email}
+					required
+					disabled={!isReauthenticated}
+					disabledDisclaimer={$t('verify_disclaimer')}
+				></FieldsetInput>
+				<FieldsetInput label={$t('display_name')} bind:value={displayName} required></FieldsetInput>
+				<FieldsetInput
+					type="password"
+					label={$t('new_password')}
+					bind:value={newPassword}
+					disabled={!isReauthenticated}
+					disabledDisclaimer={$t('verify_disclaimer')}
+				></FieldsetInput>
+				<FieldsetInput
+					type="password"
+					label={$t('confirm_new_password')}
+					bind:value={confirmNewPassword}
+					disabled={!isReauthenticated}
+					disabledDisclaimer={$t('verify_disclaimer')}
+				></FieldsetInput>
+				{#if !userData.emailVerified}
+					<span class="text-warning">
+						{$t('email_unverified')}
+					</span>
+					<button
+						type="button"
+						class="btn btn-primary btn-sm btn-outline"
+						onclick={() => {
+							sendEmailVerification(userData);
+							addToast('success', $t('verification_email_sent')).replace(
+								'%EMAIL%',
+								userData.email ?? ''
+							);
+						}}
+					>
+						{$t('send_verification_email')}
+					</button>
+				{/if}
+			</Fieldset>
+			<Fieldset title={$t('danger_zone')}>
 				<button
 					type="button"
-					class="btn btn-primary btn-sm btn-outline"
-					onclick={() => {
-						sendEmailVerification(userData);
-						addToast('success', $t('verification_email_sent')).replace(
-							'%EMAIL%',
-							userData.email ?? ''
-						);
-					}}
+					class="btn btn-error"
+					onclick={() => showModal(deleteUserMessages, $t('confirm_purge_messages'))}
 				>
-					{$t('send_verification_email')}
+					{$t('purge_messages')}
 				</button>
-			{/if}
-		</Fieldset>
-		<Fieldset title={$t('danger_zone')}>
-			<button
-				type="button"
-				class="btn btn-error"
-				onclick={() => showModal(deleteUserMessages, $t('confirm_purge_messages'))}
+				<button
+					type="button"
+					disabled={!isReauthenticated}
+					class="btn btn-error mt-2"
+					onclick={() => showModal(deleteUser, $t('confirm_delete_account'))}
+				>
+					{$t('delete_account')}
+				</button>
+				{#if !isReauthenticated}
+					<span>{$t('verify_disclaimer')}</span>
+				{/if}
+			</Fieldset>
+			<Fieldset
+				title={$t('verify_account')}
+				btnText={$t('authenticate')}
+				handleSubmit={handleReauthentication}
 			>
-				{$t('purge_messages')}
-			</button>
-			<button
-				type="button"
-				disabled={!isReauthenticated}
-				class="btn btn-error mt-2"
-				onclick={() => showModal(deleteUser, $t('confirm_delete_account'))}
-			>
-				{$t('delete_account')}
-			</button>
-			{#if !isReauthenticated}
-				<span>{$t('verify_disclaimer')}</span>
-			{/if}
-		</Fieldset>
-		<Fieldset
-			title={$t('verify_account')}
-			btnText={$t('authenticate')}
-			handleSubmit={handleReauthentication}
-		>
-			<FieldsetInput type="password" label={$t('password')} bind:value={reAuthenticatePassword}
-			></FieldsetInput>
-		</Fieldset>
-	</div>
+				<FieldsetInput type="password" label={$t('password')} bind:value={reAuthenticatePassword}
+				></FieldsetInput>
+			</Fieldset>
+		</div>
+	</Container>
 {/if}
 
 <Title title={$t('profile')}></Title>

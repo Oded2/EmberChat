@@ -29,6 +29,7 @@
 	import { addToast } from '$lib/stores/toasts';
 	import { t } from '$lib/stores/localization';
 	import OptionsButton from './OptionsButton.svelte';
+	import Container from './Container.svelte';
 
 	interface Props {
 		chatId: string;
@@ -159,95 +160,103 @@
 </script>
 
 <div class="mt-10 flex grow flex-col gap-4">
-	<div class="flex grow flex-col gap-4">
-		{#each allMessages as message (message.id)}
-			<div
-				in:fly={{ duration: 200, y: 40 }}
-				animate:flip={{ duration: 200 }}
-				class="bg-base-100 group flex gap-2 rounded-lg px-4 py-2"
-				class:ring={editId === message.id}
-			>
-				<div class="flex grow flex-col">
-					<div class="flex items-baseline gap-x-1.5">
-						<span class="font-semibold">{message.senderName}</span>
-						<span class="text-xs font-light">
-							{message.timestamp.toLocaleString(undefined, {
-								minute: 'numeric',
-								hour: 'numeric',
-								day: 'numeric',
-								month: 'numeric'
-							})}
-						</span>
+	<Container>
+		<div class="flex grow flex-col gap-4">
+			{#each allMessages as message (message.id)}
+				<div
+					in:fly={{ duration: 200, y: 40 }}
+					animate:flip={{ duration: 200 }}
+					class="bg-base-100 group flex gap-2 rounded-lg px-4 py-2"
+					class:ring={editId === message.id}
+				>
+					<div class="flex grow flex-col">
+						<div class="flex items-baseline gap-x-1.5">
+							<span class="font-semibold">{message.senderName}</span>
+							<span class="text-xs font-light">
+								{message.timestamp.toLocaleString(undefined, {
+									minute: 'numeric',
+									hour: 'numeric',
+									day: 'numeric',
+									month: 'numeric'
+								})}
+							</span>
+						</div>
+						<div class="whitespace-pre-wrap" dir="auto">
+							<Autolink text={message.text}></Autolink>
+							{#if message.edit}
+								<span class="text-xs font-light">{`(${$t('edited')})`}</span>
+							{/if}
+						</div>
 					</div>
-					<div class="whitespace-pre-wrap" dir="auto">
-						<Autolink text={message.text}></Autolink>
-						{#if message.edit}
-							<span class="text-xs font-light">{`(${$t('edited')})`}</span>
+					<div class="invisible flex gap-x-1.5 group-hover:visible pointer-coarse:visible">
+						<CopyButton text={message.text ?? ''}></CopyButton>
+						{#if message.owner === $user.user?.uid}
+							<OptionsButton tooltip={$t('edit')} onclick={() => startEdit(message)}
+								><i class="fa-solid fa-pen-to-square"></i>
+							</OptionsButton>
+							<OptionsButton
+								tooltip={$t('delete')}
+								onclick={() =>
+									showModal(
+										() => deleteMessage(message.id),
+										$t('confirm_message_delete'),
+										`"${message.text}"`,
+										$t('delete')
+									)}
+								><i class="fa-solid fa-trash-can"></i>
+							</OptionsButton>
+						{:else}
+							<OptionsButton
+								tooltip={$t('report')}
+								onclick={() =>
+									showModal(
+										() => handleReport(message),
+										$t('confirm_message_report'),
+										`"${message.text}"`,
+										$t('report')
+									)}
+							>
+								<i class="fa-solid fa-flag"></i>
+							</OptionsButton>
 						{/if}
 					</div>
 				</div>
-				<div class="invisible flex gap-x-1.5 group-hover:visible pointer-coarse:visible">
-					<CopyButton text={message.text ?? ''}></CopyButton>
-					{#if message.owner === $user.user?.uid}
-						<OptionsButton tooltip={$t('edit')} onclick={() => startEdit(message)}
-							><i class="fa-solid fa-pen-to-square"></i>
-						</OptionsButton>
-						<OptionsButton
-							tooltip={$t('delete')}
-							onclick={() =>
-								showModal(
-									() => deleteMessage(message.id),
-									$t('confirm_message_delete'),
-									`"${message.text}"`,
-									$t('delete')
-								)}
-							><i class="fa-solid fa-trash-can"></i>
-						</OptionsButton>
-					{:else}
-						<OptionsButton
-							tooltip={$t('report')}
-							onclick={() =>
-								showModal(
-									() => handleReport(message),
-									$t('confirm_message_report'),
-									`"${message.text}"`,
-									$t('report')
-								)}
-						>
-							<i class="fa-solid fa-flag"></i>
-						</OptionsButton>
-					{/if}
-				</div>
-			</div>
-		{/each}
-	</div>
-	<div class="bg-base-200 sticky bottom-0 flex flex-col gap-2 py-4">
-		<LabelInputForm handleSubmit={sendMessage}>
-			<LabelTextarea bind:value={newMessage} label={$t('enter_message')}>
-				<div class="flex ps-4">
-					{#if !$user.loading && !$user.user}
-						<span class="mt-auto text-xs font-light italic">
-							{$t('anon_chat').replace('%ANON%', anonId)}
-						</span>
-					{/if}
-					{#if editId}
+			{/each}
+		</div>
+	</Container>
+	<div class="bg-base-200 sticky bottom-0 py-4">
+		<Container>
+			<LabelInputForm handleSubmit={sendMessage}>
+				<LabelTextarea bind:value={newMessage} label={$t('enter_message')}>
+					<div class="flex ps-4">
+						{#if !$user.loading && !$user.user}
+							<span class="mt-auto text-xs font-light italic">
+								{$t('anon_chat').replace('%ANON%', anonId)}
+							</span>
+						{/if}
+						{#if editId}
+							<button
+								type="button"
+								onclick={cancelEdit}
+								class="link mt-auto text-xs font-light italic"
+							>
+								{$t('edit_cancel')}
+							</button>
+						{/if}
 						<button
-							type="button"
-							onclick={cancelEdit}
-							class="link mt-auto text-xs font-light italic"
+							type="submit"
+							class="btn btn-primary btn-circle ms-auto"
+							aria-label={$t('send')}
 						>
-							{$t('edit_cancel')}
+							<i class="fa-solid fa-arrow-up"></i>
 						</button>
-					{/if}
-					<button type="submit" class="btn btn-primary btn-circle ms-auto" aria-label={$t('send')}>
-						<i class="fa-solid fa-arrow-up"></i>
-					</button>
-				</div>
-			</LabelTextarea>
-		</LabelInputForm>
-		{#if chatId !== globalRoomCode}
-			<span class="text-center text-sm italic">{$t('chat_id').replace('%ID%', chatId)}</span>
-		{/if}
+					</div>
+				</LabelTextarea>
+			</LabelInputForm>
+			{#if chatId !== globalRoomCode}
+				<span class="text-center text-sm italic">{$t('chat_id').replace('%ID%', chatId)}</span>
+			{/if}
+		</Container>
 	</div>
 </div>
 
