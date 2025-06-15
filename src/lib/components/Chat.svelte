@@ -173,58 +173,58 @@
 				<div
 					in:fly={{ duration: 200, y: 40 }}
 					animate:flip={{ duration: 200 }}
-					class="bg-base-100 group flex gap-2 rounded-lg px-4 py-2"
+					class="bg-base-100 group flex flex-col rounded-lg px-4 py-2"
 					class:ring={editId === message.id}
 				>
-					<div class="flex grow flex-col">
-						<div class="flex items-baseline gap-x-1.5">
-							<span class="font-semibold">{message.senderName}</span>
-							<span class="text-xs font-light">
-								{message.timestamp.toLocaleString(undefined, {
-									minute: 'numeric',
-									hour: 'numeric',
-									day: 'numeric',
-									month: 'numeric'
-								})}
-							</span>
-						</div>
-						<div class="whitespace-pre-wrap" dir="auto">
-							<Autolink text={message.text}></Autolink>
-							{#if message.edit}
-								<span class="text-xs font-light">{`(${$t('edited')})`}</span>
+					<div class="flex items-baseline gap-x-1.5">
+						<span class="font-semibold">{message.senderName}</span>
+						<span class="text-xs font-light">
+							{message.timestamp.toLocaleString(undefined, {
+								minute: 'numeric',
+								hour: 'numeric',
+								day: 'numeric',
+								month: 'numeric'
+							})}
+						</span>
+						<div
+							class="ms-auto flex gap-x-1.5 opacity-0 transition-opacity duration-1 group-hover:opacity-100 pointer-coarse:opacity-100"
+						>
+							<CopyButton text={message.text ?? ''}></CopyButton>
+							{#if message.owner === $user.user?.uid}
+								<OptionsButton tooltip={$t('edit')} onclick={() => startEdit(message)}
+									><i class="fa-solid fa-pen-to-square"></i>
+								</OptionsButton>
+								<OptionsButton
+									tooltip={$t('delete')}
+									onclick={() =>
+										showModal(
+											() => deleteMessage(message.id),
+											$t('confirm_message_delete'),
+											`"${message.text}"`,
+											$t('delete')
+										)}
+									><i class="fa-solid fa-trash-can"></i>
+								</OptionsButton>
+							{:else}
+								<OptionsButton
+									tooltip={$t('report')}
+									onclick={() =>
+										showModal(
+											() => handleReport(message),
+											$t('confirm_message_report'),
+											`"${message.text}"`,
+											$t('report')
+										)}
+								>
+									<i class="fa-solid fa-flag"></i>
+								</OptionsButton>
 							{/if}
 						</div>
 					</div>
-					<div class="flex gap-x-1.5 opacity-0 group-hover:opacity-100 pointer-coarse:opacity-100">
-						<CopyButton text={message.text ?? ''}></CopyButton>
-						{#if message.owner === $user.user?.uid}
-							<OptionsButton tooltip={$t('edit')} onclick={() => startEdit(message)}
-								><i class="fa-solid fa-pen-to-square"></i>
-							</OptionsButton>
-							<OptionsButton
-								tooltip={$t('delete')}
-								onclick={() =>
-									showModal(
-										() => deleteMessage(message.id),
-										$t('confirm_message_delete'),
-										`"${message.text}"`,
-										$t('delete')
-									)}
-								><i class="fa-solid fa-trash-can"></i>
-							</OptionsButton>
-						{:else}
-							<OptionsButton
-								tooltip={$t('report')}
-								onclick={() =>
-									showModal(
-										() => handleReport(message),
-										$t('confirm_message_report'),
-										`"${message.text}"`,
-										$t('report')
-									)}
-							>
-								<i class="fa-solid fa-flag"></i>
-							</OptionsButton>
+					<div class="whitespace-pre-wrap" dir="auto">
+						<Autolink text={message.text}></Autolink>
+						{#if message.edit}
+							<span class="text-xs font-light">{`(${$t('edited')})`}</span>
 						{/if}
 					</div>
 				</div>
