@@ -113,5 +113,11 @@
     "cancel": "Cancel",
     "exceed_max_length": "Message cannot exceed %MAX% characters",
     "settings": "Settings",
-    "stats": "Stats"
+    "stats": "Stats",
+    "total_messages": "Total messages: %NUM%",
+    "first_message": "First message",
+    "last_message": "Last message",
+    "most_used_chat": "Most frequent chat room",
+    "messages": "messages",
+    "all_chat_rooms": "All chats rooms"
 }

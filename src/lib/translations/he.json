@@ -113,5 +113,11 @@
     "cancel": "בטל",
     "exceed_max_length": "ההודעה לא יכולה לעלות על %MAX% תווים",
     "settings": "הגדרות",
-    "stats": "סטטיסטיקות"
+    "stats": "סטטיסטיקות",
+    "total_messages": "סה\"כ הודעות: %NUM%",
+    "first_message": "הודעה ראשונה",
+    "last_message": "הודעה אחרונה",
+    "most_used_chat": "חדר הצ'אט הפעיל ביותר",
+    "messages": "הודעות",
+    "all_chat_rooms": "כל חדרי הצ'אט"
 }

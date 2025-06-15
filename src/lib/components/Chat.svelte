@@ -20,6 +20,7 @@
 	import { flip } from 'svelte/animate';
 	import { fly } from 'svelte/transition';
 	import {
+		formatDate,
 		getRandomInt,
 		globalRoomCode,
 		handleMessages,
@@ -165,12 +166,7 @@
 					<div class="flex items-baseline gap-x-1.5">
 						<span class="font-semibold">{message.senderName}</span>
 						<span class="text-xs font-light">
-							{message.timestamp.toDate().toLocaleString(undefined, {
-								minute: 'numeric',
-								hour: 'numeric',
-								day: 'numeric',
-								month: 'numeric'
-							})}
+							{formatDate(message.timestamp.toDate())}
 						</span>
 						<div
 							class="ms-auto flex gap-x-1.5 opacity-0 transition-opacity duration-1 group-hover:opacity-100 pointer-coarse:opacity-100"

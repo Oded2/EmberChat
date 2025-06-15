@@ -20,9 +20,10 @@
 
 	interface Props {
 		userData: User;
+		show: boolean;
 	}
 
-	const { userData }: Props = $props();
+	const { userData, show }: Props = $props();
 
 	let email = $state('');
 	let displayName = $state('');
@@ -109,7 +110,7 @@
 </script>
 
 {#if userData}
-	<div class="flex flex-wrap justify-center gap-4 pb-10">
+	<div class="flex-wrap justify-center gap-4 pb-10" class:hidden={!show} class:flex={show}>
 		<Fieldset
 			title={$t('user_settings')}
 			btnText={$t('update_profile')}

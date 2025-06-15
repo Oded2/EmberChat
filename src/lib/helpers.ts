@@ -18,6 +18,15 @@ export function addParams(url: string, params: Record<string, string>): string {
 	return `${url}?${urlParams.toString()}`;
 }
 
+export function formatDate(date: Date) {
+	return date.toLocaleString(undefined, {
+		minute: 'numeric',
+		hour: 'numeric',
+		day: 'numeric',
+		month: 'numeric'
+	});
+}
+
 export function handleMessages(snapshot: QuerySnapshot<DocumentData, DocumentData>): Message[] {
 	return snapshot.docs
 		.map((doc) => ({ ...doc.data(), id: doc.id }))
