@@ -31,7 +31,7 @@
 		{@render children()}
 		{#if btnText}
 			<button type="submit" class="btn btn-primary mt-2">
-				<DynamicSpinner text={btnText} {inProgress}></DynamicSpinner>
+				<DynamicSpinner {inProgress}>{btnText}</DynamicSpinner>
 			</button>
 		{/if}
 	</fieldset>

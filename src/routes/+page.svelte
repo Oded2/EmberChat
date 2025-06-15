@@ -63,7 +63,7 @@
 					<i class="fa-solid fa-dice"></i>
 				</button>
 				<button onclick={goToRoom} class="btn btn-primary btn-lg w-full sm:w-16">
-					<DynamicSpinner text={$t('go')} {inProgress}></DynamicSpinner>
+					<DynamicSpinner {inProgress}>{$t('go')}</DynamicSpinner>
 				</button>
 			</div>
 			<span class="text-sm font-light italic before:me-0.5 before:content-['*']">

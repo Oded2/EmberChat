@@ -1,14 +1,16 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
+
 	interface Props {
-		text: string;
 		inProgress: boolean;
+		children: Snippet;
 	}
 
-	const { text, inProgress }: Props = $props();
+	const { inProgress, children }: Props = $props();
 </script>
 
 {#if inProgress}
 	<span class="loading loading-spinner"></span>
 {:else}
-	{text}
+	{@render children()}
 {/if}

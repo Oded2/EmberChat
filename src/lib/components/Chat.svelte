@@ -30,6 +30,7 @@
 	import { t } from '$lib/stores/localization';
 	import OptionsButton from './OptionsButton.svelte';
 	import Container from './Container.svelte';
+	import DynamicSpinner from './DynamicSpinner.svelte';
 
 	interface Props {
 		chatId: string;
@@ -263,7 +264,9 @@
 							class="btn btn-primary btn-circle ms-auto"
 							aria-label={$t('send')}
 						>
-							<i class="fa-solid fa-arrow-up"></i>
+							<DynamicSpinner inProgress={inProgressChat}>
+								<i class="fa-solid fa-arrow-up"></i>
+							</DynamicSpinner>
 						</button>
 					</div>
 				</LabelTextarea>
