@@ -47,6 +47,8 @@
 
 	const { chatId }: Props = $props();
 
+	const maxlength = 5000;
+
 	let anonId = $state('');
 	let newMessage: string = $state('');
 	let allMessages: Message[] = $state([]);
@@ -76,6 +78,10 @@
 		if (inProgressChat) return;
 		newMessage = newMessage.trim();
 		if (!newMessage) return;
+		if (newMessage.length > maxlength) {
+			addToast('error', $t('exceed_max_length').replace('%MAX%', maxlength.toLocaleString()));
+			return;
+		}
 		inProgressChat = true;
 		const currentUser = get(user).user;
 		if (editId) {
@@ -227,8 +233,8 @@
 	<div class="bg-base-200 sticky bottom-0 py-4">
 		<Container>
 			<LabelInputForm handleSubmit={sendMessage}>
-				<LabelTextarea bind:value={newMessage} label={$t('enter_message')} maxlength={5000}>
-					<div class="flex items-end ps-4">
+				<LabelTextarea bind:value={newMessage} label={$t('enter_message')}>
+					<div class="flex items-end gap-2 ps-4">
 						{#if !$user.loading && !$user.user}
 							<span class="text-xs font-light italic">
 								{$t('anon_chat').replace('%ANON%', anonId)}
@@ -238,6 +244,19 @@
 							<button type="button" onclick={cancelEdit} class="link text-xs font-light italic">
 								{$t('edit_cancel')}
 							</button>
+						{/if}
+						{#if newMessage.length > maxlength / 2}
+							<div
+								class="text-xs font-light italic"
+								class:text-error={newMessage.length > maxlength}
+							>
+								<span class="hidden rtl:inline-block">
+									{`${maxlength.toLocaleString()}/${newMessage.length.toLocaleString()}`}
+								</span>
+								<span class="hidden ltr:inline-block">
+									{`${newMessage.length.toLocaleString()}/${maxlength.toLocaleString()}`}
+								</span>
+							</div>
 						{/if}
 						<button
 							type="submit"

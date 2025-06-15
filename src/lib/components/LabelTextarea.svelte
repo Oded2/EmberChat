@@ -5,11 +5,10 @@
 		label?: string;
 		value: string;
 		required?: boolean;
-		maxlength?: number;
 		children: Snippet;
 	}
 
-	let { label, value = $bindable(), required, maxlength, children }: Props = $props();
+	let { label, value = $bindable(), required, children }: Props = $props();
 
 	let textarea: HTMLTextAreaElement;
 	let hiddenSubmit: HTMLButtonElement;
@@ -34,7 +33,6 @@
 		class="bg-base-100 flex max-h-50 w-full grow resize-none gap-2 rounded-2xl px-4 py-3 outline-none"
 		dir="auto"
 		placeholder={label}
-		{maxlength}
 		onkeydown={(e) => {
 			if (e.key === 'Enter' && !e.shiftKey) {
 				e.preventDefault(); // Prevent new line
