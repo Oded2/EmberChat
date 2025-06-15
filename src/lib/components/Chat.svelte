@@ -20,7 +20,6 @@
 	import { flip } from 'svelte/animate';
 	import { get } from 'svelte/store';
 	import { fly } from 'svelte/transition';
-	import LabelInputForm from './LabelInputForm.svelte';
 	import { getRandomInt, globalRoomCode, sendForm } from '$lib/helpers';
 	import Autolink from './Autolink.svelte';
 	import LabelTextarea from './LabelTextarea.svelte';
@@ -233,7 +232,13 @@
 	</Container>
 	<div class="bg-base-200 sticky bottom-0 py-4">
 		<Container>
-			<LabelInputForm handleSubmit={sendMessage}>
+			<form
+				onsubmit={(e) => {
+					e.preventDefault();
+					sendMessage();
+				}}
+				class="mx-auto flex w-full max-w-4xl flex-col items-center gap-1.5"
+			>
 				<LabelTextarea bind:value={newMessage} label={$t('enter_message')}>
 					<div class="flex items-end gap-2 ps-4">
 						{#if !$user.loading && !$user.user}
@@ -270,10 +275,10 @@
 						</button>
 					</div>
 				</LabelTextarea>
-			</LabelInputForm>
-			{#if chatId !== globalRoomCode}
-				<span class="text-center text-sm italic">{$t('chat_id').replace('%ID%', chatId)}</span>
-			{/if}
+				{#if chatId !== globalRoomCode}
+					<span class="text-center text-sm italic">{$t('chat_id').replace('%ID%', chatId)}</span>
+				{/if}
+			</form>
 		</Container>
 	</div>
 </div>
