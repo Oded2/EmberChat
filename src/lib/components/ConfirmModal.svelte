@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { confirmModal } from '$lib/stores/confirm';
+	import { t } from '$lib/stores/localization';
 	import { onMount } from 'svelte';
 
-	const { show, message, handleConfirm } = $derived($confirmModal);
+	const { show, title, message, confirmText, handleConfirm } = $derived($confirmModal);
 
 	let modal: HTMLDialogElement;
 
@@ -32,11 +33,16 @@
 </script>
 
 <dialog bind:this={modal} class="modal">
-	<div class="modal-box">
-		<p class="mb-4 whitespace-pre-line">{message}</p>
+	<div class="modal-box" dir="auto">
+		<h2 class="mb-2 font-semibold">{title}</h2>
+		{#if message}
+			<p class="mb-4 line-clamp-3 whitespace-pre-line">{message}</p>
+		{/if}
 		<div class="flex justify-end gap-2">
-			<button class="btn" onclick={closeModal}>Cancel</button>
-			<button class="btn btn-error" disabled={inProgress} onclick={confirm}>Confirm</button>
+			<button class="btn" onclick={closeModal}>{$t('cancel')}</button>
+			<button class="btn btn-error" disabled={inProgress} onclick={confirm}
+				>{confirmText ?? $t('confirm')}</button
+			>
 		</div>
 	</div>
 	<form method="dialog" class="modal-backdrop">

@@ -197,7 +197,9 @@
 							onclick={() =>
 								showModal(
 									() => deleteMessage(message.id),
-									$t('confirm_message_delete').replace('%TEXT%', message.text ?? '')
+									$t('confirm_message_delete'),
+									`"${message.text}"`,
+									$t('delete')
 								)}
 							><i class="fa-solid fa-trash-can"></i>
 						</OptionsButton>
@@ -207,9 +209,9 @@
 							onclick={() =>
 								showModal(
 									() => handleReport(message),
-									$t('confirm_message_report')
-										.replace('%TEXT%', message.text ?? '')
-										.replace('%SENDER%', message.senderName ?? '')
+									$t('confirm_message_report'),
+									`"${message.text}"`,
+									$t('report')
 								)}
 						>
 							<i class="fa-solid fa-flag"></i>

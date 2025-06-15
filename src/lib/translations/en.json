@@ -75,8 +75,8 @@
     "report": "Report",
     "report_success": "Your report has been sent",
     "report_error": "There was an error sending your report",
-    "confirm_message_delete": "Are you sure you want to delete the following message?\n\n\"%TEXT%\"",
-    "confirm_message_report": "Are you sure you want to report the following message?\n\n\"%TEXT%\"\n\nSender: %SENDER%",
+    "confirm_message_delete": "Are you sure you want to delete the following message?",
+    "confirm_message_report": "Are you sure you want to report the following message?",
     "about_emberchat": "About EmberChat",
     "mission": "Mission",
     "about_mission": "Create a simple, minimalistic way to chat within a group of people.",
@@ -108,5 +108,7 @@
     "contact_error": "There was an error sending the form",
     "or": "OR",
     "no_symbols": "Room code cannot contain symbols",
-    "reserved_global": "Room code \"%GLOBAL%\" is reserved for the global chat room"
+    "reserved_global": "Room code \"%GLOBAL%\" is reserved for the global chat room",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
 }
