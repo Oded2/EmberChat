@@ -111,5 +111,7 @@
     "reserved_global": "קוד החדר \"%GLOBAL%\" שמור עבור חדר הצ'אט הגלובלי",
     "confirm": "אשר",
     "cancel": "בטל",
-    "exceed_max_length": "ההודעה לא יכולה לעלות על %MAX% תווים"
+    "exceed_max_length": "ההודעה לא יכולה לעלות על %MAX% תווים",
+    "settings": "הגדרות",
+    "stats": "סטטיסטיקות"
 }

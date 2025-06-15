@@ -111,5 +111,7 @@
     "reserved_global": "Room code \"%GLOBAL%\" is reserved for the global chat room",
     "confirm": "Confirm",
     "cancel": "Cancel",
-    "exceed_max_length": "Message cannot exceed %MAX% characters"
+    "exceed_max_length": "Message cannot exceed %MAX% characters",
+    "settings": "Settings",
+    "stats": "Stats"
 }
