@@ -227,7 +227,7 @@
 	<div class="bg-base-200 sticky bottom-0 py-4">
 		<Container>
 			<LabelInputForm handleSubmit={sendMessage}>
-				<LabelTextarea bind:value={newMessage} label={$t('enter_message')}>
+				<LabelTextarea bind:value={newMessage} label={$t('enter_message')} maxlength={5000}>
 					<div class="flex ps-4">
 						{#if !$user.loading && !$user.user}
 							<span class="mt-auto text-xs font-light italic">
