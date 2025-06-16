@@ -8,6 +8,7 @@
 	import StatCard from './StatCard.svelte';
 	import { showModal } from '$lib/stores/confirm';
 	import { addToast } from '$lib/stores/toasts';
+	import { flip } from 'svelte/animate';
 
 	interface Props {
 		userData: User;
@@ -90,32 +91,34 @@
 				</StatCard>
 			</div>
 			<div class="divider font-bold italic">{$t('all_chat_rooms')}</div>
-			<div class="flex flex-col gap-4 sm:grid sm:grid-cols-3">
+			<div class="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3">
 				{#each [...globalFrequencyMap].sort(([a], [b]) => {
 					if (a === globalRoomCode) return -1;
 					if (b === globalRoomCode) return 1;
 					return a.localeCompare(b);
-				}) as [chatId, count]}
-					<StatCard label={chatDisplay(chatId)}>
-						<span>{`${count.toLocaleString()} ${$t('messages')}`}</span>
-						<div class="mt-2 flex justify-end gap-2">
-							<button
-								class="btn btn-error btn-outline btn-sm lg:btn-md"
-								onclick={() =>
-									showModal(
-										() => purgeChat(chatId),
-										$t('confirm_purge_chat').replace('%ID%', chatDisplay(chatId)),
-										$t('confirm_purge_chat_description').replace('%ID%', chatDisplay(chatId)),
-										$t('purge')
-									)}
-							>
-								{$t('purge')}
-							</button>
-							<a href={`/chat/${chatId}`} class="btn btn-primary btn-outline btn-sm lg:btn-md">
-								{$t('go')}
-							</a>
-						</div>
-					</StatCard>
+				}) as [chatId, count] (chatId)}
+					<div animate:flip={{ duration: 200 }}>
+						<StatCard label={chatDisplay(chatId)}>
+							<span>{`${count.toLocaleString()} ${$t('messages')}`}</span>
+							<div class="mt-2 flex justify-end gap-2">
+								<button
+									class="btn btn-error btn-outline"
+									onclick={() =>
+										showModal(
+											() => purgeChat(chatId),
+											$t('confirm_purge_chat').replace('%ID%', chatDisplay(chatId)),
+											$t('confirm_purge_chat_description').replace('%ID%', chatDisplay(chatId)),
+											$t('purge')
+										)}
+								>
+									{$t('purge')}
+								</button>
+								<a href={`/chat/${chatId}`} class="btn btn-primary btn-outline">
+									{$t('go')}
+								</a>
+							</div>
+						</StatCard>
+					</div>
 				{/each}
 			</div>
 		{:else}
