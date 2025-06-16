@@ -106,7 +106,7 @@
 </script>
 
 {#if userData}
-	<div class="flex-wrap justify-center gap-4 pb-10" class:hidden={!show} class:flex={show}>
+	<div class="flex-wrap justify-center gap-4" class:hidden={!show} class:flex={show}>
 		<Fieldset
 			title={$t('user_settings')}
 			btnText={$t('update_profile')}

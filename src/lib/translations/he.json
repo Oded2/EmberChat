@@ -120,5 +120,8 @@
     "most_used_chat": "חדר הצ'אט הפעיל ביותר",
     "messages": "הודעות",
     "all_chat_rooms": "כל חדרי הצ'אט",
-    "no_messages": "לא נשלחו הודעות"
+    "no_messages": "לא נשלחו הודעות",
+    "purge": "נקה",
+    "confirm_purge_chat": "ניקוי צ'אט - %ID%",
+    "confirm_purge_chat_description": "פעולה זו תמחק את כל ההודעות ששלחת בחדר הצ'אט \"%ID%\". האם אתה בטוח שברצונך להמשיך?"
 }

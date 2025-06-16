@@ -120,5 +120,8 @@
     "most_used_chat": "Most frequent chat room",
     "messages": "messages",
     "all_chat_rooms": "All chats rooms",
-    "no_messages": "No messages sent"
+    "no_messages": "No messages sent",
+    "purge": "Purge",
+    "confirm_purge_chat": "Purge chat - %ID%",
+    "confirm_purge_chat_description": "This action will delete all of your messages sent in chat room \"%ID%\". Are you sure you want to continue?"
 }

@@ -14,24 +14,26 @@
 
 {#if $user.user}
 	{@const userData = $user.user}
-	<Container>
-		<h1 class="my-10 text-center text-3xl font-bold">
-			{$t('personal_greeting').replace('%NAME%', userData.displayName ?? '')}
-		</h1>
-		<div class="tabs tabs-box mx-auto mb-2">
-			<ProfileTab label={$t('settings')} checked onchange={() => (tab = 0)}></ProfileTab>
-			<ProfileTab
-				label={$t('stats')}
-				onchange={() => {
-					showStats = true;
-					tab = 1;
-				}}
-			></ProfileTab>
-		</div>
-		<ProfileSettings show={tab == 0} {userData}></ProfileSettings>
-		{#if showStats}
-			<ProfileStats show={tab == 1} {userData}></ProfileStats>
-		{/if}
-	</Container>
+	<div class="my-10">
+		<Container>
+			<h1 class="mb-10 text-center text-3xl font-bold">
+				{$t('personal_greeting').replace('%NAME%', userData.displayName ?? '')}
+			</h1>
+			<div class="tabs tabs-box mx-auto mb-2">
+				<ProfileTab label={$t('settings')} checked onchange={() => (tab = 0)}></ProfileTab>
+				<ProfileTab
+					label={$t('stats')}
+					onchange={() => {
+						showStats = true;
+						tab = 1;
+					}}
+				></ProfileTab>
+			</div>
+			<ProfileSettings show={tab == 0} {userData}></ProfileSettings>
+			{#if showStats}
+				<ProfileStats show={tab == 1} {userData}></ProfileStats>
+			{/if}
+		</Container>
+	</div>
 {/if}
 <Title title={$t('profile')}></Title>

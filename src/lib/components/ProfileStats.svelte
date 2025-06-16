@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { db } from '$lib/firebase/firebase';
-	import { globalRoomCode, handleMessages, type Message } from '$lib/helpers';
+	import { deleteDocsByQuery, globalRoomCode, handleMessages, type Message } from '$lib/helpers';
 	import type { User } from 'firebase/auth';
 	import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 	import { t } from '$lib/stores/localization';
 	import { onMount } from 'svelte';
 	import StatCard from './StatCard.svelte';
+	import { showModal } from '$lib/stores/confirm';
+	import { addToast } from '$lib/stores/toasts';
 
 	interface Props {
 		userData: User;
@@ -50,6 +52,25 @@
 			count: max
 		};
 	}
+
+	async function purgeChat(chatId: string) {
+		const q = query(
+			collection(db, 'messages'),
+			where('owner', '==', userData.uid),
+			where('chatId', '==', chatId)
+		);
+		const length = await deleteDocsByQuery(q);
+		addToast(
+			'success',
+			$t('purge_messages_success')
+				.replace('%NUMBER%', length.toLocaleString())
+				.replace('%EMAIL%', userData.email ?? '')
+		);
+	}
+
+	function chatDisplay(chatId: string) {
+		return chatId === globalRoomCode ? $t('about_usage_global_chat') : chatId;
+	}
 </script>
 
 <div class:hidden={!show}>
@@ -59,20 +80,41 @@
 			<h2 class="mb-3 text-2xl font-semibold">
 				{$t('total_messages').replace('%NUM%', messages.length.toLocaleString())}
 			</h2>
-			<div class="grid grid-cols-3 gap-4">
+			<div class="flex flex-col gap-4 sm:grid sm:grid-cols-3">
 				<StatCard label={$t('last_message')} message={messages[messages.length - 1]}></StatCard>
 				<StatCard label={$t('first_message')} message={messages[0]}></StatCard>
 				<StatCard label={$t('most_used_chat')}>
 					<span dir="auto">
-						{`${mostFrequent.chatId === globalRoomCode ? $t('about_usage_global_chat') : mostFrequent.chatId} - ${mostFrequent.count.toLocaleString()} ${$t('messages')}`}
+						{`${chatDisplay(mostFrequent.chatId)} - ${mostFrequent.count.toLocaleString()} ${$t('messages')}`}
 					</span>
 				</StatCard>
 			</div>
 			<div class="divider font-bold italic">{$t('all_chat_rooms')}</div>
-			<div class="grid grid-cols-3 gap-4">
-				{#each [...globalFrequencyMap].sort(([a], [b]) => a.localeCompare(b)) as [chatId, count]}
-					<StatCard label={chatId === globalRoomCode ? $t('about_usage_global_chat') : chatId}>
-						{`${count.toLocaleString()} ${$t('messages')}`}
+			<div class="flex flex-col gap-4 sm:grid sm:grid-cols-3">
+				{#each [...globalFrequencyMap].sort(([a], [b]) => {
+					if (a === globalRoomCode) return -1;
+					if (b === globalRoomCode) return 1;
+					return a.localeCompare(b);
+				}) as [chatId, count]}
+					<StatCard label={chatDisplay(chatId)}>
+						<span>{`${count.toLocaleString()} ${$t('messages')}`}</span>
+						<div class="mt-2 flex justify-end gap-2">
+							<button
+								class="btn btn-error btn-outline btn-sm lg:btn-md"
+								onclick={() =>
+									showModal(
+										() => purgeChat(chatId),
+										$t('confirm_purge_chat').replace('%ID%', chatDisplay(chatId)),
+										$t('confirm_purge_chat_description').replace('%ID%', chatDisplay(chatId)),
+										$t('purge')
+									)}
+							>
+								{$t('purge')}
+							</button>
+							<a href={`/chat/${chatId}`} class="btn btn-primary btn-outline btn-sm lg:btn-md">
+								{$t('go')}
+							</a>
+						</div>
 					</StatCard>
 				{/each}
 			</div>
