@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { db } from '$lib/firebase/firebase';
-	import { firebaseAuthErrorTypeGaurd } from '$lib/helpers';
+	import { deleteDocsByQuery, firebaseAuthErrorTypeGaurd } from '$lib/helpers';
 	import { t } from '$lib/stores/localization';
 	import { addToast } from '$lib/stores/toasts';
-	import { updateUser, user } from '$lib/stores/user';
+	import { updateUser } from '$lib/stores/user';
 	import {
 		EmailAuthProvider,
 		reauthenticateWithCredential,
@@ -13,7 +13,7 @@
 		updateProfile,
 		type User
 	} from 'firebase/auth';
-	import { collection, deleteDoc, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
+	import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
 	import Fieldset from './Fieldset.svelte';
 	import FieldsetInput from './FieldsetInput.svelte';
 	import { showModal } from '$lib/stores/confirm';
@@ -94,16 +94,12 @@
 
 	async function deleteUserMessages(interactive: boolean = true) {
 		const q = query(collection(db, 'messages'), where('owner', '==', userData?.uid));
-		const snapshot = await getDocs(q);
-		const deletePromises = snapshot.docs.map((docSnap) =>
-			deleteDoc(doc(db, 'messages', docSnap.id))
-		);
-		await Promise.all(deletePromises);
+		const num = await deleteDocsByQuery(q);
 		if (interactive)
 			addToast(
 				'success',
 				$t('purge_messages_success')
-					.replace('%NUMBER%', deletePromises.length.toLocaleString())
+					.replace('%NUMBER%', num.toLocaleString())
 					.replace('%EMAIL%', userData?.email ?? '')
 			);
 	}

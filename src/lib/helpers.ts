@@ -1,4 +1,11 @@
-import { QuerySnapshot, Timestamp, type DocumentData } from 'firebase/firestore';
+import {
+	deleteDoc,
+	getDocs,
+	Query,
+	QuerySnapshot,
+	Timestamp,
+	type DocumentData
+} from 'firebase/firestore';
 
 export interface Message {
 	id: string;
@@ -31,6 +38,13 @@ export function handleMessages(snapshot: QuerySnapshot<DocumentData, DocumentDat
 	return snapshot.docs
 		.map((doc) => ({ ...doc.data(), id: doc.id }))
 		.filter((doc) => messageTypeGaurd(doc));
+}
+
+export async function deleteDocsByQuery(q: Query<DocumentData, DocumentData>): Promise<number> {
+	const snapshot = await getDocs(q);
+	const deletePromises = snapshot.docs.map((doc) => deleteDoc(doc.ref));
+	await Promise.all(deletePromises);
+	return deletePromises.length;
 }
 
 export function getRandomInt(min: number, max: number): number {
