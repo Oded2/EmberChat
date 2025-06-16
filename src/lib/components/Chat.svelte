@@ -60,10 +60,10 @@
 			orderBy('timestamp'),
 			limit(200)
 		);
-		const unsubscribe = onSnapshot(q, async (snapshot) => {
+		const unsubscribe = onSnapshot(q, (snapshot) => {
 			allMessages = handleMessages(snapshot);
-			await tick();
-			window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+			if (allMessages.length > 4)
+				tick().then(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
 		});
 		return unsubscribe;
 	});
