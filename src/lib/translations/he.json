@@ -119,5 +119,6 @@
     "last_message": "הודעה אחרונה",
     "most_used_chat": "חדר הצ'אט הפעיל ביותר",
     "messages": "הודעות",
-    "all_chat_rooms": "כל חדרי הצ'אט"
+    "all_chat_rooms": "כל חדרי הצ'אט",
+    "no_messages": "לא נשלחו הודעות"
 }

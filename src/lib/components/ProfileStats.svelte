@@ -2,7 +2,7 @@
 	import { db } from '$lib/firebase/firebase';
 	import { globalRoomCode, handleMessages, type Message } from '$lib/helpers';
 	import type { User } from 'firebase/auth';
-	import { collection, getDocs, limit, orderBy, query, where } from 'firebase/firestore';
+	import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
 	import { t } from '$lib/stores/localization';
 	import { onMount } from 'svelte';
 
@@ -15,8 +15,7 @@
 	const ref = query(
 		collection(db, 'messages'),
 		where('owner', '==', userData.uid),
-		orderBy('timestamp'),
-		limit(200)
+		orderBy('timestamp')
 	);
 	const messagesPromise = getDocs(ref).then((snapshot) => handleMessages(snapshot));
 	let globalFrequencyMap: [string, number][] = $state([]);
@@ -51,24 +50,28 @@
 	{#await messagesPromise}
 		<span class="loading loading-spinner loading-xl"></span>
 	{:then messages}
-		{@const mostFrequent = getMostUsedChat(messages)}
-		<h2 class="mb-3 text-2xl font-semibold">
-			{$t('total_messages').replace('%NUM%', messages.length.toLocaleString())}
-		</h2>
-		<div class="grid grid-cols-3 gap-4">
-			{@render StatCard($t('last_message'), messages[messages.length - 1])}
-			{@render StatCard($t('first_message'), messages[0])}
-			{@render StatCard(
-				$t('most_used_chat'),
-				`${mostFrequent.chatId === globalRoomCode ? $t('about_usage_global_chat') : mostFrequent.chatId} - ${mostFrequent.count.toLocaleString()} ${$t('messages')}`
-			)}
-		</div>
-		<div class="divider font-bold italic">{$t('all_chat_rooms')}</div>
-		<div class="grid grid-cols-3 gap-4">
-			{#each globalFrequencyMap as [chatId, count]}
-				{@render StatCard(chatId, `${count.toLocaleString()} ${$t('messages')}`)}
-			{/each}
-		</div>
+		{#if messages.length > 0}
+			{@const mostFrequent = getMostUsedChat(messages)}
+			<h2 class="mb-3 text-2xl font-semibold">
+				{$t('total_messages').replace('%NUM%', messages.length.toLocaleString())}
+			</h2>
+			<div class="grid grid-cols-3 gap-4">
+				{@render StatCard($t('last_message'), messages[messages.length - 1])}
+				{@render StatCard($t('first_message'), messages[0])}
+				{@render StatCard(
+					$t('most_used_chat'),
+					`${mostFrequent.chatId === globalRoomCode ? $t('about_usage_global_chat') : mostFrequent.chatId} - ${mostFrequent.count.toLocaleString()} ${$t('messages')}`
+				)}
+			</div>
+			<div class="divider font-bold italic">{$t('all_chat_rooms')}</div>
+			<div class="grid grid-cols-3 gap-4">
+				{#each globalFrequencyMap as [chatId, count]}
+					{@render StatCard(chatId, `${count.toLocaleString()} ${$t('messages')}`)}
+				{/each}
+			</div>
+		{:else}
+			<span>{$t('no_messages')}</span>
+		{/if}
 	{/await}
 </div>
 

@@ -119,5 +119,6 @@
     "last_message": "Last message",
     "most_used_chat": "Most frequent chat room",
     "messages": "messages",
-    "all_chat_rooms": "All chats rooms"
+    "all_chat_rooms": "All chats rooms",
+    "no_messages": "No messages sent"
 }
