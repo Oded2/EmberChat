@@ -99,7 +99,7 @@
 				}) as [chatId, count] (chatId)}
 					<div animate:flip={{ duration: 200 }}>
 						<StatCard label={chatDisplay(chatId)}>
-							<span>{`${count.toLocaleString()} ${$t('messages')}`}</span>
+							<span>{`${$t('messages')}: ${count.toLocaleString()}`}</span>
 							<div class="mt-2 flex justify-end gap-2">
 								<button
 									class="btn btn-error btn-outline"
