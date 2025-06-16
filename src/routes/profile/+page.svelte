@@ -19,7 +19,7 @@
 			<h1 class="mb-10 text-center text-3xl font-bold">
 				{$t('personal_greeting').replace('%NAME%', userData.displayName ?? '')}
 			</h1>
-			<div class="bg-base-100 mx-auto mb-2 flex gap-2 rounded-2xl p-3">
+			<div class="mx-auto mb-2 flex w-52 gap-2">
 				<ProfileTab label={$t('settings')} checked={tab == 0} onchange={() => (tab = 0)}
 				></ProfileTab>
 				<ProfileTab
