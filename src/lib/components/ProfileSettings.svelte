@@ -34,8 +34,8 @@
 
 	$effect(() => {
 		const currentUser = userData;
-		email = currentUser?.email ?? '';
-		displayName = currentUser?.displayName ?? '';
+		email = currentUser.email ?? '';
+		displayName = currentUser.displayName ?? '';
 	});
 
 	async function handleUpdateUser() {
@@ -72,7 +72,7 @@
 	}
 
 	async function handleReauthentication() {
-		if (!reAuthenticatePassword || !userData?.email) return;
+		if (!reAuthenticatePassword || !userData.email) return;
 		const credential = EmailAuthProvider.credential(userData.email, reAuthenticatePassword);
 		try {
 			await reauthenticateWithCredential(userData, credential);
@@ -93,14 +93,14 @@
 	}
 
 	async function deleteUserMessages(interactive: boolean = true) {
-		const q = query(collection(db, 'messages'), where('owner', '==', userData?.uid));
+		const q = query(collection(db, 'messages'), where('owner', '==', userData.uid));
 		const num = await deleteDocsByQuery(q);
 		if (interactive)
 			addToast(
 				'success',
 				$t('purge_messages_success')
 					.replace('%NUMBER%', num.toLocaleString())
-					.replace('%EMAIL%', userData?.email ?? '')
+					.replace('%EMAIL%', userData.email ?? '')
 			);
 	}
 </script>
