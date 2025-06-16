@@ -1,5 +1,7 @@
 # EmberChat
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/338f0093-11d1-4675-8703-e7098d9c5dfc/deploy-status)](https://app.netlify.com/projects/emberchat/deploys)
+
 EmberChat is a minimal, zero-complexity chat application built with [SvelteKit](https://kit.svelte.dev/), [Firebase](https://firebase.google.com/), [Tailwind CSS](https://tailwindcss.com/), and [DaisyUI](https://daisyui.com/). It features authentication, real-time global chat, and user profile management.
 
 ## Features
