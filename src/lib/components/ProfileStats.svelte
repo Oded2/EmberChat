@@ -63,13 +63,15 @@
 				<StatCard label={$t('last_message')} message={messages[messages.length - 1]}></StatCard>
 				<StatCard label={$t('first_message')} message={messages[0]}></StatCard>
 				<StatCard label={$t('most_used_chat')}>
-					{`${mostFrequent.chatId === globalRoomCode ? $t('about_usage_global_chat') : mostFrequent.chatId} - ${mostFrequent.count.toLocaleString()} ${$t('messages')}`}
+					<span dir="auto">
+						{`${mostFrequent.chatId === globalRoomCode ? $t('about_usage_global_chat') : mostFrequent.chatId} - ${mostFrequent.count.toLocaleString()} ${$t('messages')}`}
+					</span>
 				</StatCard>
 			</div>
 			<div class="divider font-bold italic">{$t('all_chat_rooms')}</div>
 			<div class="grid grid-cols-3 gap-4">
-				{#each globalFrequencyMap as [chatId, count]}
-					<StatCard label={chatId}>
+				{#each [...globalFrequencyMap].sort(([a], [b]) => a.localeCompare(b)) as [chatId, count]}
+					<StatCard label={chatId === globalRoomCode ? $t('about_usage_global_chat') : chatId}>
 						{`${count.toLocaleString()} ${$t('messages')}`}
 					</StatCard>
 				{/each}

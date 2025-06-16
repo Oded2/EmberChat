@@ -29,7 +29,7 @@
 		{/if}
 	</div>
 	{#if message}
-		<span class="whitespace-pre-line">{`"${message.text}"`}</span>
+		<span class="line-clamp-3 whitespace-pre-line">{`"${message.text}"`}</span>
 	{:else if children}
 		{@render children()}
 	{/if}
