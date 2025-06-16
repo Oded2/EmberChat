@@ -6,6 +6,10 @@
 	}
 
 	const { label, checked, onchange }: Props = $props();
+	const id = $props.id();
 </script>
 
-<input type="radio" name="profile" class="tab" aria-label={label} {checked} {onchange} />
+<div class="w-1/2">
+	<input type="radio" {id} name="profile" class="peer hidden" {checked} {onchange} />
+	<label for={id} class="btn peer-checked:btn-info w-full">{label}</label>
+</div>
