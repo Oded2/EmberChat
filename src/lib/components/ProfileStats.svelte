@@ -2,7 +2,7 @@
 	import { db } from '$lib/firebase/firebase';
 	import { globalRoomCode, handleMessages, type Message } from '$lib/helpers';
 	import type { User } from 'firebase/auth';
-	import { collection, getDocs, orderBy, query, where } from 'firebase/firestore';
+	import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 	import { t } from '$lib/stores/localization';
 	import { onMount } from 'svelte';
 
@@ -12,19 +12,24 @@
 	}
 
 	const { userData, show }: Props = $props();
-	const ref = query(
-		collection(db, 'messages'),
-		where('owner', '==', userData.uid),
-		orderBy('timestamp')
-	);
-	const messagesPromise = getDocs(ref).then((snapshot) => handleMessages(snapshot));
+
+	let messages: Message[] | null = $state(null);
+
 	let globalFrequencyMap: [string, number][] = $state([]);
 
-	onMount(async () => {
-		const messages = await messagesPromise;
-		const frequencyMap: Record<string, number> = {};
-		messages.forEach(({ chatId }) => (frequencyMap[chatId] = (frequencyMap[chatId] || 0) + 1));
-		globalFrequencyMap = Object.entries(frequencyMap);
+	onMount(() => {
+		const q = query(
+			collection(db, 'messages'),
+			where('owner', '==', userData.uid),
+			orderBy('timestamp')
+		);
+		const unsubscribe = onSnapshot(q, async (snapshot) => {
+			messages = handleMessages(snapshot);
+			const frequencyMap: Record<string, number> = {};
+			messages.forEach(({ chatId }) => (frequencyMap[chatId] = (frequencyMap[chatId] || 0) + 1));
+			globalFrequencyMap = Object.entries(frequencyMap);
+		});
+		return unsubscribe;
 	});
 
 	function getMostUsedChat(messages: Message[]): {
@@ -47,9 +52,7 @@
 </script>
 
 <div class:hidden={!show}>
-	{#await messagesPromise}
-		<span class="loading loading-spinner loading-xl"></span>
-	{:then messages}
+	{#if messages}
 		{#if messages.length > 0}
 			{@const mostFrequent = getMostUsedChat(messages)}
 			<h2 class="mb-3 text-2xl font-semibold">
@@ -72,13 +75,15 @@
 		{:else}
 			<span>{$t('no_messages')}</span>
 		{/if}
-	{/await}
+	{:else}
+		<span class="loading loading-spinner loading-xl"></span>
+	{/if}
 </div>
 
 {#snippet StatCard(statName: string, m: Message | string)}
 	<div class="bg-base-100 flex flex-col gap-2 rounded-2xl px-4 py-2 shadow">
 		<div class="flex flex-col">
-			<h2 class="text-lg font-semibold">{`${statName}`}</h2>
+			<h2 class="text-lg font-semibold">{statName}</h2>
 			{#if typeof m !== 'string'}
 				<span class="text-sm">
 					{m.timestamp.toDate().toLocaleString(undefined, {
