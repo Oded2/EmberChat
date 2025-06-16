@@ -62,7 +62,8 @@
 		);
 		const unsubscribe = onSnapshot(q, async (snapshot) => {
 			allMessages = handleMessages(snapshot);
-			await resetScroll();
+			await tick();
+			window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 		});
 		return unsubscribe;
 	});
@@ -100,11 +101,6 @@
 	async function deleteMessage(id: string) {
 		const docRef = doc(db, 'messages', id);
 		await deleteDoc(docRef);
-	}
-
-	async function resetScroll() {
-		await tick();
-		window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
 	}
 
 	function getOrGenerateUsername(): string {
