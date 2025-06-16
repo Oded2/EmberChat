@@ -5,6 +5,7 @@
 	import { collection, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 	import { t } from '$lib/stores/localization';
 	import { onMount } from 'svelte';
+	import StatCard from './StatCard.svelte';
 
 	interface Props {
 		userData: User;
@@ -59,17 +60,18 @@
 				{$t('total_messages').replace('%NUM%', messages.length.toLocaleString())}
 			</h2>
 			<div class="grid grid-cols-3 gap-4">
-				{@render StatCard($t('last_message'), messages[messages.length - 1])}
-				{@render StatCard($t('first_message'), messages[0])}
-				{@render StatCard(
-					$t('most_used_chat'),
-					`${mostFrequent.chatId === globalRoomCode ? $t('about_usage_global_chat') : mostFrequent.chatId} - ${mostFrequent.count.toLocaleString()} ${$t('messages')}`
-				)}
+				<StatCard label={$t('last_message')} message={messages[messages.length - 1]}></StatCard>
+				<StatCard label={$t('first_message')} message={messages[0]}></StatCard>
+				<StatCard label={$t('most_used_chat')}>
+					{`${mostFrequent.chatId === globalRoomCode ? $t('about_usage_global_chat') : mostFrequent.chatId} - ${mostFrequent.count.toLocaleString()} ${$t('messages')}`}
+				</StatCard>
 			</div>
 			<div class="divider font-bold italic">{$t('all_chat_rooms')}</div>
 			<div class="grid grid-cols-3 gap-4">
 				{#each globalFrequencyMap as [chatId, count]}
-					{@render StatCard(chatId, `${count.toLocaleString()} ${$t('messages')}`)}
+					<StatCard label={chatId}>
+						{`${count.toLocaleString()} ${$t('messages')}`}
+					</StatCard>
 				{/each}
 			</div>
 		{:else}
@@ -79,31 +81,3 @@
 		<span class="loading loading-spinner loading-xl"></span>
 	{/if}
 </div>
-
-{#snippet StatCard(statName: string, m: Message | string)}
-	<div class="bg-base-100 flex flex-col gap-2 rounded-2xl px-4 py-2 shadow">
-		<div class="flex flex-col">
-			<h2 class="text-lg font-semibold">{statName}</h2>
-			{#if typeof m !== 'string'}
-				<span class="text-sm">
-					{m.timestamp.toDate().toLocaleString(undefined, {
-						minute: 'numeric',
-						hour: 'numeric',
-						weekday: 'long',
-						day: '2-digit',
-						month: 'long',
-						year: 'numeric'
-					})}
-				</span>
-			{/if}
-		</div>
-		<span class="whitespace-pre-line">{`${typeof m === 'string' ? m : `"${m.text}"`}`}</span>
-		{#if typeof m !== 'string'}
-			<span class="text-xs">
-				{m.chatId === globalRoomCode
-					? $t('about_usage_global_chat')
-					: $t('chat_id').replace('%ID%', m.chatId)}
-			</span>
-		{/if}
-	</div>
-{/snippet}
