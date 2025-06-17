@@ -35,7 +35,7 @@
 				{@render Items()}
 			</ul>
 		</div>
-		<a href="/" class="btn btn-ghost btn-lg" aria-label="Home">
+		<a href="/" class="btn btn-ghost btn-lg hover:text-orange-400" aria-label="Home">
 			<i class="fa-solid fa-fire-flame-curved"></i>
 		</a>
 	</div>
