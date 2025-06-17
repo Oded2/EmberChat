@@ -41,7 +41,7 @@
 		<div class="flex grow flex-col gap-4">
 			<h1 class="text-6xl font-bold md:text-8xl">{$t('heading')}</h1>
 			<p class="text-lg font-light">{$t('description')}</p>
-			<a href="/chat" class="btn btn-primary btn-lg sm:btn-wide mt-2 sm:mx-auto">
+			<a href="/chat" class="btn btn-primary btn-lg sm:btn-wide mt-2">
 				<i class="fa-solid fa-globe"></i>
 				{$t('enter_global')}
 			</a>
