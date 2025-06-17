@@ -42,7 +42,7 @@
 			<h1 class="text-6xl font-bold md:text-8xl">{$t('heading')}</h1>
 			<p class="text-lg font-light">{$t('description')}</p>
 			<div class="me-auto flex flex-col gap-2">
-				<a href="/chat" class="btn btn-primary btn-lg mt-2 sm:rounded-full">
+				<a href="/chat" class="btn btn-primary btn-lg mx-auto mt-2 px-10 sm:rounded-full">
 					<i class="fa-solid fa-globe"></i>
 					{$t('enter_global')}
 				</a>
