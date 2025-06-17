@@ -41,41 +41,43 @@
 		<div class="flex grow flex-col gap-4">
 			<h1 class="text-6xl font-bold md:text-8xl">{$t('heading')}</h1>
 			<p class="text-lg font-light">{$t('description')}</p>
-			<a href="/chat" class="btn btn-primary btn-lg sm:btn-wide mt-2">
-				<i class="fa-solid fa-globe"></i>
-				{$t('enter_global')}
-			</a>
-			<div class="divider"><span class="font-medium">{$t('or')}</span></div>
-			<h4 class="text-2xl font-semibold">{$t('enter_chat_room')}</h4>
-			<form
-				class="flex flex-wrap gap-2 sm:me-auto sm:min-w-xl"
-				onsubmit={(e) => {
-					e.preventDefault();
-					goToRoom();
-				}}
-			>
-				<LabelInput
-					bind:value={roomCode}
-					label={$t('room_code')}
-					autocorrect="off"
-					autocapitalize="off"
-					spellcheck={false}
-				></LabelInput>
-				<button
-					type="button"
-					onclick={generateRoomCode}
-					class="btn btn-primary btn-outline btn-lg sm:w-16"
-					aria-label="Random"
+			<div class="me-auto flex flex-col gap-2">
+				<a href="/chat" class="btn btn-primary btn-lg mt-2 sm:rounded-full">
+					<i class="fa-solid fa-globe"></i>
+					{$t('enter_global')}
+				</a>
+				<div class="divider"><span class="font-medium">{$t('or')}</span></div>
+				<h4 class="mb-2 text-2xl font-semibold">{$t('enter_chat_room')}</h4>
+				<form
+					class="flex flex-wrap gap-2"
+					onsubmit={(e) => {
+						e.preventDefault();
+						goToRoom();
+					}}
 				>
-					<i class="fa-solid fa-dice"></i>
-				</button>
-				<button type="submit" class="btn btn-primary btn-lg w-full sm:w-16">
-					<DynamicSpinner {inProgress}>{$t('go')}</DynamicSpinner>
-				</button>
-			</form>
-			<span class="text-sm font-light italic before:me-0.5 before:content-['*']">
-				{$t('room_code_pattern')}
-			</span>
+					<LabelInput
+						bind:value={roomCode}
+						label={$t('room_code')}
+						autocorrect="off"
+						autocapitalize="off"
+						spellcheck={false}
+					></LabelInput>
+					<button
+						type="button"
+						onclick={generateRoomCode}
+						class="btn btn-primary btn-outline btn-lg sm:w-16"
+						aria-label="Random"
+					>
+						<i class="fa-solid fa-dice"></i>
+					</button>
+					<button type="submit" class="btn btn-primary btn-lg w-full sm:w-16">
+						<DynamicSpinner {inProgress}>{$t('go')}</DynamicSpinner>
+					</button>
+				</form>
+				<span class="text-sm font-light italic before:me-0.5 before:content-['*']">
+					{$t('room_code_pattern')}
+				</span>
+			</div>
 		</div>
 		<div class="hidden lg:inline-block">
 			<img
