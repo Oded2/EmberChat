@@ -51,6 +51,7 @@
 	let editId: string | null = $state(null);
 	let inProgressChat = $state(false);
 	let inProgressReport = $state(false);
+	let chatContainer: HTMLDivElement;
 
 	onMount(() => {
 		anonId = getOrGenerateUsername();
@@ -62,8 +63,7 @@
 		);
 		const unsubscribe = onSnapshot(q, (snapshot) => {
 			allMessages = handleMessages(snapshot);
-			if (allMessages.length > 4)
-				tick().then(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
+			tick().then(() => chatContainer.scrollIntoView({ block: 'end', behavior: 'smooth' }));
 		});
 		return unsubscribe;
 	});
@@ -116,23 +116,21 @@
 
 	async function handleReport(m: Message) {
 		if (inProgressReport) return;
+		const currentUser = $user.user;
 		inProgressReport = true;
-		const ok = await sendForm({
+		const toSend: Record<string, string> = {
 			type: 'Report',
 			id: m.id,
 			chat_code: m.chatId,
 			text: m.text ?? '',
 			owner: m.owner || 'Anonymous',
-			sender: m.senderName ?? '',
-			date: m.timestamp.toDate().toLocaleDateString('en-US', {
-				minute: 'numeric',
-				hour: 'numeric',
-				weekday: 'long',
-				day: 'numeric',
-				month: 'long',
-				year: 'numeric'
-			})
-		});
+			sender: m.senderName ?? ''
+		};
+		if (currentUser?.displayName) {
+			toSend.reporter = currentUser.uid;
+			toSend.reporterName = currentUser.displayName;
+		}
+		const ok = await sendForm(toSend);
 		inProgressReport = false;
 		if (ok) addToast('success', $t('report_success'));
 		else addToast('error', $t('report_error'));
@@ -149,7 +147,7 @@
 	}
 </script>
 
-<div class="mt-10 flex grow flex-col gap-4">
+<div bind:this={chatContainer} class="mt-10 flex grow flex-col gap-4">
 	<Container>
 		<div class="flex grow flex-col gap-4">
 			{#each allMessages as message (message.id)}
