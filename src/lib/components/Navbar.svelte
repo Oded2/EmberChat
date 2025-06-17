@@ -48,7 +48,7 @@
 		{#if $user.user}
 			<a href="/profile" class="btn btn-primary btn-outline">{$t('profile')}</a>
 			<button onclick={authHandlers.signout} class="btn btn-primary">{$t('logout')}</button>
-		{:else}
+		{:else if !$user.loading}
 			<a href={addParams('/auth', { action: 'login' })} class="btn btn-primary btn-outline"
 				>{$t('login')}</a
 			>
