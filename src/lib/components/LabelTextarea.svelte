@@ -31,7 +31,6 @@
 		bind:this={textarea}
 		bind:value
 		class="flex max-h-50 w-full grow resize-none gap-2 rounded-2xl px-4 py-3 outline-none"
-		dir="auto"
 		placeholder={label}
 		onkeydown={(e) => {
 			if (e.key === 'Enter' && !e.shiftKey) {
