@@ -51,7 +51,6 @@
 	let editId: string | null = $state(null);
 	let inProgressChat = $state(false);
 	let inProgressReport = $state(false);
-	let chatContainer: HTMLDivElement;
 
 	onMount(() => {
 		anonId = getOrGenerateUsername();
@@ -63,7 +62,8 @@
 		);
 		const unsubscribe = onSnapshot(q, (snapshot) => {
 			allMessages = handleMessages(snapshot);
-			tick().then(() => chatContainer.scrollIntoView({ block: 'end', behavior: 'smooth' }));
+			if (allMessages.length > 4)
+				tick().then(() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }));
 		});
 		return unsubscribe;
 	});
@@ -147,7 +147,7 @@
 	}
 </script>
 
-<div bind:this={chatContainer} class="mt-10 flex grow flex-col gap-4">
+<div class="mt-10 flex grow flex-col gap-4">
 	<Container>
 		<div class="flex grow flex-col gap-4">
 			{#each allMessages as message (message.id)}
